@@ -1,4 +1,4 @@
-package com.example.meepmeeptesting;
+package com.example.meepmeeprun;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
@@ -7,9 +7,7 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 import java.awt.Image;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
