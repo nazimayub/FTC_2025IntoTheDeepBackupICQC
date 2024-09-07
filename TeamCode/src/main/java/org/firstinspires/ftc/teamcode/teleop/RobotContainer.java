@@ -23,6 +23,8 @@ public class RobotContainer extends CommandOpMode {
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,false,false,false));
         drive.setDefaultCommand(new DriveCommand(drive,base));
+        telemetrySubsystem.addLogHeadings();
+
         schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
         schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
 
