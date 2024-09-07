@@ -11,4 +11,6 @@ public class Constants {
             RevHubOrientationOnRobot.LogoFacingDirection.UP,
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
+    public static final String GROUP_ANDROID = "Android Studio";
+
 }
