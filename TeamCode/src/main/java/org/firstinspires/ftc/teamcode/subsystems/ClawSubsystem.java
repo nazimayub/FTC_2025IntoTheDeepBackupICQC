@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ClawSubsystem extends SubsystemBase {
+public class  ClawSubsystem extends SubsystemBase {
     /**
      * Creates a new ExampleSubsystem.
      */
