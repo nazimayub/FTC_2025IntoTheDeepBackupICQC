@@ -18,12 +18,15 @@ public class RobotContainer extends CommandOpMode {
     public static Drive drive;
     public static SimpleLogger log;
     public static TelemetrySubsystem telemetrySubsystem;
+
     @Override
     public void initialize() {
         GamepadEx base = new GamepadEx(gamepad1);
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,false,false,false));
         drive.setDefaultCommand(new DriveCommand(drive,base));
+        telemetrySubsystem.addLogHeadings();
+
         schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
         schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
 
