@@ -1,0 +1,9 @@
+NOTE: If you are tuning 2 slides, usually p1 and p, d1 and d, etc, will be the same. Only have these be different if you have a large weight or something of that nature on one side and you know what you are doing.
+1. Make sure motor directions are set correctly
+2. ARM ONLY find how many ticks are in each degree and set TICKINDEGREE
+3. Make f some arbitrary number like .1, but make sure the slides/arm move
+4. decrease f until arm/slides just dont move NOTE: For more advanced users, you may create a funtion that increases f based off of the slides current position because it requires more power to stop the slides from dropping higher up. ARM USERS DO NOT NEED TO DO THIS, THIS IS ALREADY TAKEN CARE OF
+5. Graph current and target pos
+6. Increase P until the lines eventualy match up
+7. Increase D until there is little to no occilation around the target position
+10. If wanted, continue to increase D until the current Pos NEVER overshoots the desired pos. THIS WILL USUALLY BE DONE
