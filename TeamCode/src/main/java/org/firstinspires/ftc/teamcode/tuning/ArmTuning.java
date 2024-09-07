@@ -42,12 +42,7 @@ public class ArmTuning extends OpMode {
         telemetry.addData("pos", armPos);
         telemetry.addData("target", target);
         telemetry.update();
-        if(-gamepad1.left_stick_y>0){
-            target+=.2;
-        }
-        else if(-gamepad1.left_stick_y<0){
-            target-=.2;
-        }
+        target-= gamepad1.left_stick_y*.2;
     }
 
 
