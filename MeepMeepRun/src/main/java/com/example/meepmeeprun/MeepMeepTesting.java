@@ -1,4 +1,4 @@
-package com.example.meepmeeptesting;
+package com.example.meepmeeprun;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
@@ -42,6 +42,7 @@ public class MeepMeepTesting {
             img = ImageIO.read(new File("field.png"));
         }
         catch (IOException e) {System.out.println(e);}
+        System.out.println("AAAAAAAAAA");
 
         meepMeep.setBackground(img)
                 .addEntity(myBot)
