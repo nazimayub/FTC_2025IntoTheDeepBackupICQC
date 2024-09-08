@@ -36,6 +36,44 @@ public class MeepMeepTesting {
 
         String path = "1+4zp2";
         boolean run = true;
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
+                .strafeToConstantHeading(new Vector2d(10,35))
+                .waitSeconds(1)
+                .strafeToConstantHeading(new Vector2d(15, 45))
+                .strafeToLinearHeading(new Vector2d(40, 45), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(48, 35), Math.toRadians(90))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(55, 55), Math.toRadians(45))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(57, 35), Math.toRadians(90))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(55, 55), Math.toRadians(45))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(57, 24), Math.toRadians(180))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(55, 55), Math.toRadians(45))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(45, 25), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(25, 0), Math.toRadians(0))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(45, 25), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(55, 55), Math.toRadians(45))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(45, 25), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(25, 0), Math.toRadians(0))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(45, 25), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(55, 55), Math.toRadians(45))
+                .waitSeconds(1)
+
+                .strafeToLinearHeading(new Vector2d(10, 35), Math.toRadians(270))
+
+                .build());
+        myBot2.runAction(myBot.getDrive().actionBuilder(new Pose2d(-20, -60, Math.toRadians(90)))
+
+                .build());
+        //1+5 for both sides
+        /*
             myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
                     .strafeToConstantHeading(new Vector2d(10,35))
                             .waitSeconds(1)
@@ -91,7 +129,8 @@ public class MeepMeepTesting {
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(-15, -35), Math.toRadians(90))
                 .build());
-
+                */
+        //2+8 for 2 robots
         /*
         if(path.equals("1+5zp1") || run){
             myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
