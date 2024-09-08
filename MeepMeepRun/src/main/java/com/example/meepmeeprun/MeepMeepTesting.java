@@ -1,9 +1,12 @@
 package com.example.meepmeeprun;
 
-import com.acmerobotics.roadrunner.Pose2d;
+import static com.example.meepmeeprun.MeepMeepFunctions.*;
+
+import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
+
 
 import java.awt.Image;
 import java.io.File;
@@ -13,35 +16,31 @@ import javax.imageio.ImageIO;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
+        String path = "B1";
 
         System.setProperty("sun.java2d.opengl", "true");
         MeepMeep meepMeep = new MeepMeep(800);
         // custom image stuff
 
-
-
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(120, 120, Math.toRadians(180), Math.toRadians(180), 11) // 11x11 tw
+                .setConstraints(MeepMeepConstants.MAXVEL, MeepMeepConstants.MAXACCEL, MeepMeepConstants.MAXANGVEL, MeepMeepConstants.MAXANGACCEL, MeepMeepConstants.TRACKWIDTH) // 11x11 tw
                 .build();
-
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(0, 0, 0))
-                .lineToX(30)
-                .turn(Math.toRadians(90))
-                .lineToY(30)
-                .turn(Math.toRadians(90))
-                .lineToX(0)
-                .turn(Math.toRadians(90))
-                .lineToY(0)
-                .turn(Math.toRadians(90))
-                .build());
-        Image img = null;
-        try {
-            img = ImageIO.read(new File("field.png"));
+        if(path.equalsIgnoreCase(MeepMeepConstants.B1)){
+            myBot.runAction(myBot.getDrive().actionBuilder(MeepMeepConstants.BLUE_1)
+                    .strafeToLinearHeading(new Vector2d(0,34),Math.toRadians(270))
+                    .strafeToLinearHeading(new Vector2d(0,40),Math.toRadians(270))
+                    .strafeToLinearHeading(new Vector2d(48,34),Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(50,52),Math.toRadians(45)) // score hb
+                    .strafeToLinearHeading(new Vector2d(54,34),Math.toRadians(110))
+                    .strafeToLinearHeading(new Vector2d(50,52),Math.toRadians(45)) // score hb
+                    .strafeToLinearHeading(new Vector2d(58,25),Math.toRadians(180))
+                    .strafeToLinearHeading(new Vector2d(50,52),Math.toRadians(45))
+                    .build());
         }
-        catch (IOException e) {System.out.println(e);}
 
-        meepMeep.setBackground(img)
+
+        meepMeep.setBackground(getImg())
                 .addEntity(myBot)
                 .start();
     }
