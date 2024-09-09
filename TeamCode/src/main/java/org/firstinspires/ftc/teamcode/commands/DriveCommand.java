@@ -11,16 +11,16 @@ import java.util.function.DoubleSupplier;
 public class DriveCommand extends RunCommand {
 
     public DriveCommand(Drive drive, GamepadEx gamepad){
-        super(() -> drive.robotCentricDrive(
-                gamepad.getLeftX(),
-                -gamepad.getLeftY(),
-                gamepad.getRightX()
-        ), drive);
-//        super(()->drive.fieldCentricDrive(
+//        super(() -> drive.robotCentricDrive(
 //                gamepad.getLeftX(),
 //                -gamepad.getLeftY(),
 //                gamepad.getRightX()
-//        ),drive);
+//        ), drive);
+        super(()->drive.fieldCentricDrive(
+                gamepad.getLeftX(),
+                -gamepad.getLeftY(),
+                gamepad.getRightX()
+        ),drive);
     }
 
 
