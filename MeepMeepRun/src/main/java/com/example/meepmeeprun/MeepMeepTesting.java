@@ -36,6 +36,7 @@ public class MeepMeepTesting {
 
         String path = "1+4zp2";
         boolean run = true;
+        /*
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
                 .strafeToConstantHeading(new Vector2d(10,35))
                 .waitSeconds(1)
@@ -72,6 +73,8 @@ public class MeepMeepTesting {
         myBot2.runAction(myBot.getDrive().actionBuilder(new Pose2d(-20, -60, Math.toRadians(90)))
 
                 .build());
+                */
+
         //1+5 for both sides
         /*
             myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
@@ -131,7 +134,7 @@ public class MeepMeepTesting {
                 .build());
                 */
         //2+8 for 2 robots
-        /*
+
         if(path.equals("1+5zp1") || run){
             myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(20, 60, Math.toRadians(270)))
                     .strafeToConstantHeading(new Vector2d(10,35))
@@ -194,7 +197,7 @@ public class MeepMeepTesting {
                     .strafeToLinearHeading(new Vector2d(10, 36), Math.toRadians(270))
                     .build());
         }
-*/
+
         Image img = null;
         try {
             img = ImageIO.read(new File("field.png"));
