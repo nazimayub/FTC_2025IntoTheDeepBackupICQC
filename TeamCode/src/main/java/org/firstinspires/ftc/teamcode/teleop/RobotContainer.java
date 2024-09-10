@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Constants;
@@ -19,12 +20,24 @@ public class RobotContainer extends CommandOpMode {
     public static SimpleLogger log;
     public static TelemetrySubsystem telemetrySubsystem;
 
+    public static Boolean isAllianceBlue = true;
+
+
     @Override
     public void initialize() {
+        // variables
         GamepadEx base = new GamepadEx(gamepad1);
+        GamepadEx operator = new GamepadEx(gamepad2);
+
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,false,false,false));
+
+        // default commands
+
         drive.setDefaultCommand(new DriveCommand(drive,base));
+
+        // telemetry stuffs
+
         telemetrySubsystem.addLogHeadings();
 
         schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
@@ -35,5 +48,27 @@ public class RobotContainer extends CommandOpMode {
         schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
         schedule(new RunCommand(telemetrySubsystem::updateLogs));
         schedule(new RunCommand(telemetry::update));
+
+        // do everything before this loop.....
+
+        // pre init
+        while(opModeInInit()&&!opModeIsActive()){
+            // do pre init stuffs here!!!!!
+            telemetry.addLine("'X' to set alliance to BLUE");
+            telemetry.addLine("'Y' to set alliance to RED");
+
+
+
+            if(base.getButton(GamepadKeys.Button.X) | operator.getButton(GamepadKeys.Button.X)){
+                // set it to blue
+                telemetry.addLine("Blue Selected!");
+                isAllianceBlue = true;
+            } else if (base.getButton(GamepadKeys.Button.Y) | operator.getButton(GamepadKeys.Button.Y)) {
+                telemetry.addLine("Red Selected!");
+                isAllianceBlue = false;
+            }
+            telemetry.update();
+            telemetry.clearAll();
+        }
     }
 }
