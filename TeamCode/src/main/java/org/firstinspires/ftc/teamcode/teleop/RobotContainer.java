@@ -67,7 +67,6 @@ public class RobotContainer extends CommandOpMode {
                 telemetry.addLine("Red Selected!");
                 isAllianceBlue = false;
             }
-            telemetry.update();
             telemetry.clearAll();
         }
     }
