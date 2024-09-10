@@ -17,4 +17,18 @@ public class MeepMeepFunctions {
         catch (IOException e) {System.out.println(e);}
         return img;
     }
+    public static double normalizeAngle(double angle) {
+        // Add 180 degrees to flip the angle
+        double flippedAngle = angle + Math.PI;
+
+        // Normalize angle to be within [0, 2*PI) radians
+        double normalized = Math.toDegrees(flippedAngle) % 360;
+        return normalized < 0 ? Math.toRadians(normalized + 360) : Math.toRadians(normalized);
+    }
+    public static int tilesToInches(int tiles){
+        return tiles*24;
+    }
+    public static double InchesToTiles(int inches){
+        return inches/24;
+    }
 }
