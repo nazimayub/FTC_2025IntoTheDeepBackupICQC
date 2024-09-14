@@ -1,8 +1,7 @@
 package com.example.meepmeeprun;
 
-import static com.example.meepmeeprun.MeepMeepFunctions.*;
-
-
+import static com.example.meepmeeprun.MeepMeepFunctions.getImg;
+import static com.example.meepmeeprun.MeepMeepFunctions.normalizeAngle;
 
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;

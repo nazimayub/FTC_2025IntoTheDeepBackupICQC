@@ -1,7 +1,5 @@
 package com.example.meepmeeprun;
 
-import com.noahbres.meepmeep.MeepMeep;
-
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
