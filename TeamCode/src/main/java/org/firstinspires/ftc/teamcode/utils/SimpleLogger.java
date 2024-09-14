@@ -1,18 +1,17 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-import java.io.Writer;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import java.text.DecimalFormat;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerImpl;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import java.io.IOException;
-import java.io.FileWriter;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import java.util.concurrent.TimeUnit;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class SimpleLogger {
     private BufferedWriter writer = null;
