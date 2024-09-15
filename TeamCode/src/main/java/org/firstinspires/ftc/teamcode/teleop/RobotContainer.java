@@ -38,15 +38,15 @@ public class RobotContainer extends CommandOpMode {
 
         // telemetry stuffs
 
-        telemetrySubsystem.addLogHeadings();
+        //telemetrySubsystem.addLogHeadings();
 
         schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
-        schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
+        //schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
 
         // update logging stuffs
 
-        schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
-        schedule(new RunCommand(telemetrySubsystem::updateLogs));
+        //schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
+        //schedule(new RunCommand(telemetrySubsystem::updateLogs));
         schedule(new RunCommand(telemetry::update));
 
         // do everything before this loop.....
