@@ -8,16 +8,16 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 public class DriveCommand extends RunCommand {
 
     public DriveCommand(Drive drive, GamepadEx gamepad){
-        super(() -> drive.robotCentricDrive(
+//        super(() -> drive.robotCentricDrive(
+//                -gamepad.getLeftX(),
+//                -gamepad.getLeftY(),
+//                -gamepad.getRightX() //gamepad.getLeftX()
+//        ), drive);
+        super(()->drive.fieldCentricDrive(
                 gamepad.getLeftX(),
                 -gamepad.getLeftY(),
                 gamepad.getRightX()
-        ), drive);
-//        super(()->drive.fieldCentricDrive(
-//                gamepad.getLeftX(),
-//                -gamepad.getLeftY(),
-//                gamepad.getRightX()
-//        ),drive);
+        ),drive);
     }
 
 

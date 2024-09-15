@@ -6,11 +6,13 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 @Config
 public class Constants {
+    public static class Params {
+        public static final IMU.Parameters IMU_ORIENTATION = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
-    public static final IMU.Parameters IMU_ORIENTATION = new IMU.Parameters(new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.UP,
-            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
-
-    public static final String GROUP_ANDROID = "Android Studio";
+        public static final String GROUP_ANDROID = "Android Studio";
+    }
+    public static Constants.Params PARAMS = new Constants.Params();
 
 }

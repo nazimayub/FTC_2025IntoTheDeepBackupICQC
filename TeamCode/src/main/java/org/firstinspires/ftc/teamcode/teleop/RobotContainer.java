@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
-@TeleOp(name = "TeleOp", group = Constants.GROUP_ANDROID)
+@TeleOp(name = "TeleOp", group = Constants.Params.GROUP_ANDROID)
 public class RobotContainer extends CommandOpMode {
     public static Drive drive;
     public static SimpleLogger log;
@@ -30,10 +30,12 @@ public class RobotContainer extends CommandOpMode {
         GamepadEx operator = new GamepadEx(gamepad2);
 
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
-        drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,false,false,false));
+        drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
+
+        drive.setBrakeMode(true);
 
         // default commands
-
+        base.getButton(x)
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
         // telemetry stuffs

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -36,9 +37,9 @@ public class Drive extends SubsystemBase {
         }
         // Retrieve the IMU from the hardware map
         this.imu = hMap.get(IMU.class, imu);
-        IMU.Parameters parameters = Constants.IMU_ORIENTATION;
+        IMU.Parameters parameters = Constants.Params.IMU_ORIENTATION;
         this.imu.initialize(parameters);
-
+        resetYaw();
 
     }
 
@@ -91,6 +92,20 @@ public class Drive extends SubsystemBase {
         bl.setPower((rotY - rotX + r)/denominator);
         fr.setPower((rotY - rotX - r)/denominator);
         br.setPower((rotY + rotX - r)/denominator);
+    }
+
+    public void setBrakeMode(boolean b){
+        if (b){
+            fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        } else {
+            fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
     }
 
     public void resetYaw(){
