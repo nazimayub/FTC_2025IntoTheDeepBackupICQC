@@ -20,7 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
     private double target = 0;
     private final double ticksInDegrees;
     private PIDController controller;
-    public ArmSubsystem(HardwareMap h, String arm, double p, double i, double d, double f, double ticksInDegrees) {
+    public ArmSubsystem(HardwareMap h, String arm, double p, double i, double d, double f, double ticksInDegrees) { //2786 total
         this.p = p;
         this.i = i;
         this.d = d;
@@ -44,6 +44,10 @@ public class ArmSubsystem extends SubsystemBase {
         }
     }
 
+    public int getEncoderValue(){
+        return arm.getCurrentPosition();
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
@@ -57,4 +61,5 @@ public class ArmSubsystem extends SubsystemBase {
         //telemetry.addData("target", target);
         //telemetry.update();
     }
+
 }

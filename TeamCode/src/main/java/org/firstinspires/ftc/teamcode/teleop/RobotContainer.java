@@ -35,7 +35,7 @@ public class RobotContainer extends CommandOpMode {
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
 
-        arm = new ArmSubsystem(hardwareMap, "arm", 1 , 0, 0, 0, 1000);
+        arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0, 0, 7.739);
 
         drive.setBrakeMode(true);
         arm.setBrakeMode(true);
@@ -43,6 +43,7 @@ public class RobotContainer extends CommandOpMode {
         // default commands
         //base.getButton(x);
         drive.setDefaultCommand(new DriveCommand(drive,base));
+
 
         // telemetry stuffs
 

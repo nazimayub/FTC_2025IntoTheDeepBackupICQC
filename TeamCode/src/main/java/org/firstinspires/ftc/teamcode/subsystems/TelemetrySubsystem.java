@@ -34,6 +34,7 @@ public class TelemetrySubsystem {
         telemetry.addData("Back Right Velocity: ", RobotContainer.drive.getBR());
         telemetry.addData("Back Left Velocity: ", RobotContainer.drive.getBL());
         telemetry.addData("Heading (Degrees): ", RobotContainer.drive.getHeading());
+        telemetry.addData("Arm encoder:", RobotContainer.arm.getEncoderValue());
     }
 
 
@@ -43,7 +44,8 @@ public class TelemetrySubsystem {
                 .add(RobotContainer.drive.getFR())
                 .add(RobotContainer.drive.getFL())
                 .add(RobotContainer.drive.getBR())
-                .add(RobotContainer.drive.getBL());
+                .add(RobotContainer.drive.getBL())
+                .add(RobotContainer.arm.getEncoderValue());
 
     }
     public void addDashBoardData(){
@@ -52,6 +54,7 @@ public class TelemetrySubsystem {
         packet.put("Back Right Velocity: ", RobotContainer.drive.getBR());
         packet.put("Back Left Velocity: ", RobotContainer.drive.getBL());
         packet.put("Heading (Degrees): ", RobotContainer.drive.getHeading());
+        packet.put("Arm encoder:", RobotContainer.arm.getEncoderValue());
     }
     public void updateDashboardTelemetry(){
         dashboard.sendTelemetryPacket(packet);
