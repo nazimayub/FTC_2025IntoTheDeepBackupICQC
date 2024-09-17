@@ -41,9 +41,8 @@ public class RobotContainer extends CommandOpMode {
         arm.setBrakeMode(true);
 
         // default commands
-        //base.getButton(x);
         drive.setDefaultCommand(new DriveCommand(drive,base));
-
+        //xButton.whenPressed(arm::change(-100));
 
 
         // telemetry stuffs
