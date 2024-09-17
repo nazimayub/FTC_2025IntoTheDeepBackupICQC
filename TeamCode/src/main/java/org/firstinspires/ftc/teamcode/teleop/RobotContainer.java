@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
@@ -17,6 +18,8 @@ import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
 @TeleOp(name = "TeleOp", group = Constants.Params.GROUP_ANDROID)
 public class RobotContainer extends CommandOpMode {
     public static Drive drive;
+
+    public static ArmSubsystem arm;
     public static SimpleLogger log;
     public static TelemetrySubsystem telemetrySubsystem;
 
@@ -32,7 +35,10 @@ public class RobotContainer extends CommandOpMode {
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
 
+        arm = new ArmSubsystem(hardwareMap, "arm");
+
         drive.setBrakeMode(true);
+        arm.setBrakeMode(true);
 
         // default commands
         //base.getButton(x);
