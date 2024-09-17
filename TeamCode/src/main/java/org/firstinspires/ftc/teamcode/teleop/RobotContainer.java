@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
+import org.firstinspires.ftc.teamcode.commands.ArmCommand;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
@@ -36,7 +37,7 @@ public class RobotContainer extends CommandOpMode {
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
 
-        arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0, 0, 7.739);
+        arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0.00001, 0.01, 7.739);
 
         drive.setBrakeMode(true);
         arm.setBrakeMode(true);
@@ -49,7 +50,8 @@ public class RobotContainer extends CommandOpMode {
 //        new GamepadButton(base, GamepadKeys.Button.B).toggleWhenPressed(new DroneCommand(drone, Constants.launch), new DroneCommand(drone, Constants.load));
 //        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenPressed(new TransferCommand(transfer, -1)).whenReleased(new IntakeCommand(intake, 0)).whenReleased(new TransferCommand(transfer, 0));
 //        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, -100));
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 0));
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
         // telemetry stuffs
 
         //telemetrySubsystem.addLogHeadings();
