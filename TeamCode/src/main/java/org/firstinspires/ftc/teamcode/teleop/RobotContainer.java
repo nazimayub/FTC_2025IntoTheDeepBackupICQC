@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -44,7 +45,11 @@ public class RobotContainer extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
         //xButton.whenPressed(arm::change(-100));
 
-
+//        new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new HandCommand(hand, Constants.out), new HandCommand(hand, Constants.in));
+//        new GamepadButton(base, GamepadKeys.Button.B).toggleWhenPressed(new DroneCommand(drone, Constants.launch), new DroneCommand(drone, Constants.load));
+//        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenPressed(new TransferCommand(transfer, -1)).whenReleased(new IntakeCommand(intake, 0)).whenReleased(new TransferCommand(transfer, 0));
+//        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, -100));
         // telemetry stuffs
 
         //telemetrySubsystem.addLogHeadings();
@@ -65,6 +70,8 @@ public class RobotContainer extends CommandOpMode {
             // do pre init stuffs here!!!!!
             telemetry.addLine("'X' to set alliance to BLUE");
             telemetry.addLine("'Y' to set alliance to RED");
+
+
 
 
 
