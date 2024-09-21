@@ -7,11 +7,14 @@ import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.commands.SliderCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.commands.ArmCommand;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
@@ -22,6 +25,8 @@ public class RobotContainer extends CommandOpMode {
     public static Drive drive;
 
     public static ArmSubsystem arm;
+
+    public static Slides slide;
     public static SimpleLogger log;
     public static TelemetrySubsystem telemetrySubsystem;
 
@@ -37,7 +42,10 @@ public class RobotContainer extends CommandOpMode {
         telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
 
-        arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0.00001, 0.01, 7.739);
+        //arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0.00001, 0.01, 7.739);
+        arm = new ArmSubsystem(hardwareMap, "arm", 0.0 , 0, 0, 0, 0);
+        slide = new Slides(hardwareMap, "slider", "slidel", DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.00001, 0, 0, 0, 0, 0, 0, 0);
+
 
         drive.setBrakeMode(true);
         arm.setBrakeMode(true);
@@ -52,6 +60,7 @@ public class RobotContainer extends CommandOpMode {
 //        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 0));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SliderCommand(slide, 600));
         // telemetry stuffs
 
         //telemetrySubsystem.addLogHeadings();
