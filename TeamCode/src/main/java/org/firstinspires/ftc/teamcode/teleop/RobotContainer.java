@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TestPorts;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
 @TeleOp(name = "IOT_CB", group = Constants.GROUP_ANDROID)
 public class RobotContainer extends CommandOpMode {
     public static Drive drive;
+    public static IntakeSubsystem intake;
 
     public static SimpleLogger log;
     public static TelemetrySubsystem telemetrySubsystem;
@@ -36,6 +38,7 @@ public class RobotContainer extends CommandOpMode {
 
         telemetrySubsystem = new TelemetrySubsystem(log, telemetry, FtcDashboard.getInstance());
         drive = new Drive(hardwareMap, "imu", new MotorConfig("fr", "fl", "br", "bl"), new MotorDirectionConfig(false, true, false, true));
+        intake = new IntakeSubsystem(hardwareMap);
 
         // default commands
 

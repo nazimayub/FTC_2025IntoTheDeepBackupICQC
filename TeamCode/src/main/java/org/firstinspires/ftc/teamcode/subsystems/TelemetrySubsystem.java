@@ -34,6 +34,7 @@ public class TelemetrySubsystem {
         telemetry.addData("Back Right Velocity: ", RobotContainer.drive.getBR());
         telemetry.addData("Back Left Velocity: ", RobotContainer.drive.getBL());
         telemetry.addData("Heading (Degrees): ", RobotContainer.drive.getHeading());
+        telemetry.addData("Intake Velocity: ", RobotContainer.intake.getVelocity());
     }
 
 
