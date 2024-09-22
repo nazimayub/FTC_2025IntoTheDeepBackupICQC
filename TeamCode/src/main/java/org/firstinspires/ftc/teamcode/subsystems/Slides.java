@@ -45,6 +45,9 @@ public class Slides extends SubsystemBase {
     }
     public void change(double amount){this.target+=amount;}
 
+//    public double getPowerR(){ return power; }
+//    public double getPowerL(){ return power1;}
+
     public int getEncoderValueR(){
         return right.getCurrentPosition();
     }
@@ -62,13 +65,17 @@ public class Slides extends SubsystemBase {
         double pid = controller.calculate(pos, target);
         double power = pid+f;
 
-        controller1.setPIDF(p1, i1, d1, f1);
+        controller1.setPID(p1, i1, d1);
         pos1 = left.getCurrentPosition();
-        double pid1 = controller.calculate(pos1, target1);
+        double pid1 = controller.calculate(pos1, target);
         double power1 = pid1+f1;
+
 
         right.setPower(power);
         left.setPower(power1);
+
+//        right.setPower(0.5);
+//        left.setPower(0.5);
 
         //telemetry.addData("pos", pos);
         //telemetry.addData("target", target);

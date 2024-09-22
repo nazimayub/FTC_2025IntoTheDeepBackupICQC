@@ -35,8 +35,11 @@ public class TelemetrySubsystem {
         telemetry.addData("Back Left Velocity: ", RobotContainer.drive.getBL());
         telemetry.addData("Heading (Degrees): ", RobotContainer.drive.getHeading());
         telemetry.addData("Arm encoder:", RobotContainer.arm.getEncoderValue());
-        telemetry.addData("slidel enc val", RobotContainer.slide.getEncoderValueL());
-        telemetry.addData("slider enc val", RobotContainer.slide.getEncoderValueR());
+        telemetry.addData("slidel enc val l", RobotContainer.slide.getEncoderValueL());
+        telemetry.addData("slider enc val r", RobotContainer.slide.getEncoderValueR());
+//        telemetry.addData("slider power r", RobotContainer.slide.getPowerR());
+//        telemetry.addData("slider power l", RobotContainer.slide.getPowerL());
+
     }
 
 

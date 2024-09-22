@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.commands.ArmCommand;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
-@TeleOp(name = "TeleOp", group = Constants.Params.GROUP_ANDROID)
+@TeleOp(name = "CommandBasedTeleOp", group = Constants.Params.GROUP_ANDROID)
 public class RobotContainer extends CommandOpMode {
     public static Drive drive;
 
@@ -43,8 +44,9 @@ public class RobotContainer extends CommandOpMode {
         drive = new Drive(hardwareMap,"imu",new MotorConfig("fr","fl","br","bl"),new MotorDirectionConfig(false,true,false,true));
 
         //arm = new ArmSubsystem(hardwareMap, "arm", 0.01 , 0, 0.00001, 0.01, 7.739);
-        arm = new ArmSubsystem(hardwareMap, "arm", 0.0 , 0, 0, 0, 0);
-        slide = new Slides(hardwareMap, "slider", "slidel", DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.00001, 0, 0, 0, 0, 0, 0, 0);
+        arm = new ArmSubsystem(hardwareMap, "arm", 0.006 , 0, 0, 0, 16.111);
+        slide = new Slides(hardwareMap, "extendR", "extendL", DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.006, 0, 0.00001, 0.001, 0.006, 0, 0.00001, 0.001);
+//        slide = new Slides(hardwareMap, "extendR", "extendL", DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0, 0, 0, 0, 0, 0, 0, 0);
 
 
         drive.setBrakeMode(true);
@@ -58,9 +60,14 @@ public class RobotContainer extends CommandOpMode {
 //        new GamepadButton(base, GamepadKeys.Button.B).toggleWhenPressed(new DroneCommand(drone, Constants.launch), new DroneCommand(drone, Constants.load));
 //        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenPressed(new TransferCommand(transfer, -1)).whenReleased(new IntakeCommand(intake, 0)).whenReleased(new TransferCommand(transfer, 0));
 //        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 0));
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
+        //new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 0));
+        //new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
+        //new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SliderCommand(slide, 600));
+        //new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 250)).whenReleased(new ArmCommand(arm, 0));
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new SliderCommand(slide, 2580)).whenReleased(new SliderCommand(slide, 0));
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SliderCommand(slide, 600));
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
+
         // telemetry stuffs
 
         //telemetrySubsystem.addLogHeadings();
