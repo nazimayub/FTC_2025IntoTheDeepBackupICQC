@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -50,7 +52,6 @@ public class RobotContainer extends CommandOpMode {
         schedule(new RunCommand(telemetry::update));
 
         // do everything before this loop.....
-
         // pre init
         while(opModeInInit()&&!opModeIsActive()){
             // do pre init stuffs here!!!!!
