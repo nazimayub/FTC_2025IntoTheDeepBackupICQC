@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -39,7 +40,10 @@ public class Drive extends SubsystemBase {
         IMU.Parameters parameters = Constants.IMU_ORIENTATION;
         this.imu.initialize(parameters);
 
-
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public double getFL(){
@@ -54,6 +58,12 @@ public class Drive extends SubsystemBase {
     public double getBR(){
         return this.br.getVelocity();
     }
+
+    public void setFL(double speed) { {fl.setPower(speed);}}
+    public void setFR(double speed) {fr.setPower(speed);}
+    public void setBL(double speed) {bl.setPower(speed);}
+    public void setBR(double speed) {br.setPower(speed);}
+
     public double getHeading(){
         return this.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
@@ -63,7 +73,7 @@ public class Drive extends SubsystemBase {
      * r = rightstickx
      */
     public void robotCentricDrive(double x, double y, double r){
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(x), 1);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(r), 1);
         fl.setPower((y+x+r)/denominator);
         bl.setPower((y-x+r)/denominator);
         fr.setPower((y-x-r)/denominator);

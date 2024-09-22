@@ -10,7 +10,7 @@ public class DriveCommand extends RunCommand {
     public DriveCommand(Drive drive, GamepadEx gamepad){
         super(() -> drive.robotCentricDrive(
                 gamepad.getLeftX(),
-                -gamepad.getLeftY(),
+                gamepad.getLeftY(),
                 gamepad.getRightX()
         ), drive);
 //        super(()->drive.fieldCentricDrive(
