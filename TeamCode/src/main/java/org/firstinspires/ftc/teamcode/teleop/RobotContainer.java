@@ -63,7 +63,7 @@ public class RobotContainer extends CommandOpMode {
         //new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 0));
         //new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));
         //new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SliderCommand(slide, 600));
-        //new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 250)).whenReleased(new ArmCommand(arm, 0));
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ArmCommand(arm, 1420)).whenReleased(new ArmCommand(arm, 0));
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new SliderCommand(slide, 2580)).whenReleased(new SliderCommand(slide, 0));
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SliderCommand(slide, 600));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ArmCommand(arm, 820));

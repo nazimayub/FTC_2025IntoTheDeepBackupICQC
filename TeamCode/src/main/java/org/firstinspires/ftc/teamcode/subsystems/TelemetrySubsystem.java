@@ -37,6 +37,9 @@ public class TelemetrySubsystem {
         telemetry.addData("Arm encoder:", RobotContainer.arm.getEncoderValue());
         telemetry.addData("slidel enc val l", RobotContainer.slide.getEncoderValueL());
         telemetry.addData("slider enc val r", RobotContainer.slide.getEncoderValueR());
+        telemetry.addData("R current", RobotContainer.slide.getCurrentR());
+        telemetry.addData("l current", RobotContainer.slide.getCurrentL());
+
 //        telemetry.addData("slider power r", RobotContainer.slide.getPowerR());
 //        telemetry.addData("slider power l", RobotContainer.slide.getPowerL());
 

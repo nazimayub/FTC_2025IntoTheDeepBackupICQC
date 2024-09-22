@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 public class Slides extends SubsystemBase {
     /**
      * Creates a new ExampleSubsystem.
@@ -55,6 +57,10 @@ public class Slides extends SubsystemBase {
         return left.getCurrentPosition();
     }
 
+    public double getCurrentR(){return right.getCurrent(CurrentUnit.AMPS);}
+    public double getCurrentL(){return left.getCurrent(CurrentUnit.AMPS);}
+
+
 
 
     @Override
@@ -72,7 +78,7 @@ public class Slides extends SubsystemBase {
 
 
         right.setPower(power);
-        left.setPower(power1);
+        left.setPower(power);
 
 //        right.setPower(0.5);
 //        left.setPower(0.5);
