@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,6 +17,8 @@ public class SlideSubsystem extends SubsystemBase {
         this.left = h.get(DcMotorEx.class, left);
         this.right.setDirection(rightD);
         this.left.setDirection(leftD);
+        this.right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void set(double speed) {
         this.right.setPower(speed);

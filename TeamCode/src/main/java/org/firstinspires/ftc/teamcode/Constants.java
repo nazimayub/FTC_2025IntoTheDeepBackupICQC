@@ -11,9 +11,11 @@ public class Constants {
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
     //Names for motors and servos
-    public static final String transfer = "transfer", drone = "droneLauncher", rSlide = "rightSlide", lSlide = "leftSlide", fr = "rightFront", fl = "leftFront", br = "rightBack", bl = "leftBack", hand = "rightHandServo", intake = "intake", imu = "imu";
+    public static final String arm = "arm", transfer = "transfer", drone = "droneLauncher", rSlide = "rightSlide", lSlide = "leftSlide", fr = "rightFront", fl = "leftFront", br = "rightBack", bl = "leftBack", hand = "hand", intake = "intake", imu = "imu";
     //Hand Pos
     public static final double out = 0.9534, in = 0.165;
+    //Arm Pos
+    public static final double up = 0.9534, down = 0.165;
     //Drone Pos
     public static final double launch = 1, load = 0;
     //Outtake Positions

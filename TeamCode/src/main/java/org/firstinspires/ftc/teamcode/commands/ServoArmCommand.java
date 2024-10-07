@@ -12,20 +12,20 @@ import java.util.function.DoubleSupplier;
  * (passed in as {@link DoubleSupplier}s). Written
  * explicitly for pedagogical purposes.
  */
-public class TransferCommand extends CommandBase {
+public class ServoArmCommand extends CommandBase {
 
-    private final TransferSubsystem transfer;
-    private final double speed;
+    private final ServoArmSubsystem arm;
+    private final double pos;
 
-    public TransferCommand(TransferSubsystem transfer, double speed) {
-        this.transfer=transfer;
-        this.speed=speed;
-        addRequirements(transfer);
+    public ServoArmCommand(ServoArmSubsystem arm, double pos) {
+        this.arm=arm;
+        this.pos=pos;
+        addRequirements(arm);
     }
 
     @Override
     public void execute() {
-        transfer.set(speed);
+        arm.set(pos);
     }
 
 }

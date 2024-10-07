@@ -9,23 +9,10 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.commands.DroneCommand;
-import org.firstinspires.ftc.teamcode.commands.HandCommand;
-import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.SlideArmCommand;
-import org.firstinspires.ftc.teamcode.commands.TransferCommand;
-import org.firstinspires.ftc.teamcode.subsystems.Drive;
-import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.HandSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.SlideSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.TransferSubsystem;
-import org.firstinspires.ftc.teamcode.utils.MotorConfig;
-import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
-import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
+import org.firstinspires.ftc.teamcode.*;
+import org.firstinspires.ftc.teamcode.subsystems.*;
+import org.firstinspires.ftc.teamcode.commands.*;
+import org.firstinspires.ftc.teamcode.utils.*;
 
 @TeleOp
 public class Duo extends CommandOpMode {

@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.subsystems.*;
 
-
 import java.util.function.DoubleSupplier;
 
 /**
@@ -12,20 +11,20 @@ import java.util.function.DoubleSupplier;
  * (passed in as {@link DoubleSupplier}s). Written
  * explicitly for pedagogical purposes.
  */
-public class TransferCommand extends CommandBase {
+public class ServoIntakeCommand extends CommandBase {
 
-    private final TransferSubsystem transfer;
+    private final ServoIntakeSubsystem intake;
     private final double speed;
 
-    public TransferCommand(TransferSubsystem transfer, double speed) {
-        this.transfer=transfer;
+    public ServoIntakeCommand(ServoIntakeSubsystem intake, double speed) {
+        this.intake=intake;
         this.speed=speed;
-        addRequirements(transfer);
+        addRequirements(intake);
     }
 
     @Override
     public void execute() {
-        transfer.set(speed);
+        intake.set(speed);
     }
 
 }

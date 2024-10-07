@@ -4,13 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFArmSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystemAdv;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystemAdv;
-import org.firstinspires.ftc.teamcode.subsystems.SlideSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.*;
 
 import java.util.function.DoubleSupplier;
 
