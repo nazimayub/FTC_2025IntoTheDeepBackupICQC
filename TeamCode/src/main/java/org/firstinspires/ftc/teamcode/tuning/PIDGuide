@@ -1,0 +1,41 @@
+PID(F) is a control system that helps to control your motion.
+It is very complicated for things like a drivetrain, which is why libraries are used.
+Although you still use libraries for things like an arm, those you can tune yourself.
+What are the parts?
+There are 4 parts to PIDF.
+P, the proportional gain.
+I, the integral gain.
+D, the derivitive gain.
+F, the feedforward component.
+What does each part do?
+P is in charge of bringing the system to its target position. It is what drives the motor near
+its target position.
+I will never be used. Its influence streches far beyond what is needed for FTC. This should
+always be 0.
+D is in charge of reducing occilation. This is used to reduce shaking around the target position.
+There are a few types of ways that you can tune your derivitave gain. You can either tune it to
+reduce occilation quickly, to make sure it absolutly neverovershoots, and a combination of the
+two. The first instance is just a normal D value, the second is critical dampening, and the
+third it major dampening. For many systems where overshoot must be avoided, you will usually
+critically dampen you controller. How to do that will be explained later.
+F is in charge of overcoming inertia. Motors encounter a force called static friction. This
+force is equal to or grater that the applied force. If the applied force is less than the max
+static force, the motor will not move. Therefore the feedforward component is the power needed
+to make a motor stationary, but about to move. It is never that simple though. Lets say you have
+an arm. The feedforward component is also in charge of countering the force of gravity. By
+breaking down the force of the system into its x and y components and using some basic
+trigonometry, this can easilly be done, however.
+To tune PID, you need to have FTCDashboard imported to you can see both the current and target
+position. Then you may need to find some basic information about your system such as how many
+tick are in each degree travelled. Remember that most math function in code expect values in
+radians, while it is easier to work with degrees. Use the built in conversion metods. Remember
+that you need encoders to be able to do PIDF.
+You then need to set up your controller.
+Look at the premade tuning opmode for more information.
+Then open up FTC Dashboard and graph lines with both the current and target position.
+Increase F until the system does not move but can move effortlessly and holds its position.
+Increase P until the lines almost match up.
+Change D until the line no longer occilates. if you are critically dampening, make sure
+to change the target position to make sure that the system never overshoots.
+Try to move your system and continue tuning unti lyou reach your desired performance level.
+Congrats! Your done!
