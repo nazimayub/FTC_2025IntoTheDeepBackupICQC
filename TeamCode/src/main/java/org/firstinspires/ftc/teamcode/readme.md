@@ -19,8 +19,10 @@ This package contains all of our tuning files, for roadrunner and custom PID. Th
 multiple guides to how to tune PID as well as what PID even is.
 
 # Utils
-This package contains some of the util files we use. Feel free to look at them but they are all
-juat for more modularity and reusability
+This package contains some of the util files we use as well as condensed documentation. The 
+documentation is very important to read. If you have time please read the full docs but the 
+summaries will also work to get a high level idea. Feel free to look at the code inside of the
+package but they are all just for more modularity and reusability
 
 # Constants
 This is just a file, but contains lots of very important information. This is where all repeated
