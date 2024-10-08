@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import java.util.List;
+import static org.firstinspires.ftc.teamcode.MODE.*;
 
 
 /*
@@ -56,13 +57,17 @@ public class ATeleop extends LinearOpMode {
 
     IOTBot bot;
     DualPad gpad;
+    StateMachine botState;
 
     @Override
     public void runOpMode() {
         bot = new IOTBot();
         gpad = new DualPad();
+        botState = new StateMachine();
+
 
         bot.init(hardwareMap);
+        botState.init(hardwareMap);
         // bot.setManualExposure(this, 6, 120);
 
         telemetry.addData("Status", "Initialized");
@@ -73,18 +78,27 @@ public class ATeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
             gpad.update(gamepad1, gamepad2);
+            botState.execute();
 
-            double jx = -gpad.left_stick_y - gpad.right_stick_y;
-            double jy = -gpad.left_stick_x;
-            double jw = -gpad.right_stick_x;
-
-            if (gpad.a) n        
-
-
-            bot.driveFieldXYW(jx, jy, jw, 0);
+            configureButtonBindings();
 
             telemetry.addData("Status", "Running");
             telemetry.update();
         }
+    }
+
+    public void configureButtonBindings() {
+        double jx = -gpad.left_stick_y - gpad.right_stick_y;
+        double jy = -gpad.left_stick_x;
+        double jw = -gpad.right_stick_x;
+
+        if (gpad.a) botState.setMode(STOW);
+        if (gpad.right_bumper) botState.setMode(INTAKE);
+        if (gpad.dpad_up) botState.setMode(LOWBUCKET);
+        if (gpad.dpad_right) botState.setMode(HIGHBUCKET);
+        if (gpad.dpad_down) botState.setMode(FIRSTLVL);
+        if (gpad.dpad_left) botState.setMode(SECONDLVL);
+
+        bot.driveFieldXYW(jx, jy, jw, 0);
     }
 }

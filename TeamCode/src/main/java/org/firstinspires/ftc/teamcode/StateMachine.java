@@ -4,26 +4,28 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class StateMachine {
 
-    public MODE mode = MODE.STOW;
+    public MODE targetMode = MODE.STOW;
+    public MODE currMode;
     public ClimbSubsystem climb;
 
-    public void setMode(MODE m) { mode = m; }
+    public void setMode(MODE m) { targetMode = m; }
 
-    public MODE getMode() { return mode; }
+    public MODE getargetMode() { return targetMode; }
 
     public void init(HardwareMap hardwareMap) {
         climb = new ClimbSubsystem(hardwareMap);
     }
 
     public StateMachine() {
+    }
 
-        if (mode == MODE.STOW) doStow();
-        if (mode == MODE.INTAKE) doIntake();
-        if (mode == MODE.LOWBUCKET) doLowBucket();
-        if (mode == MODE.HIGHBUCKET) doHiBucket();
-        if (mode == MODE.FIRSTLVL) doOneLvl();
-        if (mode == MODE.SECONDLVL) doTwoLvl();
-
+    public void execute() {
+        if (targetMode == MODE.STOW) doStow();
+        if (targetMode == MODE.INTAKE) doIntake();
+        if (targetMode == MODE.LOWBUCKET) doLowBucket();
+        if (targetMode == MODE.HIGHBUCKET) doHighBucket();
+        if (targetMode == MODE.FIRSTLVL) doOneLvl();
+        if (targetMode == MODE.SECONDLVL) doTwoLvl();
     }
 
     public void doStow() {
@@ -35,7 +37,7 @@ public class StateMachine {
     public void doLowBucket() {
         climb.setHeight(100);
     }
-    public void doHiBucket() {
+    public void doHighBucket() {
         climb.setHeight(150);
     }
     public void doOneLvl() {
