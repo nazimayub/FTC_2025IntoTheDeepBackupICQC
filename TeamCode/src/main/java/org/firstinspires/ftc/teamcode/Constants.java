@@ -23,4 +23,5 @@ public class Constants {
     //Claw Position
     public static final double lDrop = 0.5, rDrop = 0.5, lGrab = 0.5, rGrab = 0.5;
 
+    public static final String GROUP_ANDROID = "";
 }

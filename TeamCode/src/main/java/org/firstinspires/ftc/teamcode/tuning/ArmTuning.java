@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
@@ -18,7 +19,7 @@ public class ArmTuning extends OpMode {
 
     public static double target = 1;
 
-    private final double ticks_in_degree = 1;
+    private final double ticks_in_degree = 1926/180;
 
     private DcMotorEx arm_motor;
 
@@ -29,7 +30,7 @@ public class ArmTuning extends OpMode {
 
         arm_motor = hardwareMap.get(DcMotorEx.class, "armRotater");
         arm_motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        arm_motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        arm_motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
     @Override
     public void loop(){
@@ -41,6 +42,7 @@ public class ArmTuning extends OpMode {
         arm_motor.setPower(power);
         telemetry.addData("pos", armPos);
         telemetry.addData("target", target);
+        telemetry.addData("ticks", arm_motor.getCurrentPosition());
         telemetry.update();
         target-= gamepad1.left_stick_y*.2;
     }

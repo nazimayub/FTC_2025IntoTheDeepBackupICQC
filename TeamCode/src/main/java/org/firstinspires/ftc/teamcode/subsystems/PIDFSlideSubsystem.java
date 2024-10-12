@@ -44,17 +44,18 @@ public class PIDFSlideSubsystem extends SubsystemBase {
         this.target = target;
     }
     public void change(double amount){this.target+=amount;}
+    public int getTick(){return -1*this.right.getCurrentPosition();}
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         controller.setPID(p, i, d);
-        pos = right.getCurrentPosition();
+        pos = -1*right.getCurrentPosition();
         double pid = controller.calculate(pos, target);
         double power = pid+f;
 
-        controller1.setPIDF(p1, i1, d1, f1);
-        pos1 = left.getCurrentPosition();
+        controller1.setPID(p1, i1, d1);
+        pos1 = -1*left.getCurrentPosition();
         double pid1 = controller.calculate(pos1, target1);
         double power1 = pid1+f1;
 

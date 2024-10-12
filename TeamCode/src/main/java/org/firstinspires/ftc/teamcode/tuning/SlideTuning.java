@@ -19,12 +19,10 @@ import org.firstinspires.ftc.teamcode.*;
 public class SlideTuning extends OpMode {
     private PIDController controller, controller1;
 
-    public static double p = 0, i=0, d=0, p1=0, i1=0, d1=0;
-    public static double f = 0, f1=0;
+    public static double p = 0.03, i=0, d=0.0003, p1=0.03, i1=0, d1=0.0003;
+    public static double f = 0.2, f1=0.2;
 
     public static double target = 0, target1=0;
-
-    private final double ticks_in_degree = 3225.6/180;
     private int pos, pos1;
 
     private DcMotorEx right, left;
@@ -32,27 +30,30 @@ public class SlideTuning extends OpMode {
 
     @Override
     public void init() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        h = this.hardwareMap;
         this.right = h.get(DcMotorEx.class, Constants.rSlide);
         this.left = h.get(DcMotorEx.class, Constants.lSlide);
         this.right.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.left.setDirection(DcMotorSimple.Direction.REVERSE);
         this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
-        controller1 = new PIDController(p1, i1, d1);
+        controller1 = new PIDController(p, i, d);
     }
     @Override
     public void loop(){
-        controller.setPIDF(p, i, d, f);
-        pos = right.getCurrentPosition();
+        controller.setPID(p, i, d);
+        pos = -1*right.getCurrentPosition();
         double pid = controller.calculate(pos, target);
         double power = pid+f;
 
-        controller1.setPIDF(p1, i1, d1, f1);
-        pos1 = left.getCurrentPosition();
-        double pid1 = controller.calculate(pos1, target1);
-        double power1 = pid1+f1;
+        controller1.setPID(p, i, d);
+        pos1 = -1*left.getCurrentPosition();
+        double pid1 = controller.calculate(pos, target);
+        double power1 = pid1+f;
 
         right.setPower(power);
         left.setPower(power1);
@@ -60,7 +61,6 @@ public class SlideTuning extends OpMode {
         telemetry.addData("pos", pos);
         telemetry.addData("target", target);
         telemetry.addData("pos1", pos1);
-        telemetry.addData("target1", target1);
         telemetry.update();
         if(-gamepad1.left_stick_y>0){
             target+=.2;

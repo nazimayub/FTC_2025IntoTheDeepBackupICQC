@@ -34,6 +34,8 @@ public class PIDFArmSubsystem extends SubsystemBase {
         this.target = target;
     }
     public void change(double amount){this.target+=amount;}
+    public int getTick(){return this.arm.getCurrentPosition();}
+
 
     @Override
     public void periodic() {

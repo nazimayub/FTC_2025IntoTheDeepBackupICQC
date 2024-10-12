@@ -17,22 +17,24 @@ import org.firstinspires.ftc.teamcode.utils.*;
 @TeleOp
 public class Solo extends CommandOpMode {
     GamepadEx base;
+    GamepadEx op;
     SimpleLogger log;
     public static ServoIntakeSubsystem intake;
     public static Drive drive;
     public static HandSubsystem hand;
-    public static SlideSubsystem slide;
+    public static PIDFSlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
-    public static ServoArmSubsystem arm;
+    public static PIDFArmSubsystem arm;
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
+        op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        arm = new ServoArmSubsystem(hardwareMap, Constants.arm);
+        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
         hand = new HandSubsystem(hardwareMap, Constants.hand);
-        slide = new SlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD, 0.03, 0, 0.0003, 0.2, 0.03, 0, 0.0003, 0.2);
 //        telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
 
 
@@ -40,11 +42,10 @@ public class Solo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, Constants.in));
-        slide.setDefaultCommand(new SlideArmCommand(slide, base));
 
 
         //Binding Commands
-        new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new HandCommand(hand, Constants.out), new HandCommand(hand, Constants.in)).toggleWhenPressed(new ServoArmCommand(arm, Constants.up), new ServoArmCommand(arm, Constants.down));
+        new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new HandCommand(hand, Constants.out), new HandCommand(hand, Constants.in)).toggleWhenPressed(new PIDFSlideArmCommand(arm, Constants.up), new PIDFSlideArmCommand(arm, Constants.down));
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ServoIntakeCommand(intake, 1)).whenReleased(new ServoIntakeCommand(intake, 0));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 0));
         // logs stuffs
