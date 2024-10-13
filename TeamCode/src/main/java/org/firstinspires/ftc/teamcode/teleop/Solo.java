@@ -48,6 +48,7 @@ public class Solo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new HandCommand(hand, Constants.out), new HandCommand(hand, Constants.in)).toggleWhenPressed(new PIDFSlideArmCommand(arm, Constants.up), new PIDFSlideArmCommand(arm, Constants.down));
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ServoIntakeCommand(intake, 1)).whenReleased(new ServoIntakeCommand(intake, 0));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 0));
+
         // logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();

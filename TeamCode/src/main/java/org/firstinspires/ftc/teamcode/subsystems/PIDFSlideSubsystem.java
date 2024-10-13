@@ -38,8 +38,8 @@ public class PIDFSlideSubsystem extends SubsystemBase {
         this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
         controller1 = new PIDController(p1, i1, d1);
-
     }
+
     public void set(double target) {
         this.target = target;
     }
