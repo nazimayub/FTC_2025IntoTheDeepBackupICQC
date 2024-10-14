@@ -20,6 +20,5 @@ public class ServoIntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
     }
 }
