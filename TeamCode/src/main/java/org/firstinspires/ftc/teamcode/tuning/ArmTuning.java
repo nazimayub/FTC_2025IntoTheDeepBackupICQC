@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class ArmTuning extends OpMode {
     private PIDController controller;
 
-    public static double p = 0, i=0, d=0;
+    public static double p = .03, i=0, d=0.003;
     public static double f = 0;
 
     public static double target = 1;
@@ -28,7 +28,7 @@ public class ArmTuning extends OpMode {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        arm_motor = hardwareMap.get(DcMotorEx.class, "armRotater");
+        arm_motor = hardwareMap.get(DcMotorEx.class, "arm");
         arm_motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         arm_motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }

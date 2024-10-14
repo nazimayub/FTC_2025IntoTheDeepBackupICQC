@@ -22,9 +22,12 @@ public class Solo extends CommandOpMode {
     public static ServoIntakeSubsystem intake;
     public static Drive drive;
     public static HandSubsystem hand;
-    public static PIDFSlideSubsystem slide;
+    public static SlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
-    public static PIDFArmSubsystem arm;
+    public static ArmSubsystem arm;
+    public static double setSlidesDown;
+    public static double setArmDown;
+
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
@@ -32,63 +35,70 @@ public class Solo extends CommandOpMode {
         log = new SimpleLogger();
         intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
+        arm = new ArmSubsystem(hardwareMap, Constants.arm);
         hand = new HandSubsystem(hardwareMap, Constants.hand);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.01, 0, 0.0002, 0.2, 0.01, 0, 0.0002, 0.2);
+        slide = new SlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE);
+
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, Constants.in));
-        slide.setDefaultCommand(new PIDFSlideArmCommand(slide, 0));
-        arm.setDefaultCommand(new PIDFSlideArmCommand(arm, 0));
+        slide.setDefaultCommand(new SlideArmCommand(slide, new GamepadEx(gamepad1)));
+        arm.setDefaultCommand(new SlideArmCommand(arm,  new GamepadEx(gamepad1)));
 
         //Binding Commands
 
         //Slides
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER)
-                .toggleWhenPressed(new PIDFSlideArmCommand(slide, -8), new PIDFSlideArmCommand(slide, 5))
-                .whenReleased(new PIDFSlideArmCommand(slide, 0));
+                .whenPressed(new SlideArmCommand(slide, new GamepadEx(gamepad1)));
 
         //Arm
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER)
-                .toggleWhenPressed(new PIDFSlideArmCommand(arm, 8), new PIDFSlideArmCommand(arm, -5))
-                .whenReleased(new PIDFSlideArmCommand(arm, 0));
+                .whenPressed(new SlideArmCommand(arm, new GamepadEx(gamepad1)));
 
         //Hand
+        new GamepadButton(base, GamepadKeys.Button.A)
+                .whenPressed(new HandCommand(hand, 1));
+
         new GamepadButton(base, GamepadKeys.Button.B)
-                .toggleWhenPressed(new HandCommand(hand, 1), new HandCommand(hand, -1));
+                .whenPressed(new HandCommand(hand, -1));
 
         //Spinner
         new GamepadButton(base, GamepadKeys.Button.X)
-                .toggleWhenPressed(new ServoIntakeCommand(intake, 5), new ServoIntakeCommand(intake,-5));
+                .whenHeld(new ServoIntakeCommand(intake, 5));
 
-        //Automated Commands (will change ticks later)
-        //Intake
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP)
-                .whenPressed(new HandCommand(hand, 0))
-                .toggleWhenPressed(new ServoIntakeCommand(intake, 2), new ServoIntakeCommand(intake, -2));
+        new GamepadButton(base, GamepadKeys.Button.Y)
+                .whenHeld(new ServoIntakeCommand(intake, -5));
 
-        //Stow
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN)
-                .whenPressed(new PIDFSlideArmCommand(slide, slide.getTick() > 0 ? -slide.getTick() : slide.getTick()))
-                .whenPressed(new PIDFSlideArmCommand(arm, -1 - arm.getTick()))
-                .whenPressed(new HandCommand(hand, 1));
-
-        //High Basket
-        new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT)
-                .whenPressed(new PIDFSlideArmCommand(arm, 1 - arm.getTick()))
-                .whenPressed(new PIDFSlideArmCommand(slide, 1 - slide.getTick()))
-                .whenPressed(new HandCommand(hand, 0))
-                .whenPressed(new ServoIntakeCommand(intake, -2));
-
-        //Hang
-        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT)
-                .whenPressed(new PIDFSlideArmCommand(arm, 1))
-                .whenPressed(new PIDFSlideArmCommand(slide, 1))
-                .whenPressed(new HandCommand(hand, 1))
-                .whenPressed(new PIDFSlideArmCommand(slide, -1));
+//        //Automated Commands (will change ticks later)
+//        //Intake
+//        new GamepadButton(base, GamepadKeys.Button.DPAD_UP)
+//                .whenPressed(new PIDFSlideArmCommand(slide, slide.getTick() > 0 ? -slide.getTick() : slide.getTick()))
+//                .whenPressed(new PIDFSlideArmCommand(arm, arm.getTick() > 0 ? -arm.getTick() : arm.getTick()))
+//                .whenPressed(new HandCommand(hand, 0))
+//                .whenPressed(new ServoIntakeCommand(intake, 2));
+//
+//        //Stow
+//        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN)
+//                .whenPressed(new PIDFSlideArmCommand(slide, slide.getTick() > 0 ? -slide.getTick() : slide.getTick()))
+//                .whenPressed(new PIDFSlideArmCommand(arm, -1 - arm.getTick()))
+//                .whenPressed(new HandCommand(hand, 1));
+//
+//        //High Basket
+//        new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT)
+//                .whenPressed(new PIDFSlideArmCommand(arm, 1 - arm.getTick()))
+//                .whenPressed(new PIDFSlideArmCommand(slide, 1 - slide.getTick()))
+//                .whenPressed(new HandCommand(hand, 0))
+//                .whenPressed(new ServoIntakeCommand(intake, -2));
+//
+//        //Hang
+//        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT)
+//                .whenPressed(new PIDFSlideArmCommand(arm, 1))
+//                .whenPressed(new PIDFSlideArmCommand(slide, 1))
+//                .whenPressed(new HandCommand(hand, 1))
+//                .whenPressed(new PIDFSlideArmCommand(slide, -1));
 
 // logs stuffs
 
