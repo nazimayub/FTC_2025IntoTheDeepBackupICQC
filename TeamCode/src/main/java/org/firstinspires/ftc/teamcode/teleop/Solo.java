@@ -44,14 +44,18 @@ public class Solo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, Constants.in));
+        slide.setDefaultCommand(new SlideArmCommand(slide, base));
 
 
         //Binding Commands
         //new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new PIDFSlideArmCommand(slide, -5), new PIDFSlideArmCommand(slide, 5));
-        new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new SlideArmCommand(slide, new GamepadEx(gamepad1)), new SlideArmCommand(slide, new GamepadEx(gamepad1))).whenReleased(new SlideArmCommand(slide, new GamepadEx(gamepad1))); //slide (w/o pid)
+        //Turn this into default with scalar in constants
         new GamepadButton(base, GamepadKeys.Button.X).toggleWhenPressed(new PIDFSlideArmCommand(arm, 8), new PIDFSlideArmCommand(arm, -8)).whenReleased(new PIDFSlideArmCommand(arm, 0)); //arm
+        //Change button
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).toggleWhenPressed(new HandCommand(hand, 1), new HandCommand(hand, -1)).whenReleased(new HandCommand(hand, 0)); //hand
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).toggleWhenPressed(new ServoIntakeCommand(intake, 7)).whenReleased(new ServoIntakeCommand(intake, 7)); //intake
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whileHeld(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 0)); //intake
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whileHeld(new ServoIntakeCommand(intake, 1)).whenReleased(new ServoIntakeCommand(intake, 0)); //intake
+
         // logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();
