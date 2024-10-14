@@ -22,7 +22,6 @@ public class Solo extends CommandOpMode {
     public static ServoIntakeSubsystem intake;
     public static Drive drive;
     public static HandSubsystem hand;
-    //public static PIDFSlideSubsystem slide;
     public static PIDFSlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
     public static PIDFArmSubsystem arm;
@@ -33,32 +32,65 @@ public class Solo extends CommandOpMode {
         log = new SimpleLogger();
         intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        //TODO: Retune PID
         arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
         hand = new HandSubsystem(hardwareMap, Constants.hand);
-        //TODO: Retune PID
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.01, 0, 0.0002, 0.2, 0.01, 0, 0.0002, 0.2);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
-
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, Constants.in));
+        slide.setDefaultCommand(new PIDFSlideArmCommand(slide, 0));
+        arm.setDefaultCommand(new PIDFSlideArmCommand(arm, 0));
 
         //Binding Commands
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whileHeld(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 0)); //intake
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whileHeld(new ServoIntakeCommand(intake, 1)).whenReleased(new ServoIntakeCommand(intake, 0)); //intake
-        //Stow Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //Intake Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //High Basket Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //Hang Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        
-        // logs stuffs
+
+        //Slides
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER)
+                .toggleWhenPressed(new PIDFSlideArmCommand(slide, -8), new PIDFSlideArmCommand(slide, 5))
+                .whenReleased(new PIDFSlideArmCommand(slide, 0));
+
+        //Arm
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER)
+                .toggleWhenPressed(new PIDFSlideArmCommand(arm, 8), new PIDFSlideArmCommand(arm, -5))
+                .whenReleased(new PIDFSlideArmCommand(arm, 0));
+
+        //Hand
+        new GamepadButton(base, GamepadKeys.Button.B)
+                .toggleWhenPressed(new HandCommand(hand, 1), new HandCommand(hand, -1));
+
+        //Spinner
+        new GamepadButton(base, GamepadKeys.Button.X)
+                .toggleWhenPressed(new ServoIntakeCommand(intake, 5), new ServoIntakeCommand(intake,-5));
+
+        //Automated Commands (will change ticks later)
+        //Intake
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP)
+                .whenPressed(new HandCommand(hand, 0))
+                .toggleWhenPressed(new ServoIntakeCommand(intake, 2), new ServoIntakeCommand(intake, -2));
+
+        //Stow
+        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN)
+                .whenPressed(new PIDFSlideArmCommand(slide, slide.getTick() > 0 ? -slide.getTick() : slide.getTick()))
+                .whenPressed(new PIDFSlideArmCommand(arm, -1 - arm.getTick()))
+                .whenPressed(new HandCommand(hand, 1));
+
+        //High Basket
+        new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT)
+                .whenPressed(new PIDFSlideArmCommand(arm, 1 - arm.getTick()))
+                .whenPressed(new PIDFSlideArmCommand(slide, 1 - slide.getTick()))
+                .whenPressed(new HandCommand(hand, 0))
+                .whenPressed(new ServoIntakeCommand(intake, -2));
+
+        //Hang
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT)
+                .whenPressed(new PIDFSlideArmCommand(arm, 1))
+                .whenPressed(new PIDFSlideArmCommand(slide, 1))
+                .whenPressed(new HandCommand(hand, 1))
+                .whenPressed(new PIDFSlideArmCommand(slide, -1));
+
+// logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();
 
