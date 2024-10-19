@@ -8,12 +8,13 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 @Autonomous
 public class Close extends Robot {
     boolean isRedAlliance = true;
-    Drive drive = new Drive(hardwareMap);
+
     @Override
-    public void initialize() { // this is where we schedule commands for auto
+    public void initialize() {
+        Drive drive = new Drive(hardwareMap);// this is where we schedule commands for auto
         schedule(new DriveCommand(drive,10,drive.getY(),drive.getHeading(),1,0.5));
-        schedule(new DriveCommand(drive,2)); // wait with timeout
-        schedule(new DriveCommand(drive,drive.getX(),10, drive.getHeading(), 1,0.5));
+        //schedule(new DriveCommand(drive,2)); // wait with timeout
+        //schedule(new DriveCommand(drive,drive.getX(),10, drive.getHeading(), 1,0.5));
     }
 
     @Override
