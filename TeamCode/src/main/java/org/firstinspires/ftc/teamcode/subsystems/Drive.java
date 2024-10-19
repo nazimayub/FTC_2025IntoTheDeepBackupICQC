@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver;
 
@@ -17,7 +19,8 @@ public class Drive extends SubsystemBase {
         fl = hardwareMap.get(DcMotor.class,"lf");
         br = hardwareMap.get(DcMotor.class,"rb");
         bl = hardwareMap.get(DcMotor.class,"lb");
-
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         odo.setOffsets(Constants.ODOOFFSETX, Constants.ODOOFFSETY); //these are tuned for 3110-0002-0001 Product Insight #1
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -82,5 +85,8 @@ public class Drive extends SubsystemBase {
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
+    }
+    public Pose2D getPosition(){
+        return odo.getPosition();
     }
 }
