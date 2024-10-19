@@ -20,8 +20,9 @@ public class Drive extends SubsystemBase {
         fl = hardwareMap.get(DcMotor.class,"lf");
         br = hardwareMap.get(DcMotor.class,"rb");
         bl = hardwareMap.get(DcMotor.class,"lb");
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        //fl.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.REVERSE);
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         odo.setOffsets(Constants.ODOOFFSETX, Constants.ODOOFFSETY); //these are tuned for 3110-0002-0001 Product Insight #1
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -55,7 +56,7 @@ public class Drive extends SubsystemBase {
             }
 
             // Use basic proportional control to adjust movement (consider adding PID here)
-            double kP = 0.01;  // Proportional constant for power adjustment
+            double kP = 0.1;  // Proportional constant for power adjustment
             double powerX = kP * deltaX;
             double powerY = kP * deltaY;
             double powerTheta = kP * deltaTheta;
