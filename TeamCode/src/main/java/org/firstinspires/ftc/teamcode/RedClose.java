@@ -1,4 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-public class RedClose {
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+public class RedClose extends LinearOpMode {
+    @Override
+    public void runOpMode() throws InterruptedException {
+        
+    }
 }
