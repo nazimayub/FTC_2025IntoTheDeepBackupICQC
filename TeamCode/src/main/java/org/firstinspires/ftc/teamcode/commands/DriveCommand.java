@@ -14,4 +14,10 @@ public class DriveCommand extends CommandBase {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drive);
     }
+    @Override
+    public void execute(){
+
+    }
+
+
 }
