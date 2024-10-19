@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -68,7 +69,15 @@ public class Drive extends SubsystemBase {
             drive(powerX, powerY, powerTheta);
         }
     }
-
+    public void drivetoX(double x,double power, double tolerance){
+        driveToPosition(x,getY(),getHeading(),power,tolerance);
+    }
+    public void drivetoY(double y,double power, double tolerance){
+        driveToPosition(getX(),y,getHeading(),power,tolerance);
+    }
+    public void turnTo(double heading,double power, double tolerance){
+        driveToPosition(getX(),getY(),heading,power,tolerance);
+    }
     // Example of a drive method that applies power to motors
     private void drive(double xPower, double yPower, double thetaPower) {
         // Use xPower, yPower, and thetaPower to drive your robot's motors
@@ -80,13 +89,31 @@ public class Drive extends SubsystemBase {
     }
 
     // Stop method to halt the motors
-    private void stopRobot() {
+    public void stopRobot() {
         fl.setPower(0);
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
     }
+    public void stopRobotTime(long s){
+        stopRobot();
+        ElapsedTime timer = new ElapsedTime();
+        timer.startTime();
+        while(timer.seconds()<s){
+            // do nothing
+        }
+        timer.reset();
+    }
     public Pose2D getPosition(){
         return odo.getPosition();
+    }
+    public double getX(){
+        return odo.getPosition().getX(DistanceUnit.INCH);
+    }
+    public double getY(){
+        return odo.getPosition().getY(DistanceUnit.INCH);
+    }
+    public double getHeading(){
+        return odo.getPosition().getHeading(AngleUnit.DEGREES);
     }
 }
