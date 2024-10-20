@@ -43,6 +43,7 @@ public class DriveCommand extends CommandBase {
     public boolean isFinished(){
         if(drive.isCompleted()){
             drive.reset();
+            drive.stopRobot();
         }
         return drive.isCompleted();
     }

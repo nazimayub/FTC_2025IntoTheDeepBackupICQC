@@ -9,9 +9,8 @@ public class MoveCommand extends SequentialCommandGroup {
     double x,y,theta,tolerance,power;
     public MoveCommand(Drive drive){
         addCommands(
-                new DriveCommand(drive,10,drive.getY(),0,0.5,1.5)
-                //new DriveCommand(drive,drive.getX(),-10,0,0.5,1.5)
-
+                new DriveCommand(drive,15,0,0,0.5,1.5),
+                new DriveCommand(drive,15,-15,0,0.5,1.5)
                 );
         addRequirements(drive);
     }

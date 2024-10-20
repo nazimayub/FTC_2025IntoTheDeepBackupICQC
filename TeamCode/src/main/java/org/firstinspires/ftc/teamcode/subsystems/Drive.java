@@ -80,7 +80,7 @@ public class Drive extends SubsystemBase {
              kP = 0.1;  // Proportional constant for power adjustment
              powerX = kP * deltaX;
              powerY = kP * deltaY;
-             powerTheta = (kP) * deltaTheta; // delta here is the error
+             powerTheta = (kP+0.05) * deltaTheta; // delta here is the error
 
             // Limit power values to the max power
             powerX = Math.min(power, Math.max(-power, powerX));
