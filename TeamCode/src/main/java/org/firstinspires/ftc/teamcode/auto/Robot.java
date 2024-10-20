@@ -5,6 +5,9 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.Subsystem;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+/**
+ * Main Robot Paradigm
+ */
 public abstract class Robot extends LinearOpMode {
     public void reset() {
         CommandScheduler.getInstance().reset();

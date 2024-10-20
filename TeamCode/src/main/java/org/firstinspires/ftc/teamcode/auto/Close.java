@@ -20,25 +20,15 @@ public class Close extends Robot {
     public void initialize() {
         drive = new Drive(hardwareMap);// this is where we schedule commands for auto
         telemetryS = new TelemetrySubsystem(telemetry);
-//        schedule(
-//                new ParallelRaceGroup(
-//                    new SequentialCommandGroup(
-//                        new DriveCommand(drive,10,drive.getY(),0,0.5,0.5),
-//                        new DriveCommand(drive,drive.getX(),10,0,0.5,0.5)),
-//                    new TelemetryCommand(telemetryS,"X: "+Close.drive.getX()+", Y: "+Close.drive.getY()+", Heading: "+Close.drive.getHeading(), "")
-//        ));
-//        schedule(
-//                new SequentialCommandGroup(
-//                        new DriveCommand(drive,10,drive.getY(),drive.getHeading(),0.5,0.5)
-//                        ,new DriveCommand(drive,drive.getX(),10,drive.getHeading(),0.5,0.5)
-//        ));
-
         schedule(
-                new MoveCommand(drive)
-        );
-//        schedule(new DriveCommand(drive,drive.getX(),10,0,1,0.5));
-//        schedule(new DriveCommand(drive,10,drive.getY(),0,1,0.5));
+                new SequentialCommandGroup(
+                        new DriveCommand(drive,10,0,0,0.5,1.5),
+                        new DriveCommand(drive,10,-10,0,0.5,1.5)
+        ));
 
+//        schedule(
+//                new MoveCommand(drive)
+//        );
     }
 
     @Override
