@@ -35,8 +35,9 @@ public abstract class Robot extends LinearOpMode {
         while(opModeInInit()&!isStopRequested()){
             preInit();
         }
+        telemetry.clearAll(); // clear all telemetry so we dont have pre init sutff here...
         // run the scheduler
-        while (!isStopRequested() && opModeIsActive()) {
+        while(opModeIsActive()&&!isStopRequested()){
             run();
         }
         reset();
@@ -56,6 +57,9 @@ public abstract class Robot extends LinearOpMode {
 
     public static void enable() {
         com.arcrobotics.ftclib.command.Robot.enable();
+    }
+    public boolean isOpModeActive(){
+        return opModeIsActive();
     }
 
 }

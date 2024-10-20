@@ -17,8 +17,10 @@ public class TelemetrySubsystem extends SubsystemBase {
         this.telemetry = telemetry;
     }
 
-    public void addTelemetryData(){
-        telemetry.addData("X: "+Close.drive.getX()+", Y: "+Close.drive.getY()+", Heading: "+Close.drive.getHeading(), "");
+    public void addData(String key,Object data){
+        telemetry.addData(key, data);
+    }
+    public void update(){
         telemetry.update();
     }
 

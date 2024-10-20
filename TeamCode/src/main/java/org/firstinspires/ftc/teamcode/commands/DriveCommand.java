@@ -9,9 +9,8 @@ public class DriveCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final Drive drive;
     double x,y,theta,tolerance,power;
-    boolean done = false;
     boolean move = false;
-    long timeout = 0;
+    long timeout = -1;
 
 
     public DriveCommand(Drive drive,double x,double y,double theta,double power,double tolerance) {
@@ -30,6 +29,7 @@ public class DriveCommand extends CommandBase {
     public DriveCommand(Drive drive, long s){
         move = false; // dont move the robot..
         this.drive = drive;
+        timeout = s;
         addRequirements(drive);
     }
 
@@ -37,18 +37,14 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute(){
-        done = false;
-        if(move){
-            drive.driveToPosition(x,y,theta,power,tolerance); // here we just move...
-        }else{
-            drive.stopRobotTime(timeout);
-        }
-        done = true;
+        drive.driveToPosition(x,y,theta,power,tolerance);
     }
     @Override
     public boolean isFinished(){
-        return done;
+        if(drive.isCompleted()){
+            drive.reset();
+        }
+        return drive.isCompleted();
     }
-
 
 }
