@@ -144,4 +144,7 @@ public class Drive extends SubsystemBase {
     public boolean isCompleted(){
         return isFinished;
     }
+    public void completionStatus(boolean b){
+        isFinished = b;
+    }
 }

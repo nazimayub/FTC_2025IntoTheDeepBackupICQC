@@ -2,15 +2,19 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 public class DriveCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+    ElapsedTime timer = new ElapsedTime();
+
     private final Drive drive;
     double x,y,theta,tolerance,power;
     boolean move = false;
     long timeout = -1;
+    int tickNum = 1;
 
 
     public DriveCommand(Drive drive,double x,double y,double theta,double power,double tolerance) {
@@ -34,15 +38,28 @@ public class DriveCommand extends CommandBase {
     }
 
 
-
+    // this runs over the lifetime of the command so it will loop as long as the command is alive/scheduled
     @Override
     public void execute(){
-        drive.driveToPosition(x,y,theta,power,tolerance);
+        if(move){
+            drive.driveToPosition(x,y,theta,power,tolerance);
+        }else{
+            drive.completionStatus(false);
+            drive.stopRobot();
+            if(tickNum==1){ // if its the first time running this loop we are gonna reset otherwise we wont
+                timer.reset();
+            }
+            if(timer.seconds()>timeout){
+                drive.completionStatus(true);
+                timer.reset();
+            }
+        }
+        tickNum=tickNum+1; // increases the tick number so we wont reset the timer every time...
     }
     @Override
     public boolean isFinished(){
         if(drive.isCompleted()){
-            drive.reset();
+            drive.reset(); // resets pid and other values...
             drive.stopRobot();
         }
         return drive.isCompleted();
