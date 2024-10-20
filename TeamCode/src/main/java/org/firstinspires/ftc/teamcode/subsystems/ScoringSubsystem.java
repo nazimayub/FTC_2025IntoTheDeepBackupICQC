@@ -203,13 +203,13 @@ public class ScoringSubsystem extends SubsystemBase {
     }
     public void stow(){
         isFinished = false;
-        sprocPos(0);
+        sprocPos(-1000);
         sprocketState = SprocketStates.STOW;
         isFinished = true;
     }
     public void scorePos() {
         isFinished = false;
-        sprocPos(-4500);
+        sprocPos(-5500);
         sprocketState = SprocketStates.SCORE;
         isFinished = true;
     }
@@ -264,7 +264,7 @@ public class ScoringSubsystem extends SubsystemBase {
     public boolean isCompleted(){
         return isFinished;
     }
-    public void completionStatus(boolean b){
+    public void setCompletionStatus(boolean b){
         isFinished = b;
     }
 }

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
@@ -43,14 +42,14 @@ public class DriveCommand extends CommandBase {
     public void execute(){
         if(move){
             drive.driveToPosition(x,y,theta,power,tolerance);
-        }else{
-            drive.completionStatus(false);
-            drive.stopRobot();
+        }else{ // stop and wait for a timeout s in the constructor
+            drive.setCompletionStatus(false); // tell ftclib we are not done
+            drive.stopRobot(); // stops the robot
             if(tickNum==1){ // if its the first time running this loop we are gonna reset otherwise we wont
                 timer.reset();
             }
             if(timer.seconds()>timeout){
-                drive.completionStatus(true);
+                drive.setCompletionStatus(true);
                 timer.reset();
             }
         }

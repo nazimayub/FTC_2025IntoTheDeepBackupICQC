@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.commands.TelemetryCommand;
+import org.firstinspires.ftc.teamcode.commands.ScoreCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.ScoringSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 
 @Autonomous
@@ -16,14 +17,15 @@ public class Close extends Robot {
     boolean isRedAlliance = true;
     public static Drive drive;
     public static TelemetrySubsystem telemetryS;
+    public static ScoringSubsystem score;
     @Override
     public void initialize() {
         drive = new Drive(hardwareMap);// this is where we schedule commands for auto
         telemetryS = new TelemetrySubsystem(telemetry);
         schedule(
-                new SequentialCommandGroup(
-                        new DriveCommand(drive,10,0,0,0.5,1.5),
-                        new DriveCommand(drive,10,-10,0,0.5,1.5)
+                new ParallelCommandGroup(
+                        new DriveCommand(drive,10,0,0,1,1),
+                        new ScoreCommand(score,ScoringSubsystem.SprocketStates.STOW)
         ));
 
 //        schedule(

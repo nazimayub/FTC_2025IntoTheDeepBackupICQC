@@ -70,7 +70,7 @@ public class Drive extends SubsystemBase {
              deltaTheta = theta - currentTheta;
 
             // If within tolerance, stop the loop
-            if (Math.abs(deltaX) < tolerance && Math.abs(deltaY) < tolerance && Math.abs(deltaTheta) < tolerance+10) {
+            if (Math.abs(deltaX) < tolerance && Math.abs(deltaY) < tolerance && Math.abs(deltaTheta) < tolerance+5) {
                 stopRobot();
                 isFinished = true;// Implement your own stop function to stop motors
                 //break;
@@ -92,15 +92,6 @@ public class Drive extends SubsystemBase {
         //}
 
     }
-    public void drivetoX(double x,double power, double tolerance){
-        driveToPosition(x,getY(),getHeading(),power,tolerance);
-    }
-    public void drivetoY(double y,double power, double tolerance){
-        driveToPosition(getX(),y,getHeading(),power,tolerance);
-    }
-    public void turnTo(double heading,double power, double tolerance){
-        driveToPosition(getX(),getY(),heading,power,tolerance);
-    }
     // Example of a drive method that applies power to motors
     private void drive(double xPower, double yPower, double thetaPower) {
 
@@ -119,16 +110,6 @@ public class Drive extends SubsystemBase {
         bl.setPower(0);
         br.setPower(0);
     }
-    public void stopRobotTime(long s){
-        isFinished = false;
-        stopRobot();
-        ElapsedTime timer = new ElapsedTime();
-        timer.reset();
-        while(timer.seconds()<s){
-            // do nothing
-        }
-        isFinished = true;
-    }
     public Pose2D getPosition(){
         return odo.getPosition();
     }
@@ -144,7 +125,7 @@ public class Drive extends SubsystemBase {
     public boolean isCompleted(){
         return isFinished;
     }
-    public void completionStatus(boolean b){
+    public void setCompletionStatus(boolean b){
         isFinished = b;
     }
 }
