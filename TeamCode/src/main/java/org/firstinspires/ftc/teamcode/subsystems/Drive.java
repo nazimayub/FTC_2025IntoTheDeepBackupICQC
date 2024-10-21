@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,12 +13,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver;
-
+@Config
 public class Drive extends SubsystemBase {
     DcMotor fr,fl,br,bl;
     GoBildaPinpointDriver odo;
     public static boolean isFinished = false;
-    double currentX,currentY,currentTheta,deltaX,deltaY,deltaTheta,kP,powerX,powerY,powerTheta;
+    double currentX,currentY,currentTheta,deltaX,deltaY,deltaTheta,powerX,powerY,powerTheta;
+    //public static double xKp,xKi,xKd,yKp,yKi,yKd,tKp,tKi,tKd;
+
+    public static PIDController xController = new PIDController(0.125,0,0.01);
+    public static PIDController yController = new PIDController(0.125,0,0.01);
+    public static PIDController thetaController = new PIDController(0.35,0,0.01);
     public Drive(HardwareMap hardwareMap){
         isFinished = false;
         fr = hardwareMap.get(DcMotor.class,"rf");
@@ -44,7 +51,6 @@ public class Drive extends SubsystemBase {
         deltaTheta =0;
         deltaX = 0;
         deltaY=0;
-        kP =0;
         powerX=0;
         powerY=0;
         powerTheta=0;
@@ -69,18 +75,19 @@ public class Drive extends SubsystemBase {
              deltaY = y - currentY;
              deltaTheta = theta - currentTheta;
 
+
             // If within tolerance, stop the loop
-            if (Math.abs(deltaX) < tolerance && Math.abs(deltaY) < tolerance && Math.abs(deltaTheta) < tolerance+5) {
+            if (Math.abs(deltaX) < tolerance+1 && Math.abs(deltaY) < tolerance+1 && Math.abs(deltaTheta) < tolerance+5) {
                 stopRobot();
                 isFinished = true;// Implement your own stop function to stop motors
                 //break;
             }
 
             // Use basic proportional control to adjust movement (consider adding PID here)
-             kP = 0.1;  // Proportional constant for power adjustment
-             powerX = kP * deltaX;
-             powerY = kP * deltaY;
-             powerTheta = (kP+0.05) * deltaTheta; // delta here is the error
+             //kP = 0.1;  // Proportional constant for power adjustment
+             powerX = xController.calculate(currentX,x);
+             powerY = yController.calculate(currentY,y);
+             powerTheta = thetaController.calculate(currentTheta,theta); // delta here is the error
 
             // Limit power values to the max power
             powerX = Math.min(power, Math.max(-power, powerX));
@@ -88,7 +95,7 @@ public class Drive extends SubsystemBase {
             powerTheta = Math.min(power, Math.max(-power, powerTheta));
 
             // Drive the robot (implement your own drive method that takes x, y, and rotation power)
-            drive(powerX, powerY, powerTheta);
+            drive(powerX,powerY,powerTheta);
         //}
 
     }
@@ -101,6 +108,12 @@ public class Drive extends SubsystemBase {
         fr.setPower(-yPower - xPower - thetaPower);
         bl.setPower(-yPower - xPower + thetaPower);
         br.setPower(-yPower + xPower - thetaPower);
+    }
+    private void drive(double thetaPower) {
+        fl.setPower(thetaPower);
+        fr.setPower(-thetaPower);
+        bl.setPower(thetaPower);
+        br.setPower(-thetaPower);
     }
 
     // Stop method to halt the motors
