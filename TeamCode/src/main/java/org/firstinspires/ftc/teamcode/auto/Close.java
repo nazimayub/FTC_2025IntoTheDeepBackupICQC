@@ -55,39 +55,48 @@ public class Close extends Robot {
         schedule(
                 new ParallelCommandGroup(
                 new SequentialCommandGroup(
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5),
-                new DriveCommand(drive,0,0,-90,0.5,0.5),
-                new DriveCommand(drive,0,0,90,0.5,0.5)
+                new DriveCommand(drive,0,0,90,1,1),
+                new DriveCommand(drive, 1),
+                new DriveCommand(drive,0,0,0,1,1),
+                        new DriveCommand(drive, 1),
+                        new DriveCommand(drive,0,90,0,1,1),
+                        new DriveCommand(drive, 1),
+                        new DriveCommand(drive,0,0,0,1,1)
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,0,0,90,0.5,1),
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,0,0,0,0.5,1),
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,0,0,90,0.5,1),
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,0,0,0,0.5,1),
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,20,0,90,0.5,1),
+//                        new DriveCommand(drive, 1),
+//                        new DriveCommand(drive,0,0,0,0.5,1)
 
-            ),
+
+
+
+                ),
                         new RunCommand(() -> { // telemetry
                             telemetry.addData("Sprocket Pos",score.sprocket.getCurrentPosition());
                             telemetry.addData("X: "+Close.drive.getX()+", Y: "+Close.drive.getY()+", Heading", Close.drive.getHeading());
+                            telemetry.addData("delta x", Close.drive.deltaX);
+                            telemetry.addData("delta y", Close.drive.deltaY);
+                            telemetry.addData("delta theta", Close.drive.deltaTheta);
+                            telemetry.addData("current x", Close.drive.currentX);
+                            telemetry.addData("current y", Close.drive.currentY);
+                            telemetry.addData("current theta", Close.drive.currentTheta);
+                            telemetry.addData("power x", Close.drive.powerX);
+                            telemetry.addData("power y", Close.drive.powerY);
+                            telemetry.addData("power theta", Close.drive.powerTheta);
+                            telemetry.addData("fl power", Close.drive.flpower);
+                            telemetry.addData("fr power", Close.drive.frpower);
+                            telemetry.addData("bl power", Close.drive.blpower);
+                            telemetry.addData("br power", Close.drive.brpower);
+                            telemetry.addData("Finished ", Close.drive.isCompleted());
+
                             telemetry.update();
                         })
 

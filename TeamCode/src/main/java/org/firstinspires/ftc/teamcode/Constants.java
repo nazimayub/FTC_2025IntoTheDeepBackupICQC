@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 @Config
 public class Constants {
-    public static final double ODOOFFSETX = -84;
-    public static final double ODOOFFSETY = -168;
+    public static final double ODOOFFSETX = -147.5;
+    public static final double ODOOFFSETY = -56;
 
 }
