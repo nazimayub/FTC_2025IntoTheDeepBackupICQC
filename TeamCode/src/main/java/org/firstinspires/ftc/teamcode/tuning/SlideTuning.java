@@ -19,8 +19,8 @@ import org.firstinspires.ftc.teamcode.*;
 public class SlideTuning extends OpMode {
     private PIDController controller, controller1;
 
-    public static double p = 0.03, i=0, d=0.0003;
-    public static double f = 0.2;
+    public static double p = 0.0, i=0, d=0.0;
+    public static double f = 0;
 
     public static double target = 0;
     private int pos, pos1;

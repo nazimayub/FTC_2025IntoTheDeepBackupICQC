@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.commands.*;
 import org.firstinspires.ftc.teamcode.utils.*;
 @TeleOp
-public class SoloZayan extends CommandOpMode {
+public class TeleopForIrfan extends CommandOpMode {
     GamepadEx base;
     GamepadEx op;
     SimpleLogger log;
@@ -42,7 +42,7 @@ public class SoloZayan extends CommandOpMode {
 
 
         //Default Commands
-        drive.setDefaultCommand(new DriveCommand(drive,base));
+        drive.setDefaultCommand(new DriveCommand(drive,base));12wec
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, Constants.in));
 
