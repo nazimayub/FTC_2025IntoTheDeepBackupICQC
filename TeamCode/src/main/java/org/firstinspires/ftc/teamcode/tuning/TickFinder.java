@@ -29,14 +29,10 @@ public class TickFinder extends CommandOpMode {
 
     @Override
     public void initialize() {
-        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD, 0.03, 0, 0.0003, 0.2, 0.03, 0, 0.0003, 0.2);
         base = new GamepadEx(gamepad1);
-        new GamepadButton(base, GamepadKeys.Button.A).whileHeld(new PIDFSlideArmCommand(arm, -1));
-        new GamepadButton(base, GamepadKeys.Button.Y).whileHeld(new PIDFSlideArmCommand(arm, 1));
         new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new PIDFSlideArmCommand(slide, -1));
         new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new PIDFSlideArmCommand(slide, 1));
-        telemetry.addLine("Arm tick " + arm.getTick());
         telemetry.addLine("Slide tick " + slide.getTick());
         telemetry.update();
     }
