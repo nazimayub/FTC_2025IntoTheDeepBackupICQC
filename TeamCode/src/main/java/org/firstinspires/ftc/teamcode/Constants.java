@@ -12,16 +12,15 @@ public class Constants {
 
     //Names for motors and servos
     public static final String arm = "arm", transfer = "transfer", drone = "droneLauncher", rSlide = "rightSlide", lSlide = "leftSlide", fr = "rightFront", fl = "leftFront", br = "rightBack", bl = "leftBack", hand = "hand", intake = "intake", imu = "imu";
-    //Hand Pos
-    public static final double out = 0.9534, in = 0.165;
-    //Arm Pos
-    public static final double up = 0.9534, down = 0.165;
-    //Drone Pos
-    public static final double launch = 1, load = 0;
-    //Outtake Positions
-    public static final double lScore = 0.5, rScore = 0.5, lStow = 0.5, rStow = 0.5;
-    //Claw Position
-    public static final double lDrop = 0.5, rDrop = 0.5, lGrab = 0.5, rGrab = 0.5;
+
+    //Intake Pos (High Basket)
+    public static final double grabSam = 0.0, relSam = 0.0;
+    //Intake Pos (Bar)
+    public static final double grabSpe = 0.0, relSpe = 0.0;
+    //Outtake Pos
+    public static final double outSam = 0.0, outSpe = 0.0;
+    //Stow Pos
+    public static final double intStowIn = 0.0, intStowOut = 0.0, outStowIn = 0.0, outStowOut = 0.0;
 
     public static final String GROUP_ANDROID = "";
 }

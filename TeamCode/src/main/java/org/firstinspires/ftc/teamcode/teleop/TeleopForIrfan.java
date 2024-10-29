@@ -42,9 +42,9 @@ public class TeleopForIrfan extends CommandOpMode {
 
 
         //Default Commands
-        drive.setDefaultCommand(new DriveCommand(drive,base));12wec
+        drive.setDefaultCommand(new DriveCommand(drive,base));
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
-        hand.setDefaultCommand(new HandCommand(hand, Constants.in));
+        hand.setDefaultCommand(new HandCommand(hand, 0));
 
         //Binding Commands
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whileHeld(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 1)); //intake
