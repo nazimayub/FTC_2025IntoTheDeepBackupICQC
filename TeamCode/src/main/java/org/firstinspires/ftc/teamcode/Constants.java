@@ -11,14 +11,14 @@ public class Constants {
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
     //Names for motors and servos
-    public static final String arm = "arm", transfer = "transfer", drone = "droneLauncher", rSlide = "rightSlide", lSlide = "leftSlide", fr = "rightFront", fl = "leftFront", br = "rightBack", bl = "leftBack", hand = "hand", intake = "intake", imu = "imu";
+    public static final String fR = "fR", fL = "fL", bR = "bR", bL = "bL", vLSlide = "motor1", vRSlide = "motor2", hSlide = "motor3", intakeClaw = "servo2", intakeClawRot = "servo1", intakeClawDist = "servo2", outtakeClaw = "servo3", outtakeClawDist = "servo5", imu = "imu";
 
     //Intake Pos
-    public static final double grabInt = 0.0, relInt = 0.0;
+    public static final double grabInt = 0.67, relInt = 0.43, clawIn = .97, clawOut = .65;
     //Outtake Pos
-    public static final double grabOut = 0.0, relOut = 0.0;
+    public static final double grabOut = 0.3, relOut = 0.6;
     //Stow Pos
-    public static final double intStowIn = 0.0, intStowOut = 0.0, outStowIn = 0.0, outStowOut = 0.0;
+    public static final double intStowIn = 0.17, intStowOut = 0.65, outStowIn = 0.17, outStowOut = 1.0;
 
     public static final String GROUP_ANDROID = "";
 }
