@@ -13,10 +13,10 @@ public class ServoTuning extends OpMode {
 
     @Override
     public void init() {
-        s1 = 0;
+        s1 = 0.15;
         s = 0;
 
-        servo = hardwareMap.get(Servo.class, "servo");
+        servo = hardwareMap.get(Servo.class, "servo4");
         servo1 = hardwareMap.get(Servo.class, "servo1");
     }
 

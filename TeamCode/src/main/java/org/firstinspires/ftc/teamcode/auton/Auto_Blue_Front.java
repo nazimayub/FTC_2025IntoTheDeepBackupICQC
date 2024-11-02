@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.acmerobotics.roadrunner.Pose2d;
@@ -60,4 +61,4 @@ public class Auto_Blue_Front extends LinearOpMode {
     private void releaseSpecimen() {
     }
 }
-
+*/

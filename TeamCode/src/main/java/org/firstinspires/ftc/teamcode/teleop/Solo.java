@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -24,6 +25,7 @@ public class Solo extends CommandOpMode {
     public static HandSubsystem hand;
     public static SlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
+
     public static ArmSubsystem arm;
     public static double setSlidesDown;
     public static double setArmDown;
@@ -117,3 +119,4 @@ public class Solo extends CommandOpMode {
     }
 
 }
+*/

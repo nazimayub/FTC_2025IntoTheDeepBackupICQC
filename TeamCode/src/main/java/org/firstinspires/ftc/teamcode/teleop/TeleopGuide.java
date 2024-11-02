@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -68,3 +69,4 @@ public class TeleopGuide extends CommandOpMode {
     }
 
 }
+*/

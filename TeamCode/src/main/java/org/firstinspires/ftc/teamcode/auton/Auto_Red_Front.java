@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.acmerobotics.roadrunner.Pose2d;
@@ -20,6 +21,7 @@ public class Auto_Red_Front extends LinearOpMode {
 
     public static Drive drive;
     public static PIDFArmSubsystem arm;
+
     private static PIDFSlideSubsystem slide;
     public static HandSubsystem hand;
     public static ServoIntakeSubsystem intake;
@@ -61,3 +63,4 @@ public class Auto_Red_Front extends LinearOpMode {
     }
 }
 
+*/
