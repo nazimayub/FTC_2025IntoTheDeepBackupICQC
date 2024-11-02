@@ -14,11 +14,11 @@ public class Constants {
     public static final String fR = "fR", fL = "fL", bR = "bR", bL = "bL", vLSlide = "motor1", vRSlide = "motor2", hSlide = "motor3", intakeClaw = "servo2", intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo5", imu = "imu";
 
     //Intake Pos
-    public static final double grabInt = 0.67, relInt = 0.43, clawIn = .65, clawOut = .97;
+    public static final double intClawGrab = 0.67, intClawRel = 0.43, intClawIn = .227, intClawOut = .171, intMove = .65;
     //Outtake Pos
-    public static final double grabOut = 0.3, relOut = 0.6;
+    public static final double outClawGrab = 0.3, outClawRel = 0.6, outtakeIn = .3, outtakeOut = 1;
     //Stow Pos
-    public static final double intStowIn = 0.65, intStowOut = 0.17, outStowIn = 0.17, outStowOut = 1.0;
+    public static final double intStow = .16, intStowClaw = .62, outStowClaw = .3, outStow = .13;
 
     public static final String GROUP_ANDROID = "";
 }
