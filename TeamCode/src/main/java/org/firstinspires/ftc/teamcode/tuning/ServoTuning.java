@@ -16,7 +16,7 @@ public class ServoTuning extends OpMode {
         s1 = 0;
         s = 0;
 
-        servo = hardwareMap.get(Servo.class, "servo");
+        servo = hardwareMap.get(Servo.class, "servo0");
         servo1 = hardwareMap.get(Servo.class, "servo1");
     }
 

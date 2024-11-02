@@ -24,12 +24,12 @@ public class TeleOpTester extends CommandOpMode {
     public static Drive drive;
     public static TelemetrySubsystem telemetrySubsystem;
     public static PIDFSlideSubsystem vSlides;
-    public static PIDFSlideSubsystem hSlides;
-    public static ServoIntakeSubsystem intakeClaw;
-    public static ServoIntakeSubsystem outtakeClaw;
-    public static ServoIntakeSubsystem intakeClawDist;
-    public static ServoIntakeSubsystem intakeClawRot;
-    public static ServoIntakeSubsystem outtakeClawDist;
+    public static PIDFSingleSlideSubsystem hSlide;
+    public static HandSubsystem intakeClaw;
+    public static HandSubsystem outtakeClaw;
+    public static HandSubsystem intakeClawDist;
+    public static HandSubsystem intakeClawRot;
+    public static HandSubsystem outtakeClawDist;
 
 
     @Override
@@ -37,19 +37,37 @@ public class TeleOpTester extends CommandOpMode {
         base = new GamepadEx(gamepad1);
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
-        intakeClaw = new ServoIntakeSubsystem(hardwareMap, Constants.intakeClaw);
-        outtakeClaw = new ServoIntakeSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoIntakeSubsystem(hardwareMap, Constants.intakeClawDist);
-        intakeClawRot = new ServoIntakeSubsystem(hardwareMap, Constants.intakeClawRot);
-        outtakeClawDist = new ServoIntakeSubsystem(hardwareMap, Constants.outtakeClawDist);
+        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fR,Constants.fL,Constants.bR,Constants.bL),new MotorDirectionConfig(true,true,true,true));
+        vSlides = new PIDFSlideSubsystem(hardwareMap, Constants.vRSlide, Constants.vLSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .03, 0, .001, .01, .03, 0, .001, .01);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, .002, 0, 0, 0);
+        intakeClaw = new HandSubsystem(hardwareMap, Constants.intakeClaw);
+        outtakeClaw = new HandSubsystem(hardwareMap, Constants.outtakeClaw);
+        intakeClawDist = new HandSubsystem(hardwareMap, Constants.intakeClawDist);
+        intakeClawRot = new HandSubsystem(hardwareMap, Constants.intakeClawRot);
+        outtakeClawDist = new HandSubsystem(hardwareMap, Constants.outtakeClawDist);
 
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
-        new GamepadButton(base, GamepadKeys.Button.A).toggleWhenPressed(new ServoIntakeCommand(intakeClaw, Constants.grabInt), new ServoIntakeCommand(intakeClaw, Constants.relInt));
-        new GamepadButton(base, GamepadKeys.Button.B).toggleWhenPressed(new ServoIntakeCommand(outtakeClaw, Constants.grabOut), new ServoIntakeCommand(outtakeClaw, Constants.relOut));
-        new GamepadButton(base, GamepadKeys.Button.X).toggleWhenPressed(new ServoIntakeCommand(intakeClawDist, Constants.intStowIn), new ServoIntakeCommand(intakeClawDist, Constants.intStowOut));
-        new GamepadButton(base, GamepadKeys.Button.Y).toggleWhenPressed(new ServoIntakeCommand(intakeClawRot, Constants.clawIn), new ServoIntakeCommand(intakeClawDist, Constants.clawOut));
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).toggleWhenPressed(new ServoIntakeCommand(outtakeClawDist, Constants.outStowIn), new ServoIntakeCommand(outtakeClawDist, Constants.outStowOut));
+        //intake
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(new HandCommand(intakeClawDist, Constants.intMove))
+                .whenPressed(new HandCommand(intakeClaw, Constants.intClawGrab))
+                .whenPressed(new HandCommand(intakeClawRot, Constants.intClawIn))
+                .whenPressed(new HandCommand(intakeClawDist, Constants.intStow))
+                .whenPressed(new HandCommand(intakeClaw, Constants.intClawRel));
 
+        //outtake
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(new HandCommand(outtakeClawDist, Constants.outtakeIn))
+                .whenPressed(new HandCommand(outtakeClaw, Constants.outClawGrab))
+                .whenPressed(new HandCommand(outtakeClawDist, Constants.outtakeOut))
+                .whenPressed(new HandCommand(outtakeClawDist, Constants.outClawRel));
+
+        //stow
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP)
+                .whenPressed(new HandCommand(intakeClaw, Constants.intStowClaw))
+                .whenPressed(new HandCommand(intakeClawDist, Constants.intStow))
+                .whenPressed(new HandCommand(outtakeClaw, Constants.outStowClaw))
+                .whenPressed(new HandCommand(outtakeClawDist, Constants.outStow));
     }
 }
