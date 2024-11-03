@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
@@ -26,11 +27,7 @@ public class TeleopForIrfan extends CommandOpMode {
     public static PIDFSlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
     public static PIDFSingleSlideSubsystem hSlide;
-    public static ServoSubsystem intakeClaw;
-    public static ServoSubsystem outtakeClaw;
-    public static ServoSubsystem intakeClawDist;
-    public static ServoSubsystem intakeClawRot;
-    public static ServoSubsystem outtakeClawDist;
+    public static MultiServoSubsystem servos;
     public static WaitSubsystem pause;
     @Override
     public void initialize() {
@@ -38,15 +35,11 @@ public class TeleopForIrfan extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.002, 0, 0, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.03, 0, 0.001, 0.01, 0.03, 0, 0.001, 0.01);
+        //hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.002, 0, 0, 0);
+        //slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.03, 0, 0.001, 0.01, 0.03, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
-        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
-        outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
-        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
+        servos = new MultiServoSubsystem(hardwareMap, 5, Constants.intakeClaw, Constants.outtakeClaw, Constants.intakeClawDist, Constants.intakeClawRot, Constants.outtakeClawDist);
 
 
         //Default Commands
@@ -54,39 +47,54 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawRot, 0.65),
+                new MultiServoCommand(servos,3,0.65),
                 new WaitCommand(pause, 500),
-                new ServoCommand(intakeClawDist, 0.16),
+                new MultiServoCommand(servos, 2, 0.16),
                 new WaitCommand(pause, 1000),
-                new ServoCommand(intakeClawRot, 1)
+                new MultiServoCommand(servos, 3, 1)
 
         ));
 
-        //Stows intake and transfers
+        //Grabs sample Stows intake and transfers
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawRot, 0.65),
+                new MultiServoCommand(servos, 0, 0.64),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawDist, 0.62),
+                new MultiServoCommand(servos, 4, 0.682),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.16),
+                new MultiServoCommand(servos, 1, 0.343),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 0.3),
+                new MultiServoCommand(servos, 3, 0.231),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 0),
-                new ServoCommand(outtakeClawDist, 0.13),
-                new WaitCommand(pause, 600),
-                new ServoCommand(outtakeClaw, 0.6),
-                new WaitCommand(pause, 600),
-                new ServoCommand(intakeClaw, 0.43),
+                new MultiServoCommand(servos, 2, 0.623),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, 1)
+                new MultiServoCommand(servos, 3, 0.006),
+                new WaitCommand(pause, 300),
+                //Retract slides
+                new MultiServoCommand(servos, 1, 0.533),
+                new WaitCommand(pause, 300),
+                new MultiServoCommand(servos, 4, 0.344)
         ));
 
-        //Grabs Sample
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ServoCommand(intakeClaw, 0.67));
+        //Brings intake up
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
+                new MultiServoCommand(servos, 0, 0.5),
+                new WaitCommand(pause, 300),
+                new MultiServoCommand(servos, 3, 0.233),
+                new WaitCommand(pause, 300),
+                new MultiServoCommand(servos, 0, 0.865),
+                new WaitCommand(pause, 300),
+                new MultiServoCommand(servos, 1, 0.0013)
+        ));
 
         //Scores
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoCommand(outtakeClaw, 0.3));
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new MultiServoCommand(servos,1, 0.3));
+
+        //Intakes
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new SequentialCommandGroup(
+                new MultiServoCommand(servos, 3, 0.168),
+                new WaitCommand(pause, 300),
+                new MultiServoCommand(servos, 1, 0.668)
+        ));
     }
     // logs stuffs
 
