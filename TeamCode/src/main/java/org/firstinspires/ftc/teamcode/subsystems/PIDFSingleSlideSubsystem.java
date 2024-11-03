@@ -23,7 +23,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.i = i;
         this.d = d;
         this.f = f;
-        this.slide = h.get(DcMotorImplEx.class, slide);
+        this.slide = h.get(DcMotorEx.class, slide);
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);

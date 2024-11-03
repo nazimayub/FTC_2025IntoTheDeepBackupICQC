@@ -8,10 +8,10 @@ import org.firstinspires.ftc.teamcode.subsystems.*;
 import java.util.function.DoubleSupplier;
 
 /**
- * A command to drive the robot with joystick input
- * (passed in as {@link DoubleSupplier}s). Written
- * explicitly for pedagogical purposes.
- */
+
+ A command to drive the robot with joystick input
+ (passed in as {@link DoubleSupplier}s). Written
+ explicitly for pedagogical purposes.*/
 public class WaitCommand extends CommandBase {
 
     private final WaitSubsystem arm;
@@ -22,9 +22,15 @@ public class WaitCommand extends CommandBase {
         this.pos=pos;
         addRequirements(arm);
     }
+
+    @Override
+    public void initialize() {
+        this.arm.start();
+    }
     @Override
     public boolean isFinished(){
         return arm.elapesd() > pos;
     }
 
 }
+

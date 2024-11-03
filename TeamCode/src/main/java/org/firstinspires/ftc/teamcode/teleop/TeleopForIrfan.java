@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
@@ -38,9 +39,7 @@ public class TeleopForIrfan extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        //TODO: Retune PID
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.002, 0, 0, 0);
-        //TODO: Retune PID
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.03, 0, 0.001, 0.01, 0.03, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
@@ -53,53 +52,47 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-<<<<<<< HEAD
-=======
-        intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
-        hand.setDefaultCommand(new HandCommand(hand, 0));
->>>>>>> 433915418a97519355275460e5ac59bc847839c4
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawRot, 0.65),
-                new WaitCommand(pause, 500),
-                new ServoCommand(intakeClawDist, 0.16),
-                new WaitCommand(pause, 1000),
-                new ServoCommand(intakeClawRot, 1)
+                new ServoCommand(intakeClawDist, 0.233),
+                new WaitCommand(pause, 5000),
+                new ServoCommand(intakeClawRot, 0.865)
+                //new WaitCommand(pause, 1000),
+                //new ServoCommand(intakeClawRot, 1)
 
         ));
 
-        //Stows intake and transfers
+
+        //Grabs sample Stows intake and transfers
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawRot, 0.65),
+                new ServoCommand(intakeClaw, 0.64),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawDist, 0.62),
+                new ServoCommand(outtakeClawDist, 0.682),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.16),
+                new ServoCommand(outtakeClaw, 0.343),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 0.3),
+                new ServoCommand(intakeClawRot, 0.5),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 0),
-                new ServoCommand(outtakeClawDist, 0.13),
-                new WaitCommand(pause, 600),
-                new ServoCommand(outtakeClaw, 0.6),
-                new WaitCommand(pause, 600),
-                new ServoCommand(intakeClaw, 0.43),
+                new ServoCommand(intakeClawDist, 0.623),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, 1)
+                new ServoCommand(intakeClawRot, 0.14),
+                new WaitCommand(pause, 300),
+                //Retract slides
+                new ServoCommand(outtakeClaw, 0.533),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClawDist, 0.344)
         ));
 
-        //Grabs Sample
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ServoCommand(intakeClaw, 0.67));
 
         //Scores
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoCommand(outtakeClaw, 0.3));
-        }
-        // logs stuffs
+    }
+    // logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();
 
-        // add logs
+    // add logs
 
 //        schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
 //        schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
@@ -109,6 +102,4 @@ public class TeleopForIrfan extends CommandOpMode {
 //        schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
 //        schedule(new RunCommand(telemetrySubsystem::updateLogs));
 //        schedule(new RunCommand(telemetry::update));
-    }
-
-
+}
