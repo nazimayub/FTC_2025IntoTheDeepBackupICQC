@@ -53,11 +53,9 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-<<<<<<< HEAD
-=======
+
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, 0));
->>>>>>> 433915418a97519355275460e5ac59bc847839c4
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
@@ -94,12 +92,12 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Scores
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoCommand(outtakeClaw, 0.3));
-        }
-        // logs stuffs
+    }
+    // logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();
 
-        // add logs
+    // add logs
 
 //        schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
 //        schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
@@ -109,6 +107,4 @@ public class TeleopForIrfan extends CommandOpMode {
 //        schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
 //        schedule(new RunCommand(telemetrySubsystem::updateLogs));
 //        schedule(new RunCommand(telemetry::update));
-    }
-
-
+}
