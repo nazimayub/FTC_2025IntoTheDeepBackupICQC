@@ -76,7 +76,7 @@ public class TeleopForIrfan extends CommandOpMode {
         ));
 
         //Brings intake up
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
                 new MultiServoCommand(servos, 0, 0.5),
                 new WaitCommand(pause, 300),
                 new MultiServoCommand(servos, 3, 0.233),
