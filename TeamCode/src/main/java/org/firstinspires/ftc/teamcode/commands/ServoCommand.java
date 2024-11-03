@@ -24,11 +24,8 @@ public class ServoCommand extends CommandBase {
     }
 
     @Override
-    public void execute() {
-        arm.set(pos);
-    }
-    @Override
     public boolean isFinished(){
+        arm.set(pos);
         return true;
     }
 

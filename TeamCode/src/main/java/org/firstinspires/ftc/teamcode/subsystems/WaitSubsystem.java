@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class WaitSubsystem extends SubsystemBase {
     /**
-     * Creates a new ExampleSubsystem.
-     */
-    private final ElapsedTime t;
+
+     Creates a new ExampleSubsystem.*/
+    private ElapsedTime t;
     public WaitSubsystem() {
         t = new ElapsedTime();
     }
@@ -29,3 +29,4 @@ public class WaitSubsystem extends SubsystemBase {
         //telemetry.update();
     }
 }
+

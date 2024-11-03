@@ -32,31 +32,31 @@ public class SlideTuning extends OpMode {
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
-        this.right = h.get(DcMotorEx.class, "motor1");
-        this.left = h.get(DcMotorEx.class, "motor2");
+        this.right = h.get(DcMotorEx.class, "motor3");
+        //this.left = h.get(DcMotorEx.class, "motor2");
         this.right.setDirection(DcMotorSimple.Direction.REVERSE);
         //this.left.setDirection(DcMotorSimple.Direction.REVERSE);
         this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        //this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
         controller1 = new PIDController(p, i, d);
     }
     @Override
     public void loop(){
         controller.setPID(p, i, d);
-        pos = -1*right.getCurrentPosition();
+        pos = right.getCurrentPosition();
         double pid = controller.calculate(pos, target);
         double power = pid+f;
 
         controller1.setPID(p, i, d);
-        pos1 = -1*left.getCurrentPosition();
+       // pos1 = left.getCurrentPosition();
         double pid1 = controller.calculate(pos, target);
         double power1 = pid1+f;
 
         right.setPower(power);
-        left.setPower(power1);
+        //left.setPower(power1);
 
         telemetry.addData("pos", pos);
         telemetry.addData("target", target);

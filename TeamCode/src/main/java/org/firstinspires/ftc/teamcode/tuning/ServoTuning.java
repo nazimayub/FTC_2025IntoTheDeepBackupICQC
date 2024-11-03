@@ -32,7 +32,7 @@ public class ServoTuning extends OpMode {
         if(gamepad1.dpad_left){
             s+=0.001;
         }
-        else if (gamepad1.dpad_down){
+        else if (gamepad1.dpad_up){
             s-=0.001;
         }
         if(gamepad1.y){
