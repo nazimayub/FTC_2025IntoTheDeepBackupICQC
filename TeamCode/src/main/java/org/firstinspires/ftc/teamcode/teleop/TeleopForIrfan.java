@@ -1,9 +1,9 @@
-/*
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -23,42 +23,78 @@ public class TeleopForIrfan extends CommandOpMode {
     public static ServoIntakeSubsystem intake;
     public static Drive drive;
     public static HandSubsystem hand;
-    //public static PIDFSlideSubsystem slide;
     public static PIDFSlideSubsystem slide;
     public static TelemetrySubsystem telemetrySubsystem;
-    public static PIDFArmSubsystem arm;
+    public static PIDFSingleSlideSubsystem hSlide;
+    public static ServoSubsystem intakeClaw;
+    public static ServoSubsystem outtakeClaw;
+    public static ServoSubsystem intakeClawDist;
+    public static ServoSubsystem intakeClawRot;
+    public static ServoSubsystem outtakeClawDist;
+    public static WaitSubsystem pause;
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
-        intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
         //TODO: Retune PID
-        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
-        hand = new HandSubsystem(hardwareMap, Constants.hand);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.002, 0, 0, 0);
         //TODO: Retune PID
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.01, 0, 0.0002, 0.2, 0.01, 0, 0.0002, 0.2);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.03, 0, 0.001, 0.01, 0.03, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
+        pause = new WaitSubsystem();
+        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
+        outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
+        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
+        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
 
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
+<<<<<<< HEAD
+=======
         intake.setDefaultCommand(new ServoIntakeCommand(intake, 0));
         hand.setDefaultCommand(new HandCommand(hand, 0));
+>>>>>>> 433915418a97519355275460e5ac59bc847839c4
 
-        //Binding Commands
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whileHeld(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 1)); //intake
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whileHeld(new ServoIntakeCommand(intake, -1)).whenReleased(new ServoIntakeCommand(intake, 1)); //intake
-        //Stow Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //Intake Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //High Basket Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
-        //Hang Position TODO: Find positions
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SetPIDFSlideArmCommand(slide, 0)).whenPressed(new SetPIDFSlideArmCommand(arm, 0)).whenPressed(new HandCommand(hand, 0));
+        //Bring intake down
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(intakeClawRot, 0.65),
+                new WaitCommand(pause, 500),
+                new ServoCommand(intakeClawDist, 0.16),
+                new WaitCommand(pause, 1000),
+                new ServoCommand(intakeClawRot, 1)
 
+        ));
+
+        //Stows intake and transfers
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(intakeClawRot, 0.65),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawDist, 0.62),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawRot, 0.16),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClaw, 0.3),
+                new WaitCommand(pause, 300),
+                new SetPIDFSlideArmCommand(hSlide, 0),
+                new ServoCommand(outtakeClawDist, 0.13),
+                new WaitCommand(pause, 600),
+                new ServoCommand(outtakeClaw, 0.6),
+                new WaitCommand(pause, 600),
+                new ServoCommand(intakeClaw, 0.43),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClawDist, 1)
+        ));
+
+        //Grabs Sample
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new ServoCommand(intakeClaw, 0.67));
+
+        //Scores
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new ServoCommand(outtakeClaw, 0.3));
+        }
         // logs stuffs
 
 //        telemetrySubsystem.addLogHeadings();
@@ -75,5 +111,4 @@ public class TeleopForIrfan extends CommandOpMode {
 //        schedule(new RunCommand(telemetry::update));
     }
 
-}
-*/
+

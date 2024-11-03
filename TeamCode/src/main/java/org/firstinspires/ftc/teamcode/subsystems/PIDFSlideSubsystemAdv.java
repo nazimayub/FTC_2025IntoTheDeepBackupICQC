@@ -44,6 +44,7 @@ public class PIDFSlideSubsystemAdv extends SubsystemBase {
         this.target = target;
     }
     public void change(double amount){this.target+=amount;}
+    public int getTick(){return -1*this.right.getCurrentPosition();}
 
     @Override
     public void periodic() {
