@@ -20,6 +20,7 @@ public class WaitCommand extends CommandBase {
     public WaitCommand(WaitSubsystem arm, long pos) {
         this.arm=arm;
         this.pos=pos;
+        this.arm.start();
         addRequirements(arm);
     }
     @Override

@@ -5,21 +5,22 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class WaitSubsystem extends SubsystemBase {
     /**
      * Creates a new ExampleSubsystem.
      */
-    private long last;
+    private ElapsedTime t;
     public WaitSubsystem() {
-        last = System.currentTimeMillis();
+        t = new ElapsedTime();
     }
 
     public void start(){
-        last = System.currentTimeMillis();
+        t.startTime();
     }
-    public long elapesd(){
-        return System.currentTimeMillis()-last;
+    public double elapesd(){
+        return t.milliseconds();
     }
     @Override
     public void periodic() {
