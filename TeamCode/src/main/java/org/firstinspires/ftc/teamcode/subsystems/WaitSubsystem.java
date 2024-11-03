@@ -11,13 +11,13 @@ public class WaitSubsystem extends SubsystemBase {
     /**
      * Creates a new ExampleSubsystem.
      */
-    private ElapsedTime t;
+    private final ElapsedTime t;
     public WaitSubsystem() {
         t = new ElapsedTime();
     }
 
     public void start(){
-        t.startTime();
+        t.reset();
     }
     public double elapesd(){
         return t.milliseconds();
