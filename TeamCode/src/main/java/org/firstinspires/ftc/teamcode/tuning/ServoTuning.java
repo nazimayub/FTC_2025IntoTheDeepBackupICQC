@@ -46,6 +46,18 @@ public class ServoTuning extends OpMode {
         else if (s>1){
             s = 1;
         }
+        if(gamepad1.dpad_right){
+            s = 0;
+        }
+        else if (gamepad1.dpad_left){
+            s = 1;
+        }
+        if(gamepad1.b){
+            s1 = 0;
+        }
+        else if (gamepad1.x){
+            s1 = 1;
+        }
         servo.setPosition(s);
         servo1.setPosition(s1);
         telemetry.addLine("Servo 1 value " + s);

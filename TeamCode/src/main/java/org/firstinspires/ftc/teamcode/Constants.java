@@ -11,17 +11,16 @@ public class Constants {
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
     //Names for motors and servos
-    public static final String arm = "arm", transfer = "transfer", drone = "droneLauncher", rSlide = "rightSlide", lSlide = "leftSlide", fr = "rightFront", fl = "leftFront", br = "rightBack", bl = "leftBack", hand = "hand", intake = "intake", imu = "imu";
-    //Hand Pos
+    public static final String fr = "fr", fl = "fl", br = "br", bl = "bl", lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intakeClaw = "servo2", intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo5", imu = "imu";    //Hand Pos
     public static final double out = 0.9534, in = 0.165;
     //Arm Pos
-    public static final double up = 0.9534, down = 0.165;
     //Drone Pos
     public static final double launch = 1, load = 0;
-    //Outtake Positions
-    public static final double lScore = 0.5, rScore = 0.5, lStow = 0.5, rStow = 0.5;
-    //Claw Position
-    public static final double lDrop = 0.5, rDrop = 0.5, lGrab = 0.5, rGrab = 0.5;
+
+    //Intake Pos
+    public static final double intClawGrab = 0.67 /*grabs sample, servo 0*/, intClawRel = 0.43 /*releases sample, servo 0*/, intClawIn = .227 /*Rotates claw to the robot servo 1*/, intClawOut = .171 /*Rotates claw out servo 1*/, intMove = .65 /*sets intake arm to outtake servo 2*/;
+    //Stow Pos
+    public static final double intStow = .16 /*brings intake arm in, servo 2 */, outStowClaw = .3/*stows outtake servo 3 */, outStow = .13/*brings outtake arm in servo 5 */;
 
     public static final String GROUP_ANDROID = "";
 }
