@@ -32,7 +32,7 @@ public class SlideTuning extends OpMode {
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
-        this.right = h.get(DcMotorEx.class, "motor3");
+        this.right = h.get(DcMotorEx.class, "motor1");
         this.left = h.get(DcMotorEx.class, "motor2");
         this.right.setDirection(DcMotorSimple.Direction.REVERSE);
         this.left.setDirection(DcMotorSimple.Direction.REVERSE);
