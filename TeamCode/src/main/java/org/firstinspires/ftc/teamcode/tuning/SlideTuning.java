@@ -34,8 +34,8 @@ public class SlideTuning extends OpMode {
         h = this.hardwareMap;
         this.right = h.get(DcMotorEx.class, "motor1");
         this.left = h.get(DcMotorEx.class, "motor2");
-        this.right.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.left.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.right.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.left.setDirection(DcMotorSimple.Direction.FORWARD);
         this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
