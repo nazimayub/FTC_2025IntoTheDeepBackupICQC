@@ -36,7 +36,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.slide.setPower(pow);
     }
     public void change(double amount){this.target+=amount;}
-    public int getTick(){return this.slide.getCurrentPosition();}
+    public int getTick(){return -1*this.slide.getCurrentPosition();}
     public void reset(){
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);

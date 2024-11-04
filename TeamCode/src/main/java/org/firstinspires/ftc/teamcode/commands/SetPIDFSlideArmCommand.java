@@ -89,6 +89,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     public void end(boolean inturrupted){
         if(PIDFSingleSlide != null){
             PIDFSingleSlide.set(0, 0);
+            PIDFSingleSlide.change(PIDFSingleSlide.getTick());
         }
 
     }
