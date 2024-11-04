@@ -57,7 +57,7 @@ public class TeleopForIrfan extends CommandOpMode {
         hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
 
         //Bring intake down
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(hSlide, 400),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
@@ -68,7 +68,7 @@ public class TeleopForIrfan extends CommandOpMode {
 
 
         //Grabs sample Stows intake and transfers
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new SlideResetCommand(slide, vertical),
                 new ServoCommand(intakeClaw, 0.668),
                 new WaitCommand(pause, 300),
@@ -80,19 +80,29 @@ public class TeleopForIrfan extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawDist, 0.623),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.14),
+                new ServoCommand(intakeClawRot, 0.05),
                 new WaitCommand(pause, 300),
                 new SlideResetCommand(hSlide, horizontal),
                 new ServoCommand(outtakeClaw, 0.533),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClaw, 0.44),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawDist, 0.344)
         ));
 
 
         //Scores
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 200),
                 new ServoCommand(outtakeClaw, 0.3)
+        ));
+
+        //Intakes
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(intakeClawDist, 0.168),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClaw, 0.668)
+
         ));
     }
     // logs stuffs
