@@ -35,6 +35,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     public SetPIDFSlideArmCommand(PIDFSlideSubsystem PIDFSlide, double change) {
         this.PIDFSlide=PIDFSlide;
         this.change = change;
+        this.PIDFSlide.usePID(true);
         addRequirements(PIDFSlide);
     }
     public SetPIDFSlideArmCommand(PIDFSlideSubsystemAdv PIDFSlideAdv, double change) {

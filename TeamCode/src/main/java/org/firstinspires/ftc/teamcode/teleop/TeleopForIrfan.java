@@ -40,7 +40,7 @@ public class TeleopForIrfan extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        hSlide = new SingleSlideSubsystem(hardwareMap, Constants.hSlide, DcMotorSimple.Direction.FORWARD);
+        hSlide = new SingleSlideSubsystem(hardwareMap, Constants.hSlide, DcMotorSimple.Direction.REVERSE);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.03, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
@@ -49,8 +49,8 @@ public class TeleopForIrfan extends CommandOpMode {
         intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
         outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
-        vertical = new LimitSwitchSubsystem(hardwareMap, "verticalLimitSwitch");
-        horizontal = new LimitSwitchSubsystem(hardwareMap, "horizontalLimitSwitch");
+        vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
+        horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
