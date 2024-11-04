@@ -52,7 +52,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     @Override
     public void execute() {
         if(PIDFSlide!=null){
-            PIDFSlide.set(PIDFSlide.getController().calculate(PIDFSlide.getTick(), change) + PIDFSlide.getF(), 0);
+            PIDFSlide.set(PIDFSlide.getController().calculate(PIDFSlide.getTick(), change) + PIDFSlide.getF(), PIDFSlide.getController().calculate(PIDFSlide.getTick(), change) + PIDFSlide.getF());
         }
         else if(PIDFSlideAdv != null){
             PIDFSlideAdv.set(change);
