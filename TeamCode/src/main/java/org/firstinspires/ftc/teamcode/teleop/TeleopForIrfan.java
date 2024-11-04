@@ -49,8 +49,8 @@ public class TeleopForIrfan extends CommandOpMode {
         intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
         outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
-        vertical = new LimitSwitchSubsystem(hardwareMap, "");
-        horizontal = new LimitSwitchSubsystem(hardwareMap, "");
+        vertical = new LimitSwitchSubsystem(hardwareMap, "verticalLimitSwitch");
+        horizontal = new LimitSwitchSubsystem(hardwareMap, "horizontalLimitSwitch");
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
