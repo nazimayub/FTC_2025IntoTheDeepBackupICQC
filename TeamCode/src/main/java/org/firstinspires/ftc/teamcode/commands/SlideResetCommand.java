@@ -30,7 +30,7 @@ public class SlideResetCommand extends CommandBase {
     public SlideResetCommand(PIDFSingleSlideSubsystem slide, LimitSwitchSubsystem l) {
         this.pslide=slide;
         this.l = l;
-        this.slide.usePID(false);
+        this.pslide.usePID(false);
         addRequirements(slide);
     }
 
