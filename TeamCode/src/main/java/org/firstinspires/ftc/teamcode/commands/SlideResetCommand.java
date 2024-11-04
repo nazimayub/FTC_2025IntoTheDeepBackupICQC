@@ -18,10 +18,17 @@ public class SlideResetCommand extends CommandBase {
 
     private PIDFSlideSubsystem slide;
     private SingleSlideSubsystem sSlide;
+    private PIDFSingleSlideSubsystem pslide;
     private LimitSwitchSubsystem l;
 
     public SlideResetCommand(PIDFSlideSubsystem slide, LimitSwitchSubsystem l) {
         this.slide=slide;
+        this.l = l;
+        this.slide.usePID(false);
+        addRequirements(slide);
+    }
+    public SlideResetCommand(PIDFSingleSlideSubsystem slide, LimitSwitchSubsystem l) {
+        this.pslide=slide;
         this.l = l;
         this.slide.usePID(false);
         addRequirements(slide);
@@ -38,6 +45,10 @@ public class SlideResetCommand extends CommandBase {
             slide.set(-1, -1);
             slide.usePID(false);
         }
+        else if (pslide != null){
+                pslide.set(-1, 0);
+                pslide.usePID(false);
+        }
         else if (sSlide != null){
             sSlide.set(-1);
         }
@@ -52,6 +63,10 @@ public class SlideResetCommand extends CommandBase {
         if (slide != null) {
             slide.set(0, 0);
             slide.reset();
+        }
+        else if (pslide != null) {
+            pslide.set(0, 0);
+            pslide.reset();
         }
         else if (sSlide != null){
             sSlide.set(0);

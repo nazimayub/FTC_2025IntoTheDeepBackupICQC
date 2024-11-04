@@ -17,6 +17,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     private final double p, i, d, f;
     private int pos = 0;
     private double target = 0;
+    private boolean use = true;
     private PIDController controller;
     public PIDFSingleSlideSubsystem(HardwareMap h, String slide, double p, double i, double d, double f) {
         this.p = p;
@@ -31,21 +32,30 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     public void set(double target) {
         this.target = target;
     }
+    public void set(double pow, double x){
+        this.slide.setPower(pow);
+    }
     public void change(double amount){this.target+=amount;}
     public int getTick(){return -1*this.slide.getCurrentPosition();}
     public void reset(){
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public void usePID(boolean yes){
+        use = yes;
+    }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        controller.setPID(p, i, d);
-        pos = slide.getCurrentPosition();
-        double pid = controller.calculate(pos, target);
-        double power = pid + f;
-        slide.setPower(power);
+        if (use){
+            controller.setPID(p, i, d);
+            pos = slide.getCurrentPosition();
+            double pid = controller.calculate(pos, target);
+            double power = pid + f;
+            slide.setPower(power);
+        }
+
         //telemetry.addData("pos", pos);
         //telemetry.addData("target", target);
         //telemetry.update();
