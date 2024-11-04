@@ -38,7 +38,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
         this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
-        controller1 = new PIDController(p1, i1, d1);
+        controller1 = new PIDController(p, i, d);
     }
 
     public void set(double target) {
@@ -60,20 +60,19 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if(use){
             controller.setPID(p, i, d);
             pos = right.getCurrentPosition();
             double pid = controller.calculate(pos, target);
             double power = pid+f;
 
-            controller1.setPID(p1, i1, d1);
+            controller1.setPID(p, i, d);
             pos1 = left.getCurrentPosition();
             double pid1 = controller.calculate(pos1, target1);
-            double power1 = pid1+f1;
+            double power1 = pid1+f;
 
             right.setPower(power);
             left.setPower(power1);
-        }
+
 
 
 
