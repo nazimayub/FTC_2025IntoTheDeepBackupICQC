@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
@@ -52,7 +53,17 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     @Override
     public void execute() {
         if(PIDFSlide!=null){
-            PIDFSlide.set(PIDFSlide.getController().calculate(PIDFSlide.getTick(), change) + PIDFSlide.getF(), PIDFSlide.getController().calculate(PIDFSlide.getTick(), change) + PIDFSlide.getF());
+            PIDController controller = PIDFSlide.getController();
+            controller.setPID(PIDFSlide.getP(), PIDFSlide.getI(), PIDFSlide.getD());
+            int pos = PIDFSlide.getTick();
+            double pid = controller.calculate(pos, change);
+            double power = pid+PIDFSlide.getF();
+
+            PIDController controller1 = PIDFSlide.getController();
+            controller1.setPID(PIDFSlide.getP(), PIDFSlide.getI(), PIDFSlide.getD());
+            double pid1 = controller.calculate(pos, change);
+            double power1 = pid1+PIDFSlide.getF();
+            PIDFSlide.set(power, power1);
         }
         else if(PIDFSlideAdv != null){
             PIDFSlideAdv.set(change);

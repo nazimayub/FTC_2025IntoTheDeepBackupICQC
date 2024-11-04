@@ -55,6 +55,15 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     public PIDController getController(){
         return controller;
     }
+    public double getP(){
+        return p;
+    }
+    public double getI(){
+        return i;
+    }
+    public double getD(){
+        return d;
+    }
     public double getF(){
         return f;
     }

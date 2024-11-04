@@ -41,7 +41,7 @@ public class TeleopForIrfan extends CommandOpMode {
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.04, 0, 0, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
