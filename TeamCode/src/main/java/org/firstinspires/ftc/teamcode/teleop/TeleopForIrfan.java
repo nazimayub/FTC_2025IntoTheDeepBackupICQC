@@ -92,7 +92,7 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Go to high basket
         //Scores
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SetPIDFSlideArmCommand(slide, 1420));
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SetPIDFSlideArmCommand(slide, 3000));
 
         //Scores
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
