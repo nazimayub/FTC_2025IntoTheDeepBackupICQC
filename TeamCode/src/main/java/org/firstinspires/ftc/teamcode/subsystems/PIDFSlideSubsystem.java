@@ -52,6 +52,12 @@ public class PIDFSlideSubsystem extends SubsystemBase {
         this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public PIDController getController(){
+        return controller;
+    }
+    public double getF(){
+        return f;
+    }
     public void usePID(boolean yes){
         use = yes;
     }
