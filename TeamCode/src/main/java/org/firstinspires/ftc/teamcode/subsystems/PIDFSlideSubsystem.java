@@ -61,7 +61,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     public void usePID(boolean yes){
         use = yes;
     }
-    public int getTick(){return -1*this.right.getCurrentPosition();}
+    public int getTick(){return this.right.getCurrentPosition();}
 
     @Override
     public void periodic() {
