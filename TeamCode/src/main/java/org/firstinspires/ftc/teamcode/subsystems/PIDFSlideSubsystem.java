@@ -17,6 +17,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     private final double p1, i1, d1, f1;
     private int pos = 0, pos1 = 0;
     private double target = 0, target1=0;
+    boolean use = true;
     private PIDController controller;
     private PIDController controller1;
     public PIDFSlideSubsystem(HardwareMap h, String right, String left, Direction rightD, Direction leftD, double p, double i, double d, double f, double p1, double i1, double d1, double f1) {
@@ -43,24 +44,38 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     public void set(double target) {
         this.target = target;
     }
-    public void change(double amount){this.target+=amount;}
+    public void set(double rPow, double lPow){right.setPower(rPow); left.setPower(lPow);}
+    public void change(double amount){this.right.setPower(Math.max(f, amount)); this.left.setPower(Math.max(f1, amount));}
+    public void reset(){
+        this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void usePID(boolean yes){
+        use = yes;
+    }
     public int getTick(){return -1*this.right.getCurrentPosition();}
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        controller.setPID(p, i, d);
-        pos = -1*right.getCurrentPosition();
-        double pid = controller.calculate(pos, target);
-        double power = pid+f;
+        if(use){
+            controller.setPID(p, i, d);
+            pos = right.getCurrentPosition();
+            double pid = controller.calculate(pos, target);
+            double power = pid+f;
 
-        controller1.setPID(p1, i1, d1);
-        pos1 = -1*left.getCurrentPosition();
-        double pid1 = controller.calculate(pos1, target1);
-        double power1 = pid1+f1;
+            controller1.setPID(p1, i1, d1);
+            pos1 = left.getCurrentPosition();
+            double pid1 = controller.calculate(pos1, target1);
+            double power1 = pid1+f1;
 
-        right.setPower(power);
-        left.setPower(power1);
+            right.setPower(power);
+            left.setPower(power1);
+        }
+
+
 
         //telemetry.addData("pos", pos);
         //telemetry.addData("target", target);

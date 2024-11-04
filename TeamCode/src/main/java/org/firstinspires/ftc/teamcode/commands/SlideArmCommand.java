@@ -18,6 +18,7 @@ public class SlideArmCommand extends CommandBase {
 
     private SlideSubsystem slide;
     private ArmSubsystem arm;
+    private SingleSlideSubsystem sSlide;
 
     private final GamepadEx gamepad;
 
@@ -32,10 +33,18 @@ public class SlideArmCommand extends CommandBase {
         addRequirements(arm);
     }
 
+    public SlideArmCommand(SingleSlideSubsystem sSlide, GamepadEx gamepad) {
+        this.sSlide = sSlide;
+        this.gamepad = gamepad;
+        addRequirements(sSlide);
+    }
     @Override
     public void execute() {
         if (slide != null) {
             slide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
+        }
+        else if (sSlide != null){
+            sSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
         else {
             arm.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
