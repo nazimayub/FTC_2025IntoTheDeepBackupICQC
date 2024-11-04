@@ -54,24 +54,25 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        slide.setDefaultCommand(new PIDFSlideArmCommand(slide, base.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-base.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
         hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
+                new SetSlideArmCommand(hSlide, 1),
+                new WaitCommand(pause, 350),
+                new SetSlideArmCommand(hSlide, 0),
                 new ServoCommand(intakeClawDist, 0.233),
-                new WaitCommand(pause, 5000),
-                new ServoCommand(intakeClawRot, 0.865)
-                //new WaitCommand(pause, 1000),
-                //new ServoCommand(intakeClawRot, 1)
-
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawRot, 0.865),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClaw, 0.44)
         ));
 
 
         //Grabs sample Stows intake and transfers
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new SlideResetCommand(slide, vertical),
-                new ServoCommand(intakeClaw, 0.64),
+                new ServoCommand(intakeClaw, 0.668),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawDist, 0.682),
                 new WaitCommand(pause, 300),
