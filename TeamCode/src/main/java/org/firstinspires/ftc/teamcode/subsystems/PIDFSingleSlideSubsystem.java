@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -25,6 +26,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.d = d;
         this.f = f;
         this.slide = h.get(DcMotorEx.class, slide);
+        this.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
