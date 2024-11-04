@@ -19,8 +19,8 @@ import org.firstinspires.ftc.teamcode.*;
 public class SlideTuning extends OpMode {
     private PIDController controller, controller1;
 
-    public static double p = 0.0, i=0, d=0.0;
-    public static double f = 0;
+    public static double p = 0.4, i=0, d=0.001;
+    public static double f = 0.01;
 
     public static double target = 0;
     private int pos, pos1;
@@ -33,13 +33,13 @@ public class SlideTuning extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
         this.right = h.get(DcMotorEx.class, "motor3");
-        //this.left = h.get(DcMotorEx.class, "motor2");
+        this.left = h.get(DcMotorEx.class, "motor2");
         this.right.setDirection(DcMotorSimple.Direction.REVERSE);
-        //this.left.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.left.setDirection(DcMotorSimple.Direction.REVERSE);
         this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        //this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        //this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
         controller1 = new PIDController(p, i, d);
     }
@@ -51,12 +51,12 @@ public class SlideTuning extends OpMode {
         double power = pid+f;
 
         controller1.setPID(p, i, d);
-       // pos1 = left.getCurrentPosition();
+        pos1 = left.getCurrentPosition();
         double pid1 = controller.calculate(pos, target);
         double power1 = pid1+f;
 
         right.setPower(power);
-        //left.setPower(power1);
+        left.setPower(power1);
 
         telemetry.addData("pos", pos);
         telemetry.addData("target", target);
