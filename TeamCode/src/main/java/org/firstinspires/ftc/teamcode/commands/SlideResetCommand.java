@@ -46,7 +46,7 @@ public class SlideResetCommand extends CommandBase {
             slide.usePID(false);
         }
         else if (pslide != null){
-                pslide.set(-1, 0);
+                pslide.set(1, 0);
                 pslide.usePID(false);
         }
         else if (sSlide != null){
