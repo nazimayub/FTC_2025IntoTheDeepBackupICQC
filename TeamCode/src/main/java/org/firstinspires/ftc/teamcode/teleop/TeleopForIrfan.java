@@ -113,7 +113,7 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Drops
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, 0.344)
+                new ServoCommand(outtakeClaw, 0.344)
 
         ));
     }
