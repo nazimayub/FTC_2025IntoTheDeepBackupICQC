@@ -94,9 +94,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             return PIDFSingleSlideAdv.getTick()<change+3&&PIDFSingleSlideAdv.getTick()>change-3;
         }
         else if(PIDFSingleSlide != null){
-            PIDFSingleSlide.usePID(false);
             return PIDFSingleSlide.getTick()<change+3&&PIDFSingleSlide.getTick()>change-3;
-
         }
         else{
             return arm.getTick()<change+3&&arm.getTick()>change-3;

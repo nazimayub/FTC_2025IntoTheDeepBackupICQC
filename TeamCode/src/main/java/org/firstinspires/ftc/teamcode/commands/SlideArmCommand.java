@@ -52,7 +52,7 @@ public class SlideArmCommand extends CommandBase {
         else if (sSlide != null){
             sSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
-        else if (pSlide != null && !pSlide.PIDUse()){
+        else if (pSlide != null){
             pSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), 0);
         }
         else {
