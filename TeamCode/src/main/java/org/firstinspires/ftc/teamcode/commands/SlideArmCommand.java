@@ -43,7 +43,6 @@ public class SlideArmCommand extends CommandBase {
         this.pSlide = pSlide;
         this.gamepad = gamepad;
         addRequirements(pSlide);
-        this.pSlide.usePID(false);
     }
     @Override
     public void execute() {
@@ -54,27 +53,12 @@ public class SlideArmCommand extends CommandBase {
             sSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
         else if (pSlide != null){
-            if(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) != 0){
-                pSlide.usePID(false);
-                pSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
-            }
-            else {
-                pSlide.set(pSlide.getTick());
-                pSlide.usePID(true);
-
-            }
-
+            pSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
         else {
             arm.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
 
-    }
-    @Override
-    public void end(boolean inturrupted){
-        if(inturrupted && pSlide != null){
-            pSlide.usePID(true);
-        }
     }
 
 }
