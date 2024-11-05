@@ -53,6 +53,8 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     @Override
     public void execute() {
         if(PIDFSlide!=null){
+            PIDFSlide.set(change);
+            /*
             PIDController controller = PIDFSlide.getController();
             controller.setPID(PIDFSlide.getP(), PIDFSlide.getI(), PIDFSlide.getD());
             int pos = PIDFSlide.getTick();
@@ -64,6 +66,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             double pid1 = controller.calculate(pos, change);
             double power1 = pid1+PIDFSlide.getF();
             PIDFSlide.set(power, power1);
+            */
         }
         else if(PIDFSlideAdv != null){
             PIDFSlideAdv.set(change);
@@ -80,7 +83,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     }
     @Override
     public boolean isFinished(){
-        /*
+        
         if(PIDFSlide!=null){
             return PIDFSlide.getTick()<change+5&&PIDFSlide.getTick()>change-5;
         }
@@ -97,8 +100,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             return arm.getTick()<change+5&&arm.getTick()>change-5;
         }
 
-         */
-        return false;
+
 
     }
     @Override
