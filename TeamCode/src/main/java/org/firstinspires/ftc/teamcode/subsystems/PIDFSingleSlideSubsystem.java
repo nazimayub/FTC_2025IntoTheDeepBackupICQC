@@ -52,6 +52,15 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     public double getF(){
         return f;
     }
+    public double getP(){
+        return p;
+    }
+    public double getI(){
+        return i;
+    }
+    public double getD(){
+        return d;
+    }
 
     @Override
     public void periodic() {
