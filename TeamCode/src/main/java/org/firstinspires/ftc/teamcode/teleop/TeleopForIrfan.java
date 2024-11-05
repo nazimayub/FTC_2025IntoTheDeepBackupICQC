@@ -39,7 +39,7 @@ public class TeleopForIrfan extends CommandOpMode {
         base = new GamepadEx(gamepad1);
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
-        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
+        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,false,true,false));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.04, 0, 0, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
@@ -59,6 +59,7 @@ public class TeleopForIrfan extends CommandOpMode {
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(hSlide, 400),
+                new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, 0.865),
@@ -96,8 +97,7 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Scores
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 200),
-                new ServoCommand(outtakeClaw, 0.3)
+                new SetPIDFSlideArmCommand(slide, 1450)
         ));
 
         //Intakes

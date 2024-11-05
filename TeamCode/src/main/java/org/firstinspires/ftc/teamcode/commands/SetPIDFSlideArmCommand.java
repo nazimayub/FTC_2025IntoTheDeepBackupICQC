@@ -80,6 +80,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     }
     @Override
     public boolean isFinished(){
+        /*
         if(PIDFSlide!=null){
             return PIDFSlide.getTick()<change+5&&PIDFSlide.getTick()>change-5;
         }
@@ -95,6 +96,10 @@ public class SetPIDFSlideArmCommand extends CommandBase {
         else{
             return arm.getTick()<change+5&&arm.getTick()>change-5;
         }
+
+         */
+        return false;
+
     }
     @Override
     public void end(boolean inturrupted){

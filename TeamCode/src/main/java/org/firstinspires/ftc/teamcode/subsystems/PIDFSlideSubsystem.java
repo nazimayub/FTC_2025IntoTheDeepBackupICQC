@@ -16,7 +16,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     private final double p, i, d, f;
     private final double p1, i1, d1, f1;
     private int pos = 0, pos1 = 0;
-    private double target = 0, target1=0;
+    private double target = 0;
     boolean use = true;
     private PIDController controller;
     private PIDController controller1;
@@ -75,6 +75,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        /*
             controller.setPID(p, i, d);
             pos = right.getCurrentPosition();
             double pid = controller.calculate(pos, target);
@@ -82,13 +83,13 @@ public class PIDFSlideSubsystem extends SubsystemBase {
 
             controller1.setPID(p, i, d);
             pos1 = left.getCurrentPosition();
-            double pid1 = controller.calculate(pos1, target1);
+            double pid1 = controller.calculate(pos1, target);
             double power1 = pid1+f;
 
             right.setPower(power);
             left.setPower(power1);
 
-
+*/
 
 
         //telemetry.addData("pos", pos);
