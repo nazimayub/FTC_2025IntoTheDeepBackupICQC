@@ -18,7 +18,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     private final double p, i, d, f;
     private int pos = 0;
     private double target = 0;
-    private boolean use = false;
+    private boolean use = true;
     private PIDController controller;
     public PIDFSingleSlideSubsystem(HardwareMap h, String slide, double p, double i, double d, double f) {
         this.p = p;
