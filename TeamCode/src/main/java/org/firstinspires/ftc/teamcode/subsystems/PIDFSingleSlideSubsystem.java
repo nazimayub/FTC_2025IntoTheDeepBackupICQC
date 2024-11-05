@@ -27,6 +27,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.f = f;
         this.slide = h.get(DcMotorEx.class, slide);
         this.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.slide.setDirection(Direction.REVERSE);
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
@@ -61,7 +62,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         }
         else if (use){
             controller.setPID(p, i, d);
-            pos = slide.getCurrentPosition();
+            pos = -1*slide.getCurrentPosition();
             double pid = controller.calculate(pos, target);
             double power = pid + f;
             slide.setPower(power);
