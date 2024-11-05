@@ -85,19 +85,19 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     public boolean isFinished(){
 
         if(PIDFSlide!=null){
-            return PIDFSlide.getTick()<change+5&&PIDFSlide.getTick()>change-5;
+            return PIDFSlide.getTick()<change+3&&PIDFSlide.getTick()>change-3;
         }
         else if(PIDFSlideAdv != null){
-            return PIDFSlideAdv.getTick()<change+5&&PIDFSlideAdv.getTick()>change-5;
+            return PIDFSlideAdv.getTick()<change+3&&PIDFSlideAdv.getTick()>change-3;
         }
         else if(PIDFSingleSlideAdv != null){
-            return PIDFSingleSlideAdv.getTick()<change+5&&PIDFSingleSlideAdv.getTick()>change-5;
+            return PIDFSingleSlideAdv.getTick()<change+3&&PIDFSingleSlideAdv.getTick()>change-3;
         }
         else if(PIDFSingleSlide != null){
-            return PIDFSingleSlide.getTick()<change+5&&PIDFSingleSlide.getTick()>change-5;
+            return PIDFSingleSlide.getTick()<change+3&&PIDFSingleSlide.getTick()>change-3;
         }
         else{
-            return arm.getTick()<change+5&&arm.getTick()>change-5;
+            return arm.getTick()<change+3&&arm.getTick()>change-3;
         }
 
 
