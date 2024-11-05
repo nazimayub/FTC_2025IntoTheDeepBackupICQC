@@ -29,7 +29,6 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        this.slide.setPower(0);
         controller = new PIDController(p, i, d);
     }
     public void set(double target) {
