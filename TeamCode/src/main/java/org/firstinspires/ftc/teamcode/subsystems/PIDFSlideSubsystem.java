@@ -75,6 +75,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        /*
             if(Math.abs(target-pos) < 3){
                 right.setPower(f);
                 left.setPower(f);
@@ -93,7 +94,7 @@ public class PIDFSlideSubsystem extends SubsystemBase {
                 right.setPower(power);
                 left.setPower(power1);
             }
-
+*/
 
 
 

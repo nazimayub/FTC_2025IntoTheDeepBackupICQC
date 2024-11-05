@@ -98,7 +98,7 @@ public class TeleopForIrfan extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 1450),
                 new ServoCommand(outtakeClaw, 1)
-                
+
         ));
 
         //Intakes
