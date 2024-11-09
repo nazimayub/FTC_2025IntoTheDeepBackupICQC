@@ -19,15 +19,12 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     private int pos = 0;
     private double target = 0;
     private boolean use = true;
-    private boolean retract = true;
     private PIDController controller;
-    private LimitSwitchSubsystem l;
-    public PIDFSingleSlideSubsystem(HardwareMap h, String slide, double p, double i, double d, double f, LimitSwitchSubsystem l) {
+    public PIDFSingleSlideSubsystem(HardwareMap h, String slide, double p, double i, double d, double f) {
         this.p = p;
         this.i = i;
         this.d = d;
         this.f = f;
-        this.l = l;
         this.slide = h.get(DcMotorEx.class, slide);
         this.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -41,13 +38,10 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.slide.setPower(pow);
     }
     public void change(double amount){this.target+=amount;}
-    public int getTick(){return this.slide.getCurrentPosition();}
+    public int getTick(){return -1*this.slide.getCurrentPosition();}
     public void reset(){
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-    }
-    public void retract(boolean yes){
-        retract = yes;
     }
     public void usePID(boolean yes){
         use = yes;
@@ -62,20 +56,16 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-                if(Math.abs(pos-target)<3){
-                    slide.setPower(f);
-                }
-                else{
-                    controller.setPID(p, i, d);
-                    pos = slide.getCurrentPosition();
-                    double pid = controller.calculate(pos, target);
-                    double power = pid + f;
-                    slide.setPower(power);
-                }
-
-
-
-
+        if(Math.abs(target-pos)==0){
+            slide.setPower(0);
+        }
+        else if (use){
+            controller.setPID(p, i, d);
+            pos = slide.getCurrentPosition();
+            double pid = controller.calculate(pos, target);
+            double power = pid + f;
+            slide.setPower(power);
+        }
 
         //telemetry.addData("pos", pos);
         //telemetry.addData("target", target);

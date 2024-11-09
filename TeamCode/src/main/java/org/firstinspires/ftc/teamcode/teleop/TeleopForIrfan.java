@@ -41,6 +41,7 @@ public class TeleopForIrfan extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.1, 0, 0.002, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
@@ -51,15 +52,14 @@ public class TeleopForIrfan extends CommandOpMode {
         outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.12, 0.01, 0, 0, horizontal);
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        //hSlide.setDefaultCommand(new SetPIDFSlideArmCommand(hSlide, 0));
+       // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(hSlide, -400),
+                new SetPIDFSlideArmCommand(hSlide, 400),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
@@ -91,16 +91,16 @@ public class TeleopForIrfan extends CommandOpMode {
                 new ServoCommand(outtakeClawDist, 0.344)
         ));
 
-        //Place Specimen
+        //Place Specimin
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, 0.8),
                 new SetPIDFSlideArmCommand(slide, 900)
         ));
 
         //Place Specimin
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 500),
-                new ServoCommand(outtakeClawDist, 0.1)
+                new ServoCommand(outtakeClawDist, 0.1),
+                new ServoCommand(outtakeClaw, 0.343)
         ));
 
 

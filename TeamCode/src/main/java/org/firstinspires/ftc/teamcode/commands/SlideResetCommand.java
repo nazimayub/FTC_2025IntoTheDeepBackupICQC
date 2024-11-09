@@ -31,8 +31,6 @@ public class SlideResetCommand extends CommandBase {
         this.pslide=slide;
         this.l = l;
         this.pslide.usePID(false);
-        //this.pslide.retract(true);
-        this.pslide.set(0);
         addRequirements(slide);
     }
 
@@ -50,7 +48,6 @@ public class SlideResetCommand extends CommandBase {
         else if (pslide != null){
                 pslide.set(1, 0);
                 pslide.usePID(false);
-
         }
         else if (sSlide != null){
             sSlide.set(-1);
@@ -66,16 +63,13 @@ public class SlideResetCommand extends CommandBase {
         if (slide != null) {
             slide.set(0, 0);
             slide.reset();
-            slide.set(0);
         }
         else if (pslide != null) {
             pslide.set(0, 0);
             pslide.reset();
-            pslide.set(0.05, 0);
         }
         else if (sSlide != null){
             sSlide.set(0);
-
         }
     }
 
