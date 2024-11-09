@@ -71,7 +71,6 @@ public class SlideResetCommand extends CommandBase {
         else if (pslide != null) {
             pslide.set(0, 0);
             pslide.reset();
-            pslide.set(0.05, 0);
         }
         else if (sSlide != null){
             sSlide.set(0);
