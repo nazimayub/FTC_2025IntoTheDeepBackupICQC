@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.network.SendOnceRunnable;
 import org.firstinspires.ftc.teamcode.*;
@@ -90,6 +91,17 @@ public class TeleopForIrfan extends CommandOpMode {
                 new ServoCommand(outtakeClawDist, 0.344)
         ));
 
+        //Place Specimin
+        new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
+                new SetPIDFSlideArmCommand(slide, 900)
+        ));
+
+        //Place Specimin
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
+                new SetPIDFSlideArmCommand(slide, 500),
+                new ServoCommand(outtakeClawDist, 0.1),
+                new ServoCommand(outtakeClaw, 0.343)
+        ));
 
 
 
@@ -118,8 +130,15 @@ public class TeleopForIrfan extends CommandOpMode {
         ));
         //Moves outtake claw to specimen position
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, 0.128)
+                new ServoCommand(outtakeClawDist, .1),
+                new ServoCommand(outtakeClaw, 0.343)
+        ));
 
+        //Intakes Specimin
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClaw, .533),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClawDist, .128)
         ));
 
     }
