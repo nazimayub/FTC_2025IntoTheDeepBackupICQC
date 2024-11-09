@@ -56,16 +56,13 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if(Math.abs(target-pos)==0){
-            slide.setPower(0);
-        }
-        else if (use){
+
             controller.setPID(p, i, d);
             pos = slide.getCurrentPosition();
             double pid = controller.calculate(pos, target);
             double power = pid + f;
             slide.setPower(power);
-        }
+
 
         //telemetry.addData("pos", pos);
         //telemetry.addData("target", target);

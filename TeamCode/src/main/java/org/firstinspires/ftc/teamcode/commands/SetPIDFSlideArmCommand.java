@@ -75,7 +75,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             PIDFSingleSlideAdv.set(change);
         }
         else if(PIDFSingleSlide != null){
-            PIDFSingleSlide.set(-1*PIDFSingleSlide.getController().calculate(PIDFSingleSlide.getTick(), change) + PIDFSingleSlide.getF(), 0);
+            PIDFSingleSlide.set(-1*change);
         }
         else{
             arm.set(change);
@@ -105,11 +105,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     }
     @Override
     public void end(boolean inturrupted){
-        if(PIDFSingleSlide != null){
-            PIDFSingleSlide.set(0, 0);
-            PIDFSingleSlide.change(PIDFSingleSlide.getTick());
-        }
-        else if (PIDFSlide != null){
+        if (PIDFSlide != null){
             PIDFSlide.set(PIDFSlide.getF(), PIDFSlide.getF());
         }
 

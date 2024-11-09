@@ -41,7 +41,7 @@ public class TeleopForIrfan extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.1, 0, 0.002, 0);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
@@ -81,7 +81,7 @@ public class TeleopForIrfan extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, 0.05),
                 new WaitCommand(pause, 300),
-                new SlideResetCommand(hSlide, horizontal),
+                new SetPIDFSlideArmCommand(hSlide, 0),
                 new ServoCommand(outtakeClawDist, 0.682),
                 new WaitCommand(pause, 500),
                 new ServoCommand(outtakeClaw, 0.533),
