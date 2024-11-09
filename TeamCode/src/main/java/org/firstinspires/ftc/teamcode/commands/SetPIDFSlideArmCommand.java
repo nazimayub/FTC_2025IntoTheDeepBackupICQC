@@ -25,6 +25,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
 
     public SetPIDFSlideArmCommand(PIDFSingleSlideSubsystem PIDFSingleSlide, double change) {
         this.PIDFSingleSlide=PIDFSingleSlide;
+        //this.PIDFSingleSlide.retract(false);
         this.change = change;
         addRequirements(PIDFSingleSlide);
     }
@@ -37,6 +38,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
         this.PIDFSlide=PIDFSlide;
         this.change = change;
         this.PIDFSlide.usePID(true);
+
         addRequirements(PIDFSlide);
     }
     public SetPIDFSlideArmCommand(PIDFSlideSubsystemAdv PIDFSlideAdv, double change) {
@@ -54,7 +56,8 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     public void execute() {
         if(PIDFSlide!=null){
             //PIDFSlide.set(change);
-
+            PIDFSlide.set(change);
+/*
             PIDController controller = PIDFSlide.getController();
             controller.setPID(PIDFSlide.getP(), PIDFSlide.getI(), PIDFSlide.getD());
             int pos = PIDFSlide.getTick();
@@ -66,7 +69,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             double pid1 = controller.calculate(pos, change);
             double power1 = pid1+PIDFSlide.getF();
             PIDFSlide.set(power, power1);
-
+*/
         }
         else if(PIDFSlideAdv != null){
             PIDFSlideAdv.set(change);
@@ -75,7 +78,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             PIDFSingleSlideAdv.set(change);
         }
         else if(PIDFSingleSlide != null){
-            PIDFSingleSlide.set(-1*PIDFSingleSlide.getController().calculate(PIDFSingleSlide.getTick(), change) + PIDFSingleSlide.getF(), 0);
+            PIDFSingleSlide.set(change);
         }
         else{
             arm.set(change);
@@ -94,7 +97,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
             return PIDFSingleSlideAdv.getTick()<change+3&&PIDFSingleSlideAdv.getTick()>change-3;
         }
         else if(PIDFSingleSlide != null){
-            return PIDFSingleSlide.getTick()<change+3&&PIDFSingleSlide.getTick()>change-3;
+            return Math.abs(PIDFSingleSlide.getTick()-change)<3;
         }
         else{
             return arm.getTick()<change+3&&arm.getTick()>change-3;
@@ -103,16 +106,6 @@ public class SetPIDFSlideArmCommand extends CommandBase {
 
 
     }
-    @Override
-    public void end(boolean inturrupted){
-        if(PIDFSingleSlide != null){
-            PIDFSingleSlide.set(0, 0);
-            PIDFSingleSlide.change(PIDFSingleSlide.getTick());
-        }
-        else if (PIDFSlide != null){
-            PIDFSlide.set(PIDFSlide.getF(), PIDFSlide.getF());
-        }
 
-    }
 
 }
