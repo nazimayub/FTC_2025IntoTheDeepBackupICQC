@@ -56,10 +56,10 @@ public class Drive extends SubsystemBase {
      */
     public void robotCentricDrive(double x, double y, double r){
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(r), 1);
-        fl.setPower((y+x+r)/denominator);
-        bl.setPower((y-x+r)/denominator);
-        fr.setPower((y-x-r)/denominator);
-        br.setPower((y+x-r)/denominator);
+        fl.setPower((y-x-r)/denominator);
+        bl.setPower((y+x-r)/denominator);
+        fr.setPower((y+x+r)/denominator);
+        br.setPower((y-x+r)/denominator);
     }
     public double getFL(){
         return this.fl.getVelocity();
