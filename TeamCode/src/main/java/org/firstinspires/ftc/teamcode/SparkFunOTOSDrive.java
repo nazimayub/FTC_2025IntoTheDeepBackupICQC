@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 
-
 import static com.acmerobotics.roadrunner.ftc.OTOSKt.OTOSPoseToRRPose;
 import static com.acmerobotics.roadrunner.ftc.OTOSKt.RRPoseToOTOSPose;
 
@@ -13,6 +12,7 @@ import com.acmerobotics.roadrunner.ftc.FlightRecorder;
 import com.acmerobotics.roadrunner.ftc.SparkFunOTOSCorrected;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.messages.PoseMessage;
@@ -58,10 +58,10 @@ public class SparkFunOTOSDrive extends MecanumDrive {
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
         public double linearScalar = 1.0;
-        public double angularScalar = 1.0;
+        public double angularScalar = 0.9954;
     }
 
-    public static SparkFunOTOSDrive.Params PARAMS = new SparkFunOTOSDrive.Params();
+    public static Params PARAMS = new Params();
     public SparkFunOTOSCorrected otos;
     private Pose2d lastOtosPose = pose;
 

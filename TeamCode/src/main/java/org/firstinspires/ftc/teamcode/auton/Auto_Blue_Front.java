@@ -1,64 +1,46 @@
-/*
-package org.firstinspires.ftc.teamcode.auton;
-
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.robotcore.eventloop.opmode.*;
-import com.qualcomm.robotcore.hardware.*;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.*;
-import org.firstinspires.ftc.teamcode.utils.MotorConfig;
-import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
-
-@Autonomous
-public class Auto_Blue_Front extends LinearOpMode {
-    public static class Params {
-        public double originx = 36;
-        public double originy = 12;
-        public double initialHeading = 180;
-    }
-
-    public static Drive drive;
-    public static PIDFArmSubsystem arm;
-    private static PIDFSlideSubsystem slide;
-    public static HandSubsystem hand;
-    public static ServoIntakeSubsystem intake;
-    public static HardwareMap hMap;
-    public static Params PARAMS = new Params();
-
-    @Override
-    public void runOpMode() {
-        MecanumDrive mecDrive = new MecanumDrive(hardwareMap, new Pose2d(PARAMS.originx, PARAMS.originy, Math.toRadians(PARAMS.initialHeading)));
-        intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
-        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
-        hand = new HandSubsystem(hardwareMap, Constants.hand);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD, 0.03, 0, 0.0003, 0.2, 0.03, 0, 0.0003, 0.2);
-
-        waitForStart();
-
-        Actions.runBlocking(mecDrive
-                .actionBuilder(mecDrive.pose)
-                .build());
-
-        slide.set(1);
-        arm.set(1);
-
-        while (opModeIsActive() && slide.getTick() != 1 && arm.getTick() != 1) {
-            telemetry.addData("Slide Position", slide.getTick());
-            telemetry.addData("Arm Position", arm.getTick());
-            telemetry.update();
-        }
-
-        releaseSpecimen();
-
-        Actions.runBlocking(mecDrive
-                .actionBuilder(mecDrive.pose)
-                .build());
-    }
-
-    private void releaseSpecimen() {
-    }
-}
-*/
+//package org.firstinspires.ftc.teamcode.auton;
+//
+//import com.acmerobotics.roadrunner.Pose2d;
+//import com.acmerobotics.roadrunner.ftc.Actions;
+//import com.qualcomm.robotcore.eventloop.opmode.*;
+//import com.qualcomm.robotcore.hardware.*;
+//import org.firstinspires.ftc.teamcode.Constants;
+//import org.firstinspires.ftc.teamcode.MecanumDrive;
+//import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
+//import org.firstinspires.ftc.teamcode.subsystems.*;
+//import org.firstinspires.ftc.teamcode.utils.MotorConfig;
+//import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
+//import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
+//
+//@Autonomous
+//public class Auto_Blue_Front extends LinearOpMode {
+//    public static SimpleLogger log;
+//    public static ServoIntakeSubsystem intake;
+//    public static HandSubsystem hand;
+//    public static LimitSwitchSubsystem vertical, horizontal;
+//    public static PIDFSlideSubsystem slide;
+//    public static TelemetrySubsystem telemetrySubsystem;
+//    public static PIDFSingleSlideSubsystem hSlide;
+//    public static ServoSubsystem intakeClaw;
+//    public static ServoSubsystem outtakeClaw;
+//    public static ServoSubsystem intakeClawDist;
+//    public static ServoSubsystem intakeClawRot;
+//    public static ServoSubsystem outtakeClawDist;
+//    public static WaitSubsystem pause;
+//    public static ServoSubsystem blocker;
+//    public double block = 0.03, unblock = 0.12;
+//
+//    public static class Params {
+//        public double originx = 36;
+//        public double originy = 12;
+//        public double initialHeading = 180;
+//    }
+//
+//    public static HardwareMap hMap;
+//    public static Params PARAMS = new Params();
+//
+//    @Override
+//    public void runOpMode() {
+//        SparkFunOTOSDrive sparkDrive = new SparkFunOTOSDrive(hardwareMap, new Pose2d(PARAMS.originx, PARAMS.originy, Math.toRadians(PARAMS.initialHeading)));
+//
+//}
