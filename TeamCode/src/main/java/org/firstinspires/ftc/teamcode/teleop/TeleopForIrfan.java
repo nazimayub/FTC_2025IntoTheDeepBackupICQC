@@ -35,14 +35,17 @@ public class TeleopForIrfan extends CommandOpMode {
     public static ServoSubsystem intakeClawRot;
     public static ServoSubsystem outtakeClawDist;
     public static WaitSubsystem pause;
+    public static ServoSubsystem blocker;
+    public double block = 0.03, unblock = 0.12;
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
+
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.04, 0, 0.001, 0.01, 0.04, 0, 0.001, 0.01);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.06, 0, 0.001, 0.01, 0.06, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
@@ -52,6 +55,7 @@ public class TeleopForIrfan extends CommandOpMode {
         outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
+        blocker = new ServoSubsystem(hardwareMap, "servo6");
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
@@ -59,7 +63,9 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(hSlide, 400),
+                new ServoCommand(blocker, unblock),
+                new WaitCommand(pause, 300),
+                new SetPIDFSlideArmCommand(hSlide, 450),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
@@ -82,6 +88,7 @@ public class TeleopForIrfan extends CommandOpMode {
                 new ServoCommand(intakeClawRot, 0.05),
                 new WaitCommand(pause, 300),
                 new SetPIDFSlideArmCommand(hSlide, 0),
+                new ServoCommand(blocker, block),
                 new ServoCommand(outtakeClawDist, 0.682),
                 new WaitCommand(pause, 500),
                 new ServoCommand(outtakeClaw, 0.533),
@@ -93,12 +100,12 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Place Specimin
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 900)
+                new SetPIDFSlideArmCommand(slide, 800)
         ));
 
         //Place Specimin
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 500),
+                new SetPIDFSlideArmCommand(slide, 300),
                 new ServoCommand(outtakeClawDist, 0.1),
                 new ServoCommand(outtakeClaw, 0.343)
         ));
@@ -112,7 +119,8 @@ public class TeleopForIrfan extends CommandOpMode {
 
         //Slides up
         new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 1450)
+                new SetPIDFSlideArmCommand(slide, 1950),
+                new ServoCommand(outtakeClawDist, 0.1)
         ));
 
         //Intakes
@@ -130,7 +138,7 @@ public class TeleopForIrfan extends CommandOpMode {
         ));
         //Moves outtake claw to specimen position
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, .1),
+                new ServoCommand(outtakeClawDist, .08),
                 new ServoCommand(outtakeClaw, 0.343)
         ));
 
