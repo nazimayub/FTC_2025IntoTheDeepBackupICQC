@@ -89,12 +89,12 @@ public class Solo extends CommandOpMode {
                 new ServoCommand(outtakeClawDist, 0.344)
         ));
 
-        //Place Specimin
+        //Place Specimen
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 800)
         ));
 
-        //Place Specimin
+        //Place Specimen
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 300),
                 new ServoCommand(outtakeClawDist, 0.1),
@@ -132,7 +132,7 @@ public class Solo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, 0.343)
         ));
 
-        //Intakes Specimin
+        //Intakes Specimen
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, .533),
                 new WaitCommand(pause, 300),

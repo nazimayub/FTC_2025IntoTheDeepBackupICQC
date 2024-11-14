@@ -22,21 +22,17 @@ public class Duo extends CommandOpMode {
     GamepadEx base;
     GamepadEx op;
     SimpleLogger log;
-    public static ServoIntakeSubsystem intake;
+
     public static Drive drive;
-    public static HandSubsystem hand;
+    public static ServoSubsystem intakeClaw, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
+    public static ServoIntakeSubsystem intake;
     public static LimitSwitchSubsystem vertical, horizontal;
     public static PIDFSlideSubsystem slide;
-    public static TelemetrySubsystem telemetrySubsystem;
     public static PIDFSingleSlideSubsystem hSlide;
-    public static ServoSubsystem intakeClaw;
-    public static ServoSubsystem outtakeClaw;
-    public static ServoSubsystem intakeClawDist;
-    public static ServoSubsystem intakeClawRot;
-    public static ServoSubsystem outtakeClawDist;
+    public static TelemetrySubsystem telemetrySubsystem;
     public static WaitSubsystem pause;
-    public static ServoSubsystem blocker;
     public double block = 0.03, unblock = 0.12;
+
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
