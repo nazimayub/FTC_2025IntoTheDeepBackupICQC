@@ -1,65 +1,66 @@
-/*
 package org.firstinspires.ftc.teamcode.auton;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Time;
+import com.acmerobotics.roadrunner.Twist2dDual;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import com.qualcomm.robotcore.hardware.*;
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Localizer;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
+import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
 
 @Autonomous
-public class Auto_Red_Back extends LinearOpMode {
-    public static class Params {
-        public double originx = 12;
-        public double originy = 62;
-        public double initialHeading = 0;
-    }
-
+public class Auto_Red_Back extends CommandOpMode {
+    public static MecanumDrive mecDrive;
     public static Drive drive;
-    public static PIDFArmSubsystem arm;
-    private static PIDFSlideSubsystem slide;
-    public static HandSubsystem hand;
+    public static OdometrySubsystem otos;
+    public static SimpleLogger log;
+
+    public static ServoSubsystem intakeClaw, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
     public static ServoIntakeSubsystem intake;
-    public static HardwareMap hMap;
-    public static Params PARAMS = new Params();
+    public static LimitSwitchSubsystem vertical, horizontal;
+    public static PIDFSlideSubsystem slide;
+    public static PIDFSingleSlideSubsystem hSlide;
+    public static TelemetrySubsystem telemetrySubsystem;
+    public static WaitSubsystem pause;
+    public double block = 0.03, unblock = 0.12;
 
     @Override
-    public void runOpMode() {
-        MecanumDrive mecDrive = new MecanumDrive(hardwareMap, new Pose2d(PARAMS.originx, PARAMS.originy, Math.toRadians(PARAMS.initialHeading)));
-        intake = new ServoIntakeSubsystem(hardwareMap, Constants.intake);
-        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,true,true,true));
-        arm = new PIDFArmSubsystem(hardwareMap, Constants.arm, 0.01, 0, 0.0001, 0.001, 1926/180);
-        hand = new HandSubsystem(hardwareMap, Constants.hand);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD, 0.03, 0, 0.0003, 0.2, 0.03, 0, 0.0003, 0.2);
+    public void initialize() {
+        mecDrive = new MecanumDrive(hardwareMap, OdometrySubsystem.startPoses.get("redBack"));
+        otos = new OdometrySubsystem(hardwareMap, "OTOS");
+        log = new SimpleLogger();
+
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.06, 0, 0.001, 0.01, 0.06, 0, 0.001, 0.01);
+        telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
+        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
+        outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
+        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
+        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
+        vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
+        horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
+        blocker = new ServoSubsystem(hardwareMap, "servo6");
+        pause = new WaitSubsystem();
 
         waitForStart();
 
-        Actions.runBlocking(mecDrive
-                .actionBuilder(mecDrive.pose)
-                .build());
+        while (opModeIsActive()) {
+            telemetry.addData("X", otos.getXPosition());
+            telemetry.addData("Y", otos.getYPosition());
+            telemetry.addData("Heading", otos.getHeading());
 
-        slide.set(1);
-        arm.set(1);
-
-        while (opModeIsActive() && slide.getTick() != 1 && arm.getTick() != 1) {
-            telemetry.addData("Slide Position", slide.getTick());
-            telemetry.addData("Arm Position", arm.getTick());
             telemetry.update();
         }
-
-        releaseSpecimen();
-
-        Actions.runBlocking(mecDrive
-                .actionBuilder(mecDrive.pose)
-                .build());
-    }
-
-    private void releaseSpecimen() {
     }
 }
-
-*/
