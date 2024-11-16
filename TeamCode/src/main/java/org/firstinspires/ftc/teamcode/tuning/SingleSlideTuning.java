@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @Config
 @TeleOp
-public class SlideTuning extends OpMode {
+public class SingleSlideTuning extends OpMode {
     private PIDController controller, controller1;
 
     public static double p = 0.43, i=0, d=0.001;
