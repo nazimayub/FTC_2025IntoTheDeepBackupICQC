@@ -48,7 +48,7 @@ public class DriveToCommand extends CommandBase {
     }
 
     @Override
-    public void end(boolean inturrupted){
+    public void end(boolean interrupted){
         d.getFl().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         d.getFr().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         d.getBl().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
