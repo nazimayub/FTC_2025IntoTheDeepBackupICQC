@@ -110,7 +110,8 @@ public class Solo extends CommandOpMode {
 
         //Slides up
         new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 1450)
+                new SetPIDFSlideArmCommand(slide, 1900),
+                new ServoCommand(outtakeClawDist, 0.1)
         ));
 
         //Intakes
