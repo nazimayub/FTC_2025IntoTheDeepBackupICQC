@@ -20,6 +20,7 @@ public class Constants {
     //Stow Pos
     public static final double intStow = .16 /*brings intake arm in, servo 2 */, outStowClaw = .3/*stows outtake servo 3 */, outStow = .13/*brings outtake arm in servo 5 */;
 
-    public static final double tickInInch = 685.0/24.0, lateralTickInInch = 650.0/24.0, tickInDeg = 1600/360.0;
+    public static String direction = "forward";
+    public static final double tickInInch = 590/24.0, lateralTickInInch = 540/24.0, tickInDeg = 1600/360.0;
     public static final String GROUP_ANDROID = "";
 }
