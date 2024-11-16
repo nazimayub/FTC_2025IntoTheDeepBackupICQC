@@ -51,7 +51,7 @@ public class Solo extends CommandOpMode {
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
        // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
-
+        new GamepadButton(base, GamepadKeys.Button.START).whenPressed(new ReverseDriveCommand(drive));
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(blocker, unblock),
