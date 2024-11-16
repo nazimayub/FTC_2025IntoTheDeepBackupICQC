@@ -36,7 +36,7 @@ public class Solo extends CommandOpMode {
 
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.15, 0, 0.0, 0.01, 0.15, 0, 0.0, 0.01);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
@@ -51,7 +51,7 @@ public class Solo extends CommandOpMode {
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
        // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
-        new GamepadButton(base, GamepadKeys.Button.START).whenPressed(new ReverseDriveCommand(drive));
+        new GamepadButton(base, GamepadKeys.Button.START).whenPressed(new ReverseDriveCommand());
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(blocker, unblock),

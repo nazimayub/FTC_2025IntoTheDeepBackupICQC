@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 
 
@@ -16,32 +17,13 @@ import java.util.function.DoubleSupplier;
 public class ReverseDriveCommand extends CommandBase {
 
 
-    public ReverseDriveCommand(Drive d) {
-        if(d.getFl().getDirection() == DcMotorSimple.Direction.FORWARD){
-            d.getFl().setDirection(DcMotorSimple.Direction.REVERSE);
+    public ReverseDriveCommand() {
+        if(Constants.direction.equals("forward")){
+            Constants.direction = "backward";
         }
         else {
-            d.getFl().setDirection(DcMotorSimple.Direction.FORWARD);
+            Constants.direction = "forward";
         }
-        if(d.getFr().getDirection() == DcMotorSimple.Direction.FORWARD){
-            d.getFr().setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        else {
-            d.getFr().setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-        if(d.getBl().getDirection() == DcMotorSimple.Direction.FORWARD){
-            d.getBl().setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        else {
-            d.getBl().setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-        if(d.getBr().getDirection() == DcMotorSimple.Direction.FORWARD){
-            d.getBr().setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        else {
-            d.getBr().setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-        addRequirements(d);
     }
 
     @Override
