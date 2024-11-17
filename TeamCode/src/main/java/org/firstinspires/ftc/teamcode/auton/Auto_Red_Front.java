@@ -36,7 +36,7 @@ public class Auto_Red_Front extends CommandOpMode {
 
     @Override
     public void initialize() {
-        mecDrive = new MecanumDrive(hardwareMap, OdometrySubsystem.startPoses.get("redFront"));
+        mecDrive = new MecanumDrive(hardwareMap, new Pose2d(12, 12, 0));
         otos = new OdometrySubsystem(hardwareMap, "OTOS");
         log = new SimpleLogger();
 
