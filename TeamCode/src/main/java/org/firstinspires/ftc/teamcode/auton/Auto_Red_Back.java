@@ -37,7 +37,7 @@ public class Auto_Red_Back extends CommandOpMode {
     @Override
     public void initialize() {
         mecDrive = new MecanumDrive(hardwareMap, new Pose2d(12, 62, 0));
-        otos = new OdometrySubsystem(hardwareMap, "OTOS");
+        otos = new OdometrySubsystem(hardwareMap, "sensor_otos");
         log = new SimpleLogger();
 
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);

@@ -46,6 +46,7 @@ public class TestEncoderAuto extends LinearOpMode {
     public static ServoSubsystem blocker;
     public static Drive drive;
     public double block = 0.03, unblock = 0.12;
+
     @Override
     public void runOpMode(){
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
@@ -60,9 +61,10 @@ public class TestEncoderAuto extends LinearOpMode {
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");
-        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
+        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(true,false,false,true));
         waitForStart();
         while (opModeIsActive()) {
+            new DriveToCommand(drive, 0, 10, 0);
             new SequentialCommandGroup(
                     new SetPIDFSlideArmCommand(slide, 800),
                     //Drive to Submersible

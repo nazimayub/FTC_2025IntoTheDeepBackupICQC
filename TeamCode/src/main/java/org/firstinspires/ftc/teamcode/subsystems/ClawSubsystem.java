@@ -12,6 +12,7 @@ public class  ClawSubsystem extends SubsystemBase {
      */
     private final Servo left;
     private final Servo right;
+
     public ClawSubsystem(HardwareMap h, String left, String right) {
         this.right = h.get(Servo.class, right);
         this.left = h.get(Servo.class, left);

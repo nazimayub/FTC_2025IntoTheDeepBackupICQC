@@ -39,7 +39,7 @@ public class Auto_Blue_Back extends CommandOpMode {
 
     @Override
     public void initialize() {
-        otos = new OdometrySubsystem(hardwareMap, "OTOS");
+        otos = new OdometrySubsystem(hardwareMap, "sensor_otos");
         mecDrive = new MecanumDrive(hardwareMap, new Pose2d(36, 62, 180));
         log = new SimpleLogger();
 

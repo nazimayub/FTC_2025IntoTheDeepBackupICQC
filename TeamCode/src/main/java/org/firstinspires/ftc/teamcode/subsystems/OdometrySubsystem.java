@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ftc.SparkFunOTOSCorrected;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,11 +12,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class OdometrySubsystem extends SubsystemBase {
-    private SparkFunOTOS otos;
+    private SparkFunOTOSCorrected otos;
 
     public OdometrySubsystem(HardwareMap hardwareMap, String name) {
         I2cDeviceSynch deviceClient = hardwareMap.get(I2cDeviceSynch.class, name);
-        otos = new SparkFunOTOS(deviceClient);
+
+        otos = new SparkFunOTOSCorrected(deviceClient);
         otos.initialize();
     }
 
