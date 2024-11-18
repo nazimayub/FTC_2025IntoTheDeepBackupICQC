@@ -35,7 +35,7 @@ public class Solo extends CommandOpMode {
         log = new SimpleLogger();
 
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0005, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
@@ -51,12 +51,12 @@ public class Solo extends CommandOpMode {
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
        // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
-        new GamepadButton(base, GamepadKeys.Button.START).whenPressed(new ReverseDriveCommand());
+        new GamepadButton(base, GamepadKeys.Button.BACK ).whenPressed(new ReverseDriveCommand());
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(blocker, unblock),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 450),
+                new SetPIDFSlideArmCommand(hSlide, 400),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
@@ -78,10 +78,10 @@ public class Solo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, 0.05),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 0),
-                new ServoCommand(blocker, block),
                 new ServoCommand(outtakeClawDist, 0.682),
                 new WaitCommand(pause, 500),
+                new SlideResetCommand(hSlide, horizontal),
+                new ServoCommand(blocker, block),
                 new ServoCommand(outtakeClaw, 0.533),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClaw, 0.44),
