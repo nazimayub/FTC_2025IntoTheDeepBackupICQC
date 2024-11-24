@@ -28,6 +28,7 @@ public class TeleOpEnhancements extends OpMode {
     private DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
+    private DcMotorEx skibuddy;
     private DcMotorEx rightRear;
 
     /**
