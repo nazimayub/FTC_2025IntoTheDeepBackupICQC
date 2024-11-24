@@ -21,6 +21,8 @@ public class EncoderTuning extends LinearOpMode {
         bl = hardwareMap.get(DcMotorEx.class, Constants.bl);
         fr = hardwareMap.get(DcMotorEx.class, Constants.fr);
         br = hardwareMap.get(DcMotorEx.class, Constants.br);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
         while(opModeIsActive()){

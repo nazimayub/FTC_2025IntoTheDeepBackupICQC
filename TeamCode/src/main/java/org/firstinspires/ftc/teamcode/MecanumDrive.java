@@ -63,7 +63,7 @@ public class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
+        public double inPerTick = 90/129.5; // SparkFun OTOS Note: you can probably leave this at 1
         public double lateralInPerTick = inPerTick;
         public double trackWidthTicks = 8;
 
@@ -139,7 +139,8 @@ public class MecanumDrive {
             imu = lazyImu.get();
 
             // TODO: reverse encoders if needed
-            //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightFront  .setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
         @Override

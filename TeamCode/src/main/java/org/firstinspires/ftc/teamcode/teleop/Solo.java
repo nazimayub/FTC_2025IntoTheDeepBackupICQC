@@ -24,7 +24,6 @@ public class Solo extends CommandOpMode {
     public static LimitSwitchSubsystem vertical, horizontal;
     public static PIDFSlideSubsystem slide;
     public static PIDFSingleSlideSubsystem hSlide;
-    public static TelemetrySubsystem telemetrySubsystem;
     public static WaitSubsystem pause;
     public double block = 0.03, unblock = 0.12;
 
@@ -37,7 +36,6 @@ public class Solo extends CommandOpMode {
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0005, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
-//      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
@@ -50,13 +48,11 @@ public class Solo extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-       // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
-        new GamepadButton(base, GamepadKeys.Button.BACK ).whenPressed(new ReverseDriveCommand());
         //Bring intake down
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(blocker, unblock),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 400),
+                new SetPIDFSlideArmCommand(hSlide, 370),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawDist, 0.233),
                 new WaitCommand(pause, 300),
@@ -96,7 +92,7 @@ public class Solo extends CommandOpMode {
 
         //Place Specimen
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 300),
+                new SetPIDFSlideArmCommand(slide, 365),
                 new ServoCommand(outtakeClawDist, 0.1),
                 new ServoCommand(outtakeClaw, 0.343)
         ));
@@ -141,18 +137,4 @@ public class Solo extends CommandOpMode {
         ));
 
     }
-    // logs stuffs
-
-//        telemetrySubsystem.addLogHeadings();
-
-    // add logs
-
-//        schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
-//        schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
-//
-//        // update logging stuffs
-//
-//        schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
-//        schedule(new RunCommand(telemetrySubsystem::updateLogs));
-//        schedule(new RunCommand(telemetry::update));
 }
