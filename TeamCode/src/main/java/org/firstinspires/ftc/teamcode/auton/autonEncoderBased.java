@@ -11,6 +11,12 @@ import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoIntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
+
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.messages.PoseMessage;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
 import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
@@ -32,6 +38,14 @@ public class autonEncoderBased extends CommandOpMode {
 
     @Override
     public void initialize() {
+// Get a reference to the sensor
+        odometryizer = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
 
+
+        // Wait for the start button to be pressed
+        waitForStart();
+        while(opModeIsActive()){
+
+        }
     }
 }

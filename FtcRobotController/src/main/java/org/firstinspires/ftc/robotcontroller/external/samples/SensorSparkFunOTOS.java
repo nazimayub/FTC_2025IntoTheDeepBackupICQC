@@ -119,7 +119,7 @@ public class SensorSparkFunOTOS extends LinearOpMode {
         myOtos.setLinearScalar(1.0);
         myOtos.setAngularScalar(1.0);
 
-        // The IMU on the OTOS includes a gyroscope and accelerometer, which could
+        /* The IMU on the OTOS includes a gyroscope and accelerometer, which could
         // have an offset. Note that as of firmware version 1.0, the calibration
         // will be lost after a power cycle; the OTOS performs a quick calibration
         // when it powers up, but it is recommended to perform a more thorough
@@ -128,7 +128,7 @@ public class SensorSparkFunOTOS extends LinearOpMode {
         // calibrateImu(), you can specify the number of samples to take and whether
         // to wait until the calibration is complete. If no parameters are provided,
         // it will take 255 samples and wait until done; each sample takes about
-        // 2.4ms, so about 612ms total
+        // 2.4ms, so about 612ms total */
         myOtos.calibrateImu();
 
         // Reset the tracking algorithm - this resets the position to the origin,
