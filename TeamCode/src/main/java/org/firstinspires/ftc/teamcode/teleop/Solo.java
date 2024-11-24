@@ -37,7 +37,7 @@ public class Solo extends CommandOpMode {
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0005, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
         pause = new WaitSubsystem();
-        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
+        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intake);
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);

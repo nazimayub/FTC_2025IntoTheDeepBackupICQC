@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -24,8 +25,8 @@ public class Duo extends CommandOpMode {
     SimpleLogger log;
 
     public static Drive drive;
-    public static ServoSubsystem intakeClaw, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
-    public static ServoIntakeSubsystem intake;
+    public static ServoSubsystem intakeClaw, outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
+    public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vertical, horizontal;
     public static PIDFSlideSubsystem slide;
     public static PIDFSingleSlideSubsystem hSlide;
@@ -33,18 +34,19 @@ public class Duo extends CommandOpMode {
     public static WaitSubsystem pause;
     public double block = 0.03, unblock = 0.12;
 
+
     @Override
     public void initialize() {
         base = new GamepadEx(gamepad1);
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
-
+        intake = new IntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0007, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.06, 0, 0.001, 0.01, 0.06, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
-        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intakeClaw);
+        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intake);
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
@@ -52,7 +54,7 @@ public class Duo extends CommandOpMode {
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");
-
+        outtakeClawRot = new ServoSubsystem(hardwareMap, Constants.outtakeClawRot);
         /*
         * DRIVER 1 (base) - Drive & Samples
         * DRIVER 2 (op) - Slides & Specimen
@@ -60,103 +62,59 @@ public class Duo extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        // hSlide.setDefaultCommand(new SlideArmCommand(hSlide, base));
+        hSlide.setDefaultCommand(new SlideArmCommand(hSlide, op));
+
+        //Intake
+        new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenReleased(new IntakeCommand(intake, 0));
+        new GamepadButton(op, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
 
         //Bring intake down
-        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(blocker, unblock),
-                new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 450),
-                new WaitCommand(pause, 500),
-                new ServoCommand(intakeClawDist, 0.233),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.865),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClaw, 0.44)
-        ));
+        new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new ServoCommand(intakeClawRot, Constants.intakeDownPos));
 
-        //Grabs sample, stows intake, and transfers to outtake
-        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new SequentialCommandGroup(
-                new SlideResetCommand(slide, vertical),
-
-                new ServoCommand(outtakeClaw, 0.343),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.5),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawDist, 0.623),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.05),
-                new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(hSlide, 0),
-                new ServoCommand(blocker, block),
-                new ServoCommand(outtakeClawDist, 0.682),
-                new WaitCommand(pause, 500),
-                new ServoCommand(outtakeClaw, 0.533),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClaw, 0.44),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, 0.344)
-        ));
-
-        //Slides up to High Basket
-        new GamepadButton(op, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 1450)
-        ));
-
-        //Slides up to High Bar
-        new GamepadButton(op, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 800)
-        ));
-
-        //Slides down
-        new GamepadButton(op, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
-                new SlideResetCommand(slide, vertical)
-        ));
-
-        //Place Specimen
-        new GamepadButton(op, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
-                new SetPIDFSlideArmCommand(slide, 300),
-                new ServoCommand(outtakeClawDist, 0.1),
-                new ServoCommand(outtakeClaw, 0.343)
-        ));
-
-        //Intakes Sample
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawDist, 0.168),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClaw, 0.668)
-        ));
-
-        //Drop Sample
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, 0.344)
-        ));
-
-        //Moves outtake claw to specimen position
+        //Transfer
         new GamepadButton(op, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, .08),
-                new ServoCommand(outtakeClaw, 0.343)
+                new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
+                new SlideResetCommand(slide, vertical),
+                new SlideResetCommand(hSlide, horizontal),
+                new ServoCommand(blocker, block),
+                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistInitTransfer),
+                new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawRot, Constants.intakeFinalTransferPos),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClaw, Constants.grab),
+                new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
+                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
+                new ServoCommand(blocker, unblock)
         ));
 
-        //Intakes Specimen
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, .533),
+        //Basket Score
+        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(
+            new SequentialCommandGroup(
+                   new SetPIDFSlideArmCommand(slide, 1700),
+                   new ServoCommand(outtakeClawDist, Constants.distBasketPos),
+                   new ServoCommand(outtakeClawRot, Constants.rotBasketPos)
+            )
+        );
+
+        //Release in Basket
+        new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Constants.release));
+
+        //Specimen Grab Pos
+        new GamepadButton(op, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClawDist, Constants.distSpecimenGrab),
+                new ServoCommand(outtakeClawRot, Constants.rotSpecimenGrab),
+                new ServoCommand(outtakeClaw, Constants.release)
+        ));
+
+        //Specimen Score
+        new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClawDist, Constants.distInitSpecimenScorePos),
+                new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, .128)
+                new SetPIDFSlideArmCommand(slide, 700),
+                new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos)
         ));
     }
-    // logs stuffs
-
-//        telemetrySubsystem.addLogHeadings();
-
-    // add logs
-
-//        schedule(new RunCommand(telemetrySubsystem::addTelemetryData));
-//        schedule(new RunCommand(telemetrySubsystem::addDashBoardData));
-//
-//        // update logging stuffs
-//
-//        schedule(new RunCommand(telemetrySubsystem::updateDashboardTelemetry));
-//        schedule(new RunCommand(telemetrySubsystem::updateLogs));
-//        schedule(new RunCommand(telemetry::update));
 }

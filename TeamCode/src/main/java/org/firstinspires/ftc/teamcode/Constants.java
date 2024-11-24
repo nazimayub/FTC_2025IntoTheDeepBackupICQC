@@ -11,14 +11,20 @@ public class Constants {
             RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
     //Names for motors and servos
-    public static final String fr = "fr", fl = "fl", br = "br", bl = "bl", lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intakeClaw = "servo2", intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo4", imu = "imu";    //Hand Pos
+    public static final String outtakeClawRot = "servo5", fr = "fr", fl = "fl", br = "br", bl = "bl",
+            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3",
+            intake = "motor4", intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo4",
+            imu = "imu";
 
-    //Intake Pos
-    public static final double intClawGrab = 0.67 /*grabs sample, servo 0*/, intClawRel = 0.43 /*releases sample, servo 0*/, intClawIn = .227 /*Rotates claw to the robot servo 1*/, intClawOut = .171 /*Rotates claw out servo 1*/, intMove = .65 /*sets intake arm to outtake servo 2*/;
-    //Outtake Pos
-    public static final double transfer = .68 /* outtake grabs sample */, basket = 0.337 /* outtake drops sample*/, specimen = .118 /* outtake hangs specimen */;
-    //Stow Pos
-    public static final double intStow = .16 /*brings intake arm in, servo 2 */, outStowClaw = .3/*stows outtake servo 3 */, outStow = .13/*brings outtake arm in servo 5 */;
+    //Intake
+    public static double intakeInitTransferPos = 0, intakeFinalTransferPos = 0, intakeDownPos = 0;
+    //Outtake
+    public static double outtakeClawDistInitTransfer = 0, outtakeClawDistFinalTransfer = 0, outtakeClawRotTransfer = 0,
+            grab = 0, release = 0,
+            distBasketPos = 0, rotBasketPos = 0,
+            distSpecimenGrab = 0, rotSpecimenGrab = 0,
+            distInitSpecimenScorePos = 0, rotSpecimenScorePos = 0, distFinalSpecimenScorePos = 0;
+
 
     public static String direction = "forward";
     public static final double tickInInch = 590/24.0, lateralTickInInch = 540/24.0, tickInDeg = 1600/360.0;
