@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.teamcode.subsystems.LimitSwitchSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.OdometrySubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
@@ -19,7 +20,7 @@ public class autonEncoderBased extends CommandOpMode {
     public static Drive drive;
     public static OdometrySubsystem otos;
     public static SimpleLogger log;
-
+    public static SparkFunOTOS odometryizer;
     public static ServoSubsystem intakeClaw, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
     public static ServoIntakeSubsystem intake;
     public static LimitSwitchSubsystem vertical, horizontal;
