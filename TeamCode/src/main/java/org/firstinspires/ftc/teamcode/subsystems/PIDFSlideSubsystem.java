@@ -44,7 +44,10 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     public void set(double target) {
         this.target = target;
     }
-    public void set(double rPow, double lPow){right.setPower(rPow); left.setPower(lPow);}
+    public void set(double rPow, double lPow){
+        right.setPower(rPow); left.setPower(lPow);
+
+    }
     public void change(double amount){this.right.setPower(Math.max(f, amount)); this.left.setPower(Math.max(f1, amount));}
     public void reset(){
         this.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

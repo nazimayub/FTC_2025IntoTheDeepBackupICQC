@@ -12,14 +12,14 @@ public class Constants {
 
     //Names for motors and servos
     public static final String outtakeClawRot = "servo5", fr = "fr", fl = "fl", br = "br", bl = "bl",
-            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3",
-            intake = "motor4", intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo4",
+            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4",
+            intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo4",
             imu = "imu";
 
     //Intake
-    public static double intakeInitTransferPos = .35, intakeFinalTransferPos = .252, intakeDownPos = 0.536;
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .252, intakeDownPos = 0.536;
     //Outtake
-    public static double outtakeClawDistInitTransfer = 0, outtakeClawDistFinalTransfer = 0, outtakeClawRotTransfer = 0,
+    public static double outtakeClawDistInitTransfer = 0.9376, outtakeClawDistFinalTransfer = 0.9215, outtakeClawRotTransfer = 0.21,
             grab = 0.28, release = 0.85,
             distBasketPos = .619, rotBasketPos = .194,
             distSpecimenGrab = 0.551, rotSpecimenGrab = 0.346,

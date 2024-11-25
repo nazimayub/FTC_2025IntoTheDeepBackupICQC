@@ -46,7 +46,6 @@ public class Duo extends CommandOpMode {
         slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.06, 0, 0.001, 0.01, 0.06, 0, 0.001, 0.01);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
-        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intake);
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
@@ -76,14 +75,15 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
                 new SlideResetCommand(slide, vertical),
                 new SlideResetCommand(hSlide, horizontal),
+                new ServoCommand(outtakeClaw, Constants.release),
+                new WaitCommand(pause, 3000),
                 new ServoCommand(blocker, block),
-                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistInitTransfer),
                 new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
-                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistInitTransfer),
+                new WaitCommand(pause, 3000),
                 new ServoCommand(intakeClawRot, Constants.intakeFinalTransferPos),
-                new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Constants.grab),
-                new WaitCommand(pause, 300),
+                new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
                 new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
                 new ServoCommand(blocker, unblock)
@@ -115,6 +115,12 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new SetPIDFSlideArmCommand(slide, 700),
                 new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos)
+        ));
+
+        //test
+        new GamepadButton(op, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
+                new SlideResetCommand(slide, vertical),
+                new SlideResetCommand(hSlide, horizontal)
         ));
     }
 }
