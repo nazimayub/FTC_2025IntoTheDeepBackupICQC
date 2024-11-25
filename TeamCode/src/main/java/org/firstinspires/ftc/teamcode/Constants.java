@@ -17,12 +17,12 @@ public class Constants {
             imu = "imu";
 
     //Intake
-    public static double intakeInitTransferPos = 0, intakeFinalTransferPos = 0, intakeDownPos = 0;
+    public static double intakeInitTransferPos = .35, intakeFinalTransferPos = .252, intakeDownPos = 0.536;
     //Outtake
     public static double outtakeClawDistInitTransfer = 0, outtakeClawDistFinalTransfer = 0, outtakeClawRotTransfer = 0,
-            grab = 0, release = 0,
-            distBasketPos = 0, rotBasketPos = 0,
-            distSpecimenGrab = 0, rotSpecimenGrab = 0,
+            grab = 0.28, release = 0.85,
+            distBasketPos = .619, rotBasketPos = .194,
+            distSpecimenGrab = 0.551, rotSpecimenGrab = 0.346,
             distInitSpecimenScorePos = 0, rotSpecimenScorePos = 0, distFinalSpecimenScorePos = 0;
 
 
