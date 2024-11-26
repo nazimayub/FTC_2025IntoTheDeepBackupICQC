@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
@@ -37,6 +38,8 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
     public void set(double pow, double x){
         this.slide.setPower(pow);
     }
+
+
     public void change(double amount){this.target+=amount;}
     public int getTick(){return -1*this.slide.getCurrentPosition();}
     public void reset(){

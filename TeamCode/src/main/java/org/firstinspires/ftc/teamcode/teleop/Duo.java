@@ -85,8 +85,9 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Constants.grab),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
-                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
-                new ServoCommand(blocker, unblock)
+                new WaitCommand(pause, 500),
+                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer)
+                //new ServoCommand(blocker, unblock)
         ));
 
         //Basket Score
