@@ -62,6 +62,8 @@ public class Duo extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
+
+        //TODO: Fix how we use horizontal slide
         //hSlide.setDefaultCommand(new SlideArmCommand(hSlide, op));
 
         //Intake
@@ -111,19 +113,18 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Constants.release)
         ));
 
+        //Specimen Grab
+        new GamepadButton(op, GamepadKeys.Button.DPAD_LEFT).whenPressed(new ServoCommand(outtakeClaw, Constants.grab));
+
         //Specimen Score
-        new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
+        new GamepadButton(op, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClawDist, Constants.distInitSpecimenScorePos),
                 new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
                 new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(slide, 700),
+                new SetPIDFSlideArmCommand(slide, 300),
                 new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos)
         ));
 
-        //test
-        new GamepadButton(op, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
-                new SlideResetCommand(slide, vertical),
-                new SlideResetCommand(hSlide, horizontal)
-        ));
+
     }
 }
