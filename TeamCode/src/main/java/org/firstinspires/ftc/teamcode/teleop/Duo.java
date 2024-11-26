@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.transition.Slide;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -74,13 +76,22 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new ServoCommand(intakeClawRot, Constants.intakeDownPos));
 
         //Slides
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).toggleWhenPressed(new SequentialCommandGroup(
-                new ServoCommand(blocker, unblock),
-                new SetPIDFSlideArmCommand(hSlide, 370)),
-                new SlideResetCommand(hSlide, horizontal)
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).toggleWhenPressed(
+                new SequentialCommandGroup(
+                    new ServoCommand(blocker, unblock),
+                    new SetPIDFSlideArmCommand(hSlide, 370)),
+                new SequentialCommandGroup(
+                        new SlideResetCommand(hSlide, horizontal),
+                        new ServoCommand(blocker, block))
         );
 
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).toggleWhenPressed(new SetPIDFSlideArmCommand(slide, 1700), new SlideResetCommand(slide, vertical));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(
+                new SetPIDFSlideArmCommand(slide, 1700)
+        );
+
+        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new SlideResetCommand(slide, vertical)
+        );
 
         //Transfer
         new GamepadButton(op, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
