@@ -75,6 +75,7 @@ public class Duo extends CommandOpMode {
 
         //Transfer
         new GamepadButton(op, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
+                new PIDFSlideArmCommand(hSlide, 370),
                 new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
                 new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
                 new ServoCommand(outtakeClawDist, Constants.outtakeClawDistTempTransfer),
