@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -61,7 +62,7 @@ public class Duo extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        hSlide.setDefaultCommand(new SlideArmCommand(hSlide, op));
+        //hSlide.setDefaultCommand(new SlideArmCommand(hSlide, op));
 
         //Intake
         new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenReleased(new IntakeCommand(intake, 0));
@@ -82,6 +83,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawDist, Constants.outtakeClawDistInitTransfer),
                 new WaitCommand(pause, 3000),
                 new ServoCommand(intakeClawRot, Constants.intakeFinalTransferPos),
+                new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Constants.grab),
                 new WaitCommand(pause, 500),
                 new ServoCommand(intakeClawRot, Constants.intakeInitTransferPos),
