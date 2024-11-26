@@ -74,7 +74,12 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new ServoCommand(intakeClawRot, Constants.intakeDownPos));
 
         //Slides
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).toggleWhenPressed(new SetPIDFSlideArmCommand(hSlide, 370), new SlideResetCommand(hSlide, horizontal));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).toggleWhenPressed(new SequentialCommandGroup(
+                new ServoCommand(blocker, unblock),
+                new SetPIDFSlideArmCommand(hSlide, 370)),
+                new SlideResetCommand(hSlide, horizontal)
+        );
+
         new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).toggleWhenPressed(new SetPIDFSlideArmCommand(slide, 1700), new SlideResetCommand(slide, vertical));
 
         //Transfer
