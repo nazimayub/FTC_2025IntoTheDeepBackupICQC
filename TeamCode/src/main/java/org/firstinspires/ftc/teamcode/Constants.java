@@ -17,9 +17,9 @@ public class Constants {
             imu = "imu";
 
     //Intake
-    public static double intakeInitTransferPos = .4, intakeFinalTransferPos = .22, intakeDownPos = 0.536;
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .22, intakeDownPos = 0.536;
     //Outtake
-    public static double outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .33,
+    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .33,
             grab = 0.28, release = 0.85,
             distBasketPos = .619, rotBasketPos = .194,
             distSpecimenGrab = 0.32, rotSpecimenGrab = 0.91,
