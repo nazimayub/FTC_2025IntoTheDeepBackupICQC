@@ -53,8 +53,10 @@ public class SlideArmCommand extends CommandBase {
             sSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
         }
         else if (pSlide != null){
-            this.pSlide.usePID(true);
-            pSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), 0);
+            if(pSlide.getPID()){
+                pSlide.set(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), 0);
+
+            }
             //pSlide.set(-1*pSlide.getController().calculate(pSlide.getTick(), pSlide.getTick()-(int)(1000* gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER))+(int)(1000* gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))) + pSlide.getF(), 0);
         }
         else {

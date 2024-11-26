@@ -35,7 +35,6 @@ public class SlideResetCommand extends CommandBase {
     public SlideResetCommand(PIDFSingleSlideSubsystem slide, LimitSwitchSubsystem l) {
         this.pslide=slide;
         this.l = l;
-        this.pslide.usePID(false);
         addRequirements(slide);
     }
 
@@ -47,7 +46,7 @@ public class SlideResetCommand extends CommandBase {
     @Override
     public void execute() {
         finish = l.get();
-        if (finish == false && didSetPowerToMotor == false) {
+        if (!finish) {
             if (slide != null) {
                 slide.usePID(false);
                 slide.set(-1, -1);
@@ -76,19 +75,22 @@ public class SlideResetCommand extends CommandBase {
     }
     @Override
     public void end(boolean interrupted){
-        if (slide != null) {
-            slide.set(0, 0);
-            slide.reset();
+        if(!interrupted){
+            if (slide != null) {
+                slide.set(0, 0);
+                slide.reset();
+                slide.usePID(true);
+            }
+            else if (pslide != null) {
+                pslide.set(0, 0);
+                pslide.reset();
+                pslide.set(0);
+            }
+            else if (sSlide != null){
+                sSlide.set(0);
+            }
         }
-        else if (pslide != null) {
-            pslide.set(0, 0);
-            pslide.reset();
-            pslide.set(0);
-            //pslide.usePID(true);
-        }
-        else if (sSlide != null){
-            sSlide.set(0);
-        }
+
     }
 
 }

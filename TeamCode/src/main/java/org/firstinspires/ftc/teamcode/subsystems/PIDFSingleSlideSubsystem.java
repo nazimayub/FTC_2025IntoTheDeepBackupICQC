@@ -46,6 +46,7 @@ public class PIDFSingleSlideSubsystem extends SubsystemBase {
         this.slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.slide.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public boolean getPID(){return use;}
     public void usePID(boolean yes){
         use = yes;
     }
