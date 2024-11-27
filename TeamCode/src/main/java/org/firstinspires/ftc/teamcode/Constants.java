@@ -17,13 +17,13 @@ public class Constants {
             imu = "imu";
 
     //Intake
-    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .19, intakeDownPos = 0.536, intakeSecondFinalTransferPos = .35;
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .19, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35;
     //Outtake
     public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = 0.025,
             grab = 0.28, release = 0.85,
             distBasketPos = .619, rotBasketPos = .194,
-            distSpecimenGrab = 0.32, rotSpecimenGrab = 0.91,
-            distInitSpecimenScorePos = 0.52, rotSpecimenScorePos = 0.515, distFinalSpecimenScorePos = .5;
+            distSpecimenGrab = 0.34, rotSpecimenGrab = 0.565, distSpecimenGrabFinal = 0.6,
+            distInitSpecimenScorePos = 0.62, rotSpecimenScorePos = 0.26, distFinalSpecimenScorePos = .4;
 
 
     public static String direction = "forward";

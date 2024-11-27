@@ -121,7 +121,11 @@ public class Duo extends CommandOpMode {
         ));
 
         //Grab
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Constants.grab));
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClaw, Constants.grab),
+                new WaitCommand(pause, 300),
+                new ServoCommand(outtakeClawDist, Constants.distSpecimenGrabFinal)
+        ));
 
         //Release
         new GamepadButton(op, GamepadKeys.Button.DPAD_UP).whenPressed(new ServoCommand(outtakeClaw, Constants.release));
@@ -133,9 +137,13 @@ public class Duo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClawDist, Constants.distInitSpecimenScorePos),
                 new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
-                new WaitCommand(pause, 300),
-                new SetPIDFSlideArmCommand(slide, 300),
-                new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos)
+                new SetPIDFSlideArmCommand(slide, 150)
+        ));
+
+        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos),
+                new WaitCommand(pause, 500),
+                new ServoCommand(outtakeClaw, Constants.release)
         ));
 
 
