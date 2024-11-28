@@ -1,24 +1,13 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import android.transition.Slide;
-
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
-import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.internal.network.SendOnceRunnable;
 import org.firstinspires.ftc.teamcode.*;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.commands.*;
@@ -52,13 +41,13 @@ public class Duo extends CommandOpMode {
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
-        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
+        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeDist);
+        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeRot);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeDist);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");
-        outtakeClawRot = new ServoSubsystem(hardwareMap, Constants.outtakeClawRot);
+        outtakeClawRot = new ServoSubsystem(hardwareMap, Constants.outtakeRot);
         /*
         * DRIVER 1 (base) - Drive & Samples
         * DRIVER 2 (op) - Slides & Specimen
@@ -66,12 +55,6 @@ public class Duo extends CommandOpMode {
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
-
-        //TODO: Fix how we use horizontal slide
-        //hSlide.setDefaultCommand(new SlideArmCommand(hSlide, op));
-
-        //Trigger defaultHSlideCommand = new Trigger(new OperatorTrigger()::get);
-        //defaultHSlideCommand.whenActive(new SlideArmCommand(hSlide, op));
 
         //Intake
         new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));

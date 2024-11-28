@@ -11,13 +11,15 @@ public class Constants {
             RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
     //Names for motors and servos
-    public static final String outtakeClawRot = "servo5", fr = "fr", fl = "fl", br = "br", bl = "bl",
+    public static final String fr = "fr", fl = "fl", br = "br", bl = "bl",
             lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4",
-            intakeClawRot = "servo1", intakeClawDist = "servo0", outtakeClaw = "servo3", outtakeClawDist = "servo4",
-            imu = "imu";
+            intakeRot = "servo1", intakeDist = "servo0", outtakeClaw = "servo3", outtakeRot = "servo5", outtakeDist = "servo4",
+            imu = "imu", otos = "sensor_otos";
 
     //Intake
-    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .19, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35;
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .19, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
+            block = 0.03, unblock = 0.12;
+
     //Outtake
     public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = 0.025,
             grab = 0.28, release = 0.85,

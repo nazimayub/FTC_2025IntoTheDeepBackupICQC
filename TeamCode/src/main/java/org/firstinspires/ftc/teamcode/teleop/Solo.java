@@ -39,9 +39,9 @@ public class Solo extends CommandOpMode {
         pause = new WaitSubsystem();
         intakeClaw = new ServoSubsystem(hardwareMap, Constants.intake);
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeClawDist);
-        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeClawRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeClawDist);
+        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeDist);
+        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeRot);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeDist);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");
