@@ -25,7 +25,7 @@ public class Constants {
             grab = 0.28, release = 0.85,
             distBasketPos = .619, rotBasketPos = .194,
             distSpecimenGrab = 0.34, rotSpecimenGrab = 0.565, distSpecimenGrabFinal = 0.6,
-            distInitSpecimenScorePos = 0.62, rotSpecimenScorePos = 0.26, distFinalSpecimenScorePos = .4;
+            distSpecimenScorePos = .45, rotSpecimenScorePos = .4, distFinalSpecimenScorePos = .4;
 
 
     public static String direction = "forward";

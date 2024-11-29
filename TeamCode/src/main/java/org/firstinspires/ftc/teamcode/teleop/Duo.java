@@ -118,15 +118,17 @@ public class Duo extends CommandOpMode {
 
         //Specimen Score
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, Constants.distInitSpecimenScorePos),
-                new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
-                new SetPIDFSlideArmCommand(slide, 150)
+                new ServoCommand(outtakeClaw, Constants.grab),
+                new ServoCommand(outtakeClawDist, Constants.distBasketPos),
+                new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
+                new SetPIDFSlideArmCommand(slide, 250)
         ));
 
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, Constants.distFinalSpecimenScorePos),
-                new WaitCommand(pause, 500),
-                new ServoCommand(outtakeClaw, Constants.release)
+                new ServoCommand(outtakeClaw, Constants.grab),
+                new ServoCommand(outtakeClawDist, Constants.distSpecimenScorePos),
+                new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
+                new SlideResetCommand(slide, vertical)
         ));
 
 
