@@ -41,6 +41,35 @@ public class SampleAuto extends LinearOpMode {
         Minibot.Pose[] score = new Minibot.Pose[]{ //sets your targets
                 new Minibot.Pose(0.001, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
+        Minibot.Pose[] grab = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(-48, 8,  180),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+        Minibot.Pose[] score1 = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(2, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+        Minibot.Pose[] score2 = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(4, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+        Minibot.Pose[] score3 = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(6, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+        Minibot.Pose[] score4 = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(8, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+
+        Minibot.Pose[] push = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(-32, 28,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-36, 50,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-42, 54,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-42, 12,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-42, 50,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-48, 54,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-48, 12,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-48, 50,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-56, 54,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(-56, 12,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+
 
 
         // run until the end of the match (driver presses STOP)
@@ -48,6 +77,32 @@ public class SampleAuto extends LinearOpMode {
             bot.scorePos();
             followPath(score, 0.5);
             bot.score();
+            followPath(push, 0.5);
+            sleep(1000);
+            bot.grabPos();
+            followPath(grab, 0.5);
+            bot.grab();
+            followPath(score1, 0.5);
+            bot.score();
+            sleep(1000);
+            bot.grabPos();
+            followPath(grab, 0.5);
+            bot.grab();
+            followPath(score2, 0.5);
+            bot.score();
+            sleep(1000);
+            bot.grabPos();
+            followPath(grab, 0.5);
+            bot.grab();
+            followPath(score3, 0.5);
+            bot.score();
+            sleep(1000);
+            bot.grabPos();
+            followPath(grab, 0.5);
+            bot.grab();
+            followPath(score4, 0.5);
+            bot.score();
+
             //int temp = 0;
 //            bot.intakewrist("mid");
 //            bot.grabber("grab");

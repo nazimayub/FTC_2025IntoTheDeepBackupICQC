@@ -21,7 +21,7 @@ public class Minibot extends RobotDrive { //pull in everything from RobotDrive
         super.init(hardwareMap); //init robot drive
     }
     public static void grabPos(){
-        outtakeClaw.setPosition(0.85);
+        outtakeClaw.setPosition(0.54);
         outtakeClawDist.setPosition(.34);
         outtakeClawRot.setPosition(0.565);
     }
