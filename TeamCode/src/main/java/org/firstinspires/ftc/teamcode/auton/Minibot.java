@@ -21,7 +21,7 @@ public class Minibot extends RobotDrive { //pull in everything from RobotDrive
         super.init(hardwareMap); //init robot drive
     }
     public static void grabPos(){
-        outtakeClaw.setPosition(0.54);
+        outtakeClaw.setPosition(0.5);
         outtakeClawDist.setPosition(.34);
         outtakeClawRot.setPosition(0.565);
     }
@@ -31,17 +31,31 @@ public class Minibot extends RobotDrive { //pull in everything from RobotDrive
     }
 
     public static void scorePos(){
-        outtakeClaw.setPosition(.25);
+        outtakeClaw.setPosition(.22);
         outtakeClawDist.setPosition(.619);
         outtakeClawRot.setPosition(0.025);
-        setPos(250);
+//        while(Math.abs(250-lSlide.getCurrentPosition())>3 || Math.abs(250-lSlide.getCurrentPosition())>3){
+//            lSlide.setPower(new PIDController(0.06, 0, 0.0004).calculate(250, lSlide.getCurrentPosition()) + 0.2);
+//            rSlide.setPower(new PIDController(0.06, 0, 0.0004).calculate(250, rSlide.getCurrentPosition()) + 0.2);
+//        }
+//        lSlide.setPower(0.2);
+//        rSlide.setPower(0.2);
+    }
+
+    public void resetEncoders(){
+        super.resetEncoders();
     }
 
     public static void score(){
-        outtakeClaw.setPosition(.25);
+        outtakeClaw.setPosition(.22);
         outtakeClawDist.setPosition(.45);
         outtakeClawRot.setPosition(0.4);
-        setPos(0);
+        while(Math.abs(0-lSlide.getCurrentPosition())>3 || Math.abs(0-lSlide.getCurrentPosition())>3){
+            lSlide.setPower(new PIDController(0.06, 0, 0.0004).calculate(0, lSlide.getCurrentPosition()) + 0.2);
+            rSlide.setPower(new PIDController(0.06, 0, 0.0004).calculate(0, rSlide.getCurrentPosition()) + 0.2);
+        }
+        lSlide.setPower(0);
+        rSlide.setPower(0);
     }
 
     public static void setPos(int t){

@@ -38,7 +38,7 @@ public class RobotDrive {
         rf = initDcMotor(hardwareMap, "fr", DcMotorSimple.Direction.FORWARD);
         lb = initDcMotor(hardwareMap, "bl", DcMotorSimple.Direction.REVERSE);
         rb = initDcMotor(hardwareMap, "br", DcMotorSimple.Direction.FORWARD);
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake = hardwareMap.get(DcMotorEx.class, "motor4");
 
         rSlide = hardwareMap.get(DcMotorEx.class, "motor2");
         lSlide = hardwareMap.get(DcMotorEx.class, "motor1");
@@ -57,6 +57,12 @@ public class RobotDrive {
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+    }
+    public void resetEncoders(){
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void initIMU(HardwareMap hardwareMap) { //init imu

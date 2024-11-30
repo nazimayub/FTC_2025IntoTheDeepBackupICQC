@@ -22,7 +22,7 @@ public class SampleAuto extends LinearOpMode {
 
         bot = new Minibot(); //init robot class (which includes robotdrive)
         bot.init(hardwareMap);
-        //bot.resetEncoders();
+        bot.resetEncoders();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -39,7 +39,7 @@ public class SampleAuto extends LinearOpMode {
         bot.setFieldXY(0.001, 0.001); //if zero NaN error
 
         Minibot.Pose[] score = new Minibot.Pose[]{ //sets your targets
-                new Minibot.Pose(0.001, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(32, 32,  90),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
         Minibot.Pose[] grab = new Minibot.Pose[]{ //sets your targets
                 new Minibot.Pose(-48, 8,  180),// (x inches (abs), y inches (abs), rotation degrees (abs))
@@ -75,33 +75,34 @@ public class SampleAuto extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             bot.scorePos();
-            followPath(score, 0.5);
-            bot.score();
-            followPath(push, 0.5);
             sleep(1000);
-            bot.grabPos();
-            followPath(grab, 0.5);
-            bot.grab();
-            followPath(score1, 0.5);
-            bot.score();
-            sleep(1000);
-            bot.grabPos();
-            followPath(grab, 0.5);
-            bot.grab();
-            followPath(score2, 0.5);
-            bot.score();
-            sleep(1000);
-            bot.grabPos();
-            followPath(grab, 0.5);
-            bot.grab();
-            followPath(score3, 0.5);
-            bot.score();
-            sleep(1000);
-            bot.grabPos();
-            followPath(grab, 0.5);
-            bot.grab();
-            followPath(score4, 0.5);
-            bot.score();
+            followPath(score, 1);
+            //bot.score();
+            //followPath(push, 0.5);
+            //sleep(1000);
+            //bot.grabPos();
+            //followPath(grab, 0.5);
+            //bot.grab();
+            //followPath(score1, 0.5);
+            //bot.score();
+            //sleep(1000);
+            //bot.grabPos();
+            //followPath(grab, 0.5);
+            //bot.grab();
+            //followPath(score2, 0.5);
+            //bot.score();
+            //sleep(1000);
+            //bot.grabPos();
+            //followPath(grab, 0.5);
+            //bot.grab();
+            //followPath(score3, 0.5);
+            //bot.score();
+            //sleep(1000);
+            //bot.grabPos();
+            //followPath(grab, 0.5);
+            //bot.grab();
+            //followPath(score4, 0.5);
+            //bot.score();
 
             //int temp = 0;
 //            bot.intakewrist("mid");
