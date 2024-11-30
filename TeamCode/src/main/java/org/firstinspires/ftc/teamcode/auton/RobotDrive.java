@@ -56,6 +56,8 @@ public class RobotDrive {
 
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
     public void resetEncoders(){
@@ -63,6 +65,10 @@ public class RobotDrive {
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void initIMU(HardwareMap hardwareMap) { //init imu

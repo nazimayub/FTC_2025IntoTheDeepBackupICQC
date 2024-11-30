@@ -77,9 +77,9 @@ public class SampleAuto extends LinearOpMode {
             bot.scorePos();
             sleep(1000);
             followPath(score, 1);
-            //bot.score();
-            //followPath(push, 0.5);
-            //sleep(1000);
+            bot.score();
+            followPath(push, 0.5);
+            sleep(1000);
             //bot.grabPos();
             //followPath(grab, 0.5);
             //bot.grab();
