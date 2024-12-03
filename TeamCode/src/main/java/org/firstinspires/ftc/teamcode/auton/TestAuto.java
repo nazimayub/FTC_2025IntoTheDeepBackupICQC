@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -30,20 +31,22 @@ public class TestAuto extends LinearOpMode{
 
     @Override
     public void runOpMode() {
+        init(hardwareMap);
         waitForStart();
         while(opModeIsActive()) {
-            drive(300, 300, 300, 300);
+            drive(150, 150, 150, 150);
+            sleep(2000);
             scorePos();
-            sleep(500);
+            sleep(2000);
             score();
-            drive(0, -600, -600, 0);
-            grabPos();
-            drive(300, -300, 300, -300);
-            grab();
-            drive(-300, 900, 300, 300);
-            scorePos();
-            sleep(500);
-            score();
+            //drive(0, -300, -300, 0);
+            //grabPos();
+            //drive(150, -150, 150, -150);
+            //grab();
+            //drive(-150, 450, 150, 150);
+            //scorePos();
+            //sleep(500);
+            //score();
 
         }
     }
@@ -53,25 +56,25 @@ public class TestAuto extends LinearOpMode{
         resetEncoders();
         while(!at(q, w, e, r, 0)){
             if(!at(q, w, e, r, 1)){
-               fl.setPower(Math.abs(fl.getCurrentPosition()-q)/(fl.getCurrentPosition-q));
+               fl.setPower((double) (fl.getCurrentPosition() - q) /Math.max(1, Math.abs(fl.getCurrentPosition()-q)));
             }
             else {
                 fl.setPower(0);
             }
             if(!at(q, w, e, r, 2)){
-                fr.setPower(Math.abs(fr.getCurrentPosition()-q)/(fr.getCurrentPosition-q));
+                fr.setPower((double) (fr.getCurrentPosition() - q) /Math.max(1, Math.abs(fr.getCurrentPosition()-q)));
             }
             else {
                 fr.setPower(0);
             }
             if(!at(q, w, e, r, 3)){
-                bl.setPower(Math.abs(bl.getCurrentPosition()-q)/(bl.getCurrentPosition-q));
+                bl.setPower((double) (bl.getCurrentPosition() - q) /Math.max(1, Math.abs(bl.getCurrentPosition()-q)));
             }
             else {
                 bl.setPower(0);
             }
             if(!at(q, w, e, r, 4)){
-                br.setPower(Math.abs(br.getCurrentPosition()-q)/(br.getCurrentPosition-q));
+                br.setPower((double) (br.getCurrentPosition() - q) /Math.max(1, Math.abs(br.getCurrentPosition()-q)));
             }
             else {
                 br.setPower(0);
@@ -80,30 +83,30 @@ public class TestAuto extends LinearOpMode{
     }
     public boolean at(int q, int w, int e, int r, int n){
         if(n==0){
-            return Math.abs(fl.getCurrentPosition()-q)<3&&Math.abs(fr.getCurrentPosition()-w)<3&&Math.abs(bl.getCurrentPosition()-e)<3&&Math.abs(br.getCurrentPosition()-r)<3;
+            return Math.abs(fl.getCurrentPosition()-q)<5&&Math.abs(fr.getCurrentPosition()-w)<5&&Math.abs(bl.getCurrentPosition()-e)<5&&Math.abs(br.getCurrentPosition()-r)<5;
         }
         else if(n==1){
-            return Math.abs(fl.getCurrentPosition()-q)<3;
+            return Math.abs(fl.getCurrentPosition()-q)<5;
         }
         else if (n==2){
-            return Math.abs(fr.getCurrentPosition()-w)<3;
+            return Math.abs(fr.getCurrentPosition()-w)<5;
         }
         else if (n==3){
-            return Math.abs(bl.getCurrentPosition()-e)<3;
+            return Math.abs(bl.getCurrentPosition()-e)<5;
         }
         else{
-            return Math.abs(br.getCurrentPosition()-r)<3;
+            return Math.abs(br.getCurrentPosition()-r)<5;
         }
     }
     public void resetEncoders(){
-        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void init(HardwareMap hardwareMap) {
         fl = initDcMotor(hardwareMap, "fl", DcMotorSimple.Direction.REVERSE);
@@ -116,15 +119,13 @@ public class TestAuto extends LinearOpMode{
         lSlide = hardwareMap.get(DcMotorEx.class, "motor1");
 
         lSlide.setDirection(DcMotorSimple.Direction.REVERSE);
-        rSlide.setZeroPowebrehavior(DcMotor.ZeroPowebrehavior.BRAKE);
-        lSlide.setZeroPowebrehavior(DcMotor.ZeroPowebrehavior.BRAKE);
+        rSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeClaw = hardwareMap.get(Servo.class, "servo3");
         outtakeClawDist = hardwareMap.get(Servo.class, "servo4");
         outtakeClawRot = hardwareMap.get(Servo.class, "servo5");
         intakeClawRot = hardwareMap.get(Servo.class, "servo1");
 
-        initIMU(hardwareMap);
-        setFieldXY(0,0);
 
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -133,19 +134,13 @@ public class TestAuto extends LinearOpMode{
     }
 
 
-    public void initIMU(HardwareMap hardwareMap) { //init imu
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters params = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        imu.initialize(params);
-    }
 
     public DcMotorEx initDcMotor(HardwareMap hardwareMap,
                                  String name,
                                  DcMotor.Direction dir) {
         DcMotorEx m = hardwareMap.get(DcMotorEx.class, name);
         m.setDirection(dir);
-        m.setZeroPowebrehavior(DcMotor.ZeroPowebrehavior.BRAKE);
+        m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         return m;
     }
 

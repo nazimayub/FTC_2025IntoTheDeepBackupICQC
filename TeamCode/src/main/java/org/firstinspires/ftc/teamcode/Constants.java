@@ -21,11 +21,11 @@ public class Constants {
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = 0.025,
+    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .93, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = 0.175,
             grab = 0.22, release = 0.5,
             distBasketPos = .619, rotBasketPos = .194,
-            distSpecimenGrab = 0.34, rotSpecimenGrab = 0.565, distSpecimenGrabFinal = 0.6,
-            distSpecimenScorePos = .45, rotSpecimenScorePos = .4, distFinalSpecimenScorePos = .4;
+            distSpecimenGrab = 0.34, rotSpecimenGrab = .715, distSpecimenGrabFinal = 0.6,
+            distSpecimenScorePos = .45, rotSpecimenScorePos = .55, distFinalSpecimenScorePos = .4;
 
 
     public static String direction = "forward";

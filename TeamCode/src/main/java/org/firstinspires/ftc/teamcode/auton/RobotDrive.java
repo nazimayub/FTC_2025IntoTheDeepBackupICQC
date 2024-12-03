@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class RobotDrive {
 
@@ -18,7 +19,7 @@ public class RobotDrive {
     static DcMotorEx rf;
     static DcMotorEx lb;
     static DcMotorEx rb;
-    static DcMotorEx intake, lSlide, rSlide;
+    static DcMotorEx intake, lSlide, rSlide, hSlide;
 
     static Servo outtakeClaw, outtakeClawDist, outtakeClawRot, intakeClawRot;
 
@@ -34,10 +35,10 @@ public class RobotDrive {
     double headingPrev = 0;
 
     public void init(HardwareMap hardwareMap) {
-        lf = initDcMotor(hardwareMap, "fl", DcMotorSimple.Direction.REVERSE);
-        rf = initDcMotor(hardwareMap, "fr", DcMotorSimple.Direction.FORWARD);
-        lb = initDcMotor(hardwareMap, "bl", DcMotorSimple.Direction.REVERSE);
-        rb = initDcMotor(hardwareMap, "br", DcMotorSimple.Direction.FORWARD);
+        rf = initDcMotor(hardwareMap, "fl", DcMotorSimple.Direction.REVERSE);
+        lf = initDcMotor(hardwareMap, "fr", DcMotorSimple.Direction.FORWARD);
+        rb = initDcMotor(hardwareMap, "bl", DcMotorSimple.Direction.REVERSE);
+        lb = initDcMotor(hardwareMap, "br", DcMotorSimple.Direction.FORWARD);
         intake = hardwareMap.get(DcMotorEx.class, "motor4");
 
         rSlide = hardwareMap.get(DcMotorEx.class, "motor2");
@@ -50,6 +51,8 @@ public class RobotDrive {
         outtakeClawDist = hardwareMap.get(Servo.class, "servo4");
         outtakeClawRot = hardwareMap.get(Servo.class, "servo5");
         intakeClawRot = hardwareMap.get(Servo.class, "servo1");
+
+        hSlide = hardwareMap.get(DcMotorEx.class, "motor3");
 
         initIMU(hardwareMap);
         setFieldXY(0,0);
@@ -264,15 +267,20 @@ public class RobotDrive {
 
         public static void scorePos(){
             outtakeClaw.setPosition(.25);
-            outtakeClawDist.setPosition(.619);
-            outtakeClawRot.setPosition(0.025);
-            setPos(250);
+            outtakeClawDist.setPosition(.625);
+            outtakeClawRot.setPosition(0.424);
+            setPos(200);
         }
 
         public static void score(){
             outtakeClaw.setPosition(.25);
             outtakeClawDist.setPosition(.45);
             outtakeClawRot.setPosition(0.4);
+            ElapsedTime t = new ElapsedTime();
+            while(t.milliseconds()<1000){
+
+            }
+
             setPos(0);
         }
 
@@ -283,6 +291,17 @@ public class RobotDrive {
             }
             lSlide.setPower(0.2);
             rSlide.setPower(0.2);
+        }
+        public static void scoreBasket(){
+            setPos(1500);
+            outtakeClawDist.setPosition(.6);
+            outtakeClawRot.setPosition(.175);
+            ElapsedTime t = new ElapsedTime();
+            while(t.milliseconds()<500){
+
+            }
+            outtakeClaw.setPosition(.5);
+
         }
 
     }

@@ -35,15 +35,21 @@ public class SampleAuto extends LinearOpMode {
         waitForStart();
 
         // bot starts zeroed out. moves are relative to starting pos
-        bot.setHeading(0.001); //if zero NaN error
+        bot.setHeading(270); //if zero NaN error
         bot.setFieldXY(0.001, 0.001); //if zero NaN error
 
         Minibot.Pose[] score = new Minibot.Pose[]{ //sets your targets
-                new Minibot.Pose(32, 32,  90),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(0, 50,  0),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
         Minibot.Pose[] grab = new Minibot.Pose[]{ //sets your targets
-                new Minibot.Pose(-48, 8,  180),// (x inches (abs), y inches (abs), rotation degrees (abs))
+                new Minibot.Pose(10, 6,  180),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
+
+        Minibot.Pose[] scorePreload = new Minibot.Pose[]{ //sets your targets
+                new Minibot.Pose(0, -52,  0),// (x inches (abs), y inches (abs), rotation degrees (abs))
+        };
+        //Unused Poses
+        /*
         Minibot.Pose[] score1 = new Minibot.Pose[]{ //sets your targets
                 new Minibot.Pose(2, 32,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
@@ -70,16 +76,19 @@ public class SampleAuto extends LinearOpMode {
                 new Minibot.Pose(-56, 12,  0.001),// (x inches (abs), y inches (abs), rotation degrees (abs))
         };
 
+         */
+
 
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            bot.scorePos();
+            followPath(scorePreload, .5);
             sleep(1000);
-            followPath(score, 1);
+            bot.scoreBasket();
+            sleep(1000);
             bot.score();
-            followPath(push, 0.5);
-            sleep(1000);
+            //followPath(push, 0.6);
+            //sleep(1000);
             //bot.grabPos();
             //followPath(grab, 0.5);
             //bot.grab();

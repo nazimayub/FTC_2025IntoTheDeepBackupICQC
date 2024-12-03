@@ -53,7 +53,7 @@ public class ForwardZeroPowerAccelerationTuner extends OpMode {
 
     private PoseUpdater poseUpdater;
 
-    public static double VELOCITY = 1;
+    public static double VELOCITY = .0001;
 
     private double previousVelocity;
 
@@ -154,7 +154,7 @@ public class ForwardZeroPowerAccelerationTuner extends OpMode {
             for (Double acceleration : accelerations) {
                 average += acceleration;
             }
-            average /= (double) accelerations.size();
+            average /= accelerations.size();
 
             telemetryA.addData("forward zero power acceleration (deceleration):", average);
             telemetryA.update();
