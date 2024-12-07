@@ -25,28 +25,28 @@ public class ServoTuning extends OpMode {
     @Override
     public void loop() {
         if(gamepad1.y){
-            s1+=0.01;
+            s1+=0.001;
         }
         else if (gamepad1.b){
-            s1-=0.01;
+            s1-=0.001;
         }
         if(gamepad1.x){
-            s3+=0.01;
+            s3+=0.001;
         }
         else if (gamepad1.a){
-            s3-=0.01;
+            s3-=0.001;
         }
         if(gamepad1.right_bumper){
-            s4+=0.01;
+            s4+=0.001;
         }
         else if (gamepad1.left_bumper){
-            s4-=0.01;
+            s4-=0.001;
         }
         if(gamepad1.right_stick_button){
-            s5+=0.01;
+            s5+=0.001;
         }
         else if (gamepad1.left_stick_button){
-            s5-=0.01;
+            s5-=0.001;
         }
 
         s1 = Math.max(Math.min(1, s1), 0);
