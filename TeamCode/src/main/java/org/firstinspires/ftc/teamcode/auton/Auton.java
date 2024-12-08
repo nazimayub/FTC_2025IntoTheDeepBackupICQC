@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.*;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
@@ -10,7 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
-
 public class Auton {
     public static Drive drive;
     public static ServoSubsystem intakeClaw, outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
