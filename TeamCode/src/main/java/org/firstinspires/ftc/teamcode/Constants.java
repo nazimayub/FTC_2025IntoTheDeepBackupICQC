@@ -17,15 +17,15 @@ public class Constants {
             imu = "imu", otos = "sensor_otos";
 
     //Intake
-    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .245, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .235, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .933, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = 0.198,
+    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .931, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .0399,
             grab = 0.22, release = 0.5,
             distBasketPos = .619, rotBasketPos = .194,
-            distSpecimenGrab = 0.34, rotSpecimenGrab = .715, distSpecimenGrabFinal = 0.6,
-            distSpecimenScorePos = .45, rotSpecimenScorePos = .55, distFinalSpecimenScorePos = .4;
+            distSpecimenGrab = .339, rotSpecimenGrab = .755, distSpecimenGrabFinal = 0.6,
+            distSpecimenScorePos = .599, rotSpecimenScorePos = .44, distFinalSpecimenScorePos = .4;
 
 
     public static String direction = "forward";

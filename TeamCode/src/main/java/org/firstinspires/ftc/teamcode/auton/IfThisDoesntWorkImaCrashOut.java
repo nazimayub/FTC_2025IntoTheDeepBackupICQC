@@ -86,7 +86,8 @@ public class IfThisDoesntWorkImaCrashOut extends LinearOpMode{
         rSlide = hardwareMap.get(DcMotorEx.class, "motor2");
         lSlide = hardwareMap.get(DcMotorEx.class, "motor1");
 
-        lSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        lSlide.setDirection(DcMotorSimple.Direction.FORWARD);
+        rSlide.setDirection(DcMotorSimple.Direction.REVERSE);
         rSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeClaw = hardwareMap.get(Servo.class, "servo3");
@@ -262,7 +263,7 @@ public class IfThisDoesntWorkImaCrashOut extends LinearOpMode{
         outtakeClaw.setPosition(.25);
         outtakeClawDist.setPosition(.619);
         outtakeClawRot.setPosition(0.025);
-        setPos(250);
+        setPos(540);
     }
 
     public static void score(){

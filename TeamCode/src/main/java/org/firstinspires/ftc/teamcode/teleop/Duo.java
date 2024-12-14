@@ -91,7 +91,12 @@ public class Duo extends CommandOpMode {
 
 
         //Basket Score
-        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(new SetPIDFSlideArmCommand(slide, 2500));
+        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(
+                new SequentialCommandGroup(
+                        new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
+                        new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
+                        new SetPIDFSlideArmCommand(slide, 2750)
+                ));
 
         //Release in Basket
         new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Constants.release));
@@ -130,6 +135,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Constants.release)
         ));
 
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SetPIDFSlideArmCommand(slide, 2400));
 
 
     }

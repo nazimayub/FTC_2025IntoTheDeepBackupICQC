@@ -12,7 +12,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private final DcMotorEx intake;
     public IntakeSubsystem(HardwareMap h, String name) {
         this.intake = h.get(DcMotorEx.class, name);
-        this.intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void set(double speed) {
         this.intake.setPower(speed);
