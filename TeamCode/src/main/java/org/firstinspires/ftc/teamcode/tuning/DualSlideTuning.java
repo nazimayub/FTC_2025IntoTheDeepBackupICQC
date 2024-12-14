@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp
 public class DualSlideTuning extends OpMode {
 
-    public static double p = 0.15, i = 0, d = 0.0;
-    public static double f = 0.01;
+    public static double p = 0.005, i = 0, d = 0.0;
+    public static double f = 0.1;
     public static double target = 500;
 
     private PIDController controller1, controller2;
@@ -28,8 +28,8 @@ public class DualSlideTuning extends OpMode {
         motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
 
-        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);

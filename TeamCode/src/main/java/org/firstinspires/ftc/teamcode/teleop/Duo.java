@@ -37,7 +37,7 @@ public class Duo extends CommandOpMode {
         intake = new IntakeSubsystem(hardwareMap, Constants.intake);
         drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0, 0.0007, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, 0.06, 0,  0.0004, 0.2, 0.06, 0, 0.0004, 0.2);
+        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
 //      telemetrySubsystem = new TelemetrySubsystem(log,telemetry, FtcDashboard.getInstance());
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
@@ -91,7 +91,7 @@ public class Duo extends CommandOpMode {
 
 
         //Basket Score
-        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(new SetPIDFSlideArmCommand(slide, 1500));
+        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(new SetPIDFSlideArmCommand(slide, 2500));
 
         //Release in Basket
         new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Constants.release));
@@ -121,14 +121,13 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Constants.grab),
                 new ServoCommand(outtakeClawDist, Constants.distBasketPos),
                 new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
-                new SetPIDFSlideArmCommand(slide, 250)
+                new SetPIDFSlideArmCommand(slide, 525)
         ));
 
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, Constants.grab),
-                new ServoCommand(outtakeClawDist, Constants.distSpecimenScorePos),
-                new ServoCommand(outtakeClawRot, Constants.rotSpecimenScorePos),
-                new SlideResetCommand(slide, vertical)
+                new ServoCommand(outtakeClawDist, Constants.distBasketPos-0.1),
+                new SlideResetCommand(slide, vertical),
+                new ServoCommand(outtakeClaw, Constants.release)
         ));
 
 

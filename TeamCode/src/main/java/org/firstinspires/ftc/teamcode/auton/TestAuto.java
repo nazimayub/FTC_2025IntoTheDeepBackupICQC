@@ -34,11 +34,11 @@ public class TestAuto extends LinearOpMode{
         init(hardwareMap);
         waitForStart();
         while(opModeIsActive()) {
-            drive(150, 150, 150, 150);
-            sleep(2000);
-            scorePos();
-            sleep(2000);
-            score();
+            drive(5, 5, 5, 5);
+            //sleep(2000);
+            //scorePos();
+            //sleep(2000);
+            //score();
             //drive(0, -300, -300, 0);
             //grabPos();
             //drive(150, -150, 150, -150);
