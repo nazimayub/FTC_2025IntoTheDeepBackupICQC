@@ -39,7 +39,7 @@ public class IfThisDoesntWorkImaCrashOut extends LinearOpMode{
         init(hardwareMap);
         waitForStart();
         while(opModeIsActive()) {
-            drive(750);
+            drive(715);
             scorePos();
             sleep(1000);
             score();

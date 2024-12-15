@@ -21,7 +21,7 @@ public class Constants {
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .931, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .0399,
+    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .931, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .0399,
             grab = 0.22, release = 0.5,
             distBasketPos = .619, rotBasketPos = .194,
             distSpecimenGrab = .339, rotSpecimenGrab = .755, distSpecimenGrabFinal = 0.6,
