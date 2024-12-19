@@ -79,7 +79,7 @@ public class PinpointLocalizer extends Localizer {
         //TODO: Set encoder directions
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
-        resetPinpoint();;
+        resetPinpoint();
 
         setStartPose(setStartPose);
         totalHeading = 0;
