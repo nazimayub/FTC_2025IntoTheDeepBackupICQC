@@ -268,10 +268,10 @@ of imports in gradle.
 To re-enable it, go to `RoadRunnerEncoder.java`, `RoadRunnerThreeWheelLocalizer.java`, and `RRToPedroThreeWheelLocalizer.java` 
 and hit `ctrl` + `a` to select everything within the files. Then, press `ctrl` + `/` to uncomment the code.
 
-Afterwards, go to `build.gradle` file under the `teamcode` folder and add the following dependencies:
+Afterwards, go to `build.gradle` and `build.dependencies.gradle` file  under the `teamcode` folder and add the following dependencies:
 ```
 implementation 'org.apache.commons:commons-math3:3.6.1'
-implementation 'com.acmerobotics.com.roadrunner:core:0.5.6'
+implementation 'com.acmerobotics.roadrunner:core:0.5.6'
 ```
 
 After that, you should be good to go. If you want to use a different localizer from Road Runner, then

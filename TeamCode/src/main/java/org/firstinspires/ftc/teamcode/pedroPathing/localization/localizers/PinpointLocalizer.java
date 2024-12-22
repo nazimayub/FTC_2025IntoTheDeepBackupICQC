@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Localizer;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
@@ -66,7 +67,7 @@ public class PinpointLocalizer extends Localizer {
     public PinpointLocalizer(HardwareMap map, Pose setStartPose){
         hardwareMap = map;
         // TODO: replace this with your Pinpoint port
-        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odo = hardwareMap.get(GoBildaPinpointDriver.class, Constants.odo);
 
         //This uses mm, to use inches divide these numbers by 25.4
         odo.setOffsets(-84.0, -168.0); //these are tuned for 3110-0002-0001 Product Insight #1

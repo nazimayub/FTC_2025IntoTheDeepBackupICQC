@@ -14,7 +14,7 @@ public class Constants {
     public static final String fr = "fr", fl = "fl", br = "br", bl = "bl",
             lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4",
             intakeRot = "servo1", intakeDist = "servo0", outtakeClaw = "servo3", outtakeRot = "servo5", outtakeDist = "servo4",
-            imu = "imu", otos = "sensor_otos";
+            imu = "imu", odo = "odo";
 
     //Intake
     public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .235, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
