@@ -143,12 +143,12 @@ public class Auton extends CommandOpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(generatedPath);
-                new SequentialCommandGroup(
+                schedule(new SequentialCommandGroup(
                         new ServoCommand(outtakeClaw, Constants.grab),
                         new ServoCommand(outtakeClawDist, Constants.distBasketPos),
                         new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
                         new SetPIDFSlideArmCommand(slide, 525)
-                );
+                ));
                 pathState++;
                 break;
             case 1:

@@ -19,7 +19,7 @@ public class Duo extends CommandOpMode {
     SimpleLogger log;
 
     public static Drive drive;
-    public static ServoSubsystem intakeClaw, outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
+    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
     public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vertical, horizontal;
     public static PIDFSlideSubsystem slide;
