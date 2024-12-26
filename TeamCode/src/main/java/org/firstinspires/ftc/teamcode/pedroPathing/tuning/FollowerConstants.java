@@ -87,7 +87,7 @@ public class FollowerConstants {
     public static double mass = 12.7;
 
     // Centripetal force to power scaling
-    public static double centripetalScaling = 0.00000000000000000001;
+    public static double centripetalScaling = 0.000000000000000000000001;
 
 
     // Acceleration of the drivetrain when power is cut in inches/second^2 (should be negative)
