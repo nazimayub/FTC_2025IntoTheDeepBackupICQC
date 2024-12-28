@@ -12,7 +12,7 @@ public class Constants {
 
     //Names for motors and servos
     public static final String fr = "fr", fl = "fl", br = "br", bl = "bl",
-            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4",
+            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4", vLimit = "vSlide", hLimit = "hSlide",
             intakeRot = "servo1", intakeDist = "servo0", outtakeClaw = "servo3", outtakeRot = "servo5", outtakeDist = "servo4",
             imu = "imu", odo = "odo";
 
