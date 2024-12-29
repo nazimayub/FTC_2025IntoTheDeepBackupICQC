@@ -28,19 +28,28 @@ public class Auton extends CommandOpMode {
     private Follower follower;
     private Timer pathTimer;
     private int pathState;
-    private PathChain scorePreloadPath, moveToSampsPath, pushSampsToHPPath;
+    private PathChain scorePreloadPath, moveFromFirstSpecimenScorePath, strafeToSampsPath,
+            moveToSampsPath, moveToFirstSampPath, pushFirstSampPath, moveToSecondSampPath,
+            strafeToSecondSampPath, pushSecondSampPath, moveToThirdSampPath, strafeToThirdSampPath,
+            pushThirdSampPath;
 
     //Poses
-    private final Pose startPose = new Pose(0.504, 57.802, Point.CARTESIAN);
-    private final Pose scorePreloadPose = new Pose(30.319, 57.802, Point.CARTESIAN);
-    private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Point.CARTESIAN);
-    private final Pose strafeToSampsPose = new Pose(23.319, 17.802, Point.CARTESIAN);
-    private final Pose moveToFirstSampPose = new Pose(60.319, 5.802, Point.CARTESIAN);
-    private final Pose pushFirstSampPose = new Pose(5.00, 5.802, Point.CARTESIAN);
-    private final Pose moveToSecondSampPose = new Pose(60.319, 3.802, Point.CARTESIAN);
-    private final Pose pushSecondSampPose = new Pose(5.00, 3.802, Point.CARTESIAN);
-    private final Pose moveToThirdSampPose = new Pose(60.319, 0.802, Point.CARTESIAN);
-    private final Pose pushThirdSampPose = new Pose(5.00, 0.802, Point.CARTESIAN);
+    private final Pose startPose = new Pose(0.504, 57.802, Math.toRadians(0));
+    private final Pose scorePreloadPose = new Pose(30.319, 57.802, Math.toRadians(0));
+    private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Math.toRadians(0));
+    private final Pose strafeToSampsPose = new Pose(23.319, 17.802, Math.toRadians(0));
+    private final Pose moveToSampsPose = new Pose(60.319, 17.802, Math.toRadians(0));
+
+    private final Pose moveToFirstSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
+    private final Pose pushFirstSampPose = new Pose(5.00, 5.802, Math.toRadians(0));
+
+    private final Pose moveToSecondSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
+    private final Pose strafeToSecondSampPose = new Pose(60.319, 2.802, Math.toRadians(0));
+    private final Pose pushSecondSampPose = new Pose(5.00, 2.802, Math.toRadians(0));
+
+    private final Pose moveToThirdSampPose = new Pose(60.319, 2.802, Math.toRadians(0));
+    private final Pose strafeToThirdSampPose = new Pose(60.319, 0.802, Math.toRadians(0));
+    private final Pose pushThirdSampPose = new Pose(5.00, 0.802, Math.toRadians(0));
 
     @Override
     public void initialize() {
@@ -81,33 +90,65 @@ public class Auton extends CommandOpMode {
     }
 
     public void pathing() {
-        PathBuilder scorePreload = follower.pathBuilder()
+        scorePreloadPath = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(startPose), new Point(scorePreloadPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0));
-        scorePreloadPath = scorePreload.build();
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePreloadPose.getHeading())
+                .build();
 
-        PathBuilder moveToSamps = follower.pathBuilder()
+        moveFromFirstSpecimenScorePath = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(scorePreloadPose), new Point(moveFromScorePreloadPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setLinearHeadingInterpolation(scorePreloadPose.getHeading(), moveFromScorePreloadPose.getHeading())
+                .build();
+
+        strafeToSampsPath = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(moveFromScorePreloadPose), new Point(strafeToSampsPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(new BezierLine(new Point(strafeToSampsPose), new Point(moveToFirstSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0));
-        moveToSampsPath = moveToSamps.build();
+                .setLinearHeadingInterpolation(moveFromScorePreloadPose.getHeading(), strafeToSampsPose.getHeading())
+                .build();
 
-        PathBuilder pushSampsToHP = follower.pathBuilder()
+        moveToSampsPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToSampsPose), new Point(moveToSampsPose)))
+                .setLinearHeadingInterpolation(strafeToSampsPose.getHeading(), moveToSampsPose.getHeading())
+                .build();
+
+        moveToFirstSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToSampsPose), new Point(moveToFirstSampPose)))
+                .setLinearHeadingInterpolation(moveToSampsPose.getHeading(), moveToFirstSampPose.getHeading())
+                .build();
+
+        pushFirstSampPath = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(moveToFirstSampPose), new Point(pushFirstSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(new BezierLine(new Point(pushFirstSampPose), new Point(moveToSecondSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(new BezierLine(new Point(moveToSecondSampPose), new Point(pushSecondSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addPath(new BezierLine(new Point(moveToThirdSampPose), new Point(pushThirdSampPose)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0));
-        pushSampsToHPPath = pushSampsToHP.build();
+                .setLinearHeadingInterpolation(moveToFirstSampPose.getHeading(), pushFirstSampPose.getHeading())
+                .build();
 
+        moveToSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(pushFirstSampPose), new Point(moveToSecondSampPose)))
+                .setLinearHeadingInterpolation(pushFirstSampPose.getHeading(), moveToSecondSampPose.getHeading())
+                .build();
+
+        strafeToSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToSecondSampPose), new Point(strafeToSecondSampPose)))
+                .setLinearHeadingInterpolation(moveToSecondSampPose.getHeading(), strafeToSecondSampPose.getHeading())
+                .build();
+
+        pushSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToSecondSampPose), new Point(pushSecondSampPose)))
+                .setLinearHeadingInterpolation(strafeToSecondSampPose.getHeading(), pushSecondSampPose.getHeading())
+                .build();
+//
+//        moveToThirdSampPath = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
+//                .setLinearHeadingInterpolation(pushSecondSampPose.getHeading(), moveToThirdSampPose.getHeading())
+//                .build();
+//
+//        strafeToThirdSampPath = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(moveToThirdSampPose), new Point(strafeToThirdSampPose)))
+//                .setLinearHeadingInterpolation(moveToThirdSampPose.getHeading(), strafeToThirdSampPose.getHeading())
+//                .build();
+//
+//       pushThirdSampPath = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(strafeToThirdSampPose), new Point(pushThirdSampPose)))
+//                .setLinearHeadingInterpolation(strafeToThirdSampPose.getHeading(), pushThirdSampPose.getHeading())
+//                .build();
     }
 
     public void setPathState(int num){
@@ -117,7 +158,7 @@ public class Auton extends CommandOpMode {
     public void updatePath() {
         switch (pathState) {
             case 0:
-                follower.followPath(scorePreloadPath);
+                follower.followPath(scorePreloadPath, true);
 //                schedule(new SequentialCommandGroup(
 //                        new ServoCommand(outtakeClaw, Constants.grab),
 //                        new ServoCommand(outtakeClawDist, Constants.distBasketPos),
@@ -126,20 +167,79 @@ public class Auton extends CommandOpMode {
 //                ));
                 setPathState(1);
                 break;
+
             case 1:
-                if (follower.getPose().getX() > (scorePreloadPose.getX() - 1) && follower.getPose().getY() > (scorePreloadPose.getY() - 1)) {
-                    follower.followPath(moveToSampsPath);
+                if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
+                    follower.followPath(moveFromFirstSpecimenScorePath, true);
                     setPathState(2);
                 }
                 break;
+
             case 2:
-                if (follower.getPose().getX() > (moveToFirstSampPose.getX() - 1) && follower.getPose().getY() > (moveToFirstSampPose.getY() - 1)) {
-                    follower.followPath(pushSampsToHPPath);
+                if (follower.getPose().getX() < (moveFromScorePreloadPose.getX() - 1)) {
+                    follower.followPath(strafeToSampsPath, true);
                     setPathState(3);
                 }
                 break;
+
             case 3:
+                if (follower.getPose().getX() > (strafeToSampsPose.getX() - 1)) {
+                    follower.followPath(moveToSampsPath, true);
+                    setPathState(4);
+                }
                 break;
+
+            case 4:
+                if (follower.getPose().getX() > (moveToSampsPose.getX() - 1)) {
+                    follower.followPath(moveToFirstSampPath, true);
+                    setPathState(5);
+                }
+                break;
+
+            case 5:
+                if (follower.getPose().getY() < (moveToFirstSampPose.getY() - 1)) {
+                    follower.followPath(pushFirstSampPath, true);
+                    setPathState(6);
+                }
+                break;
+
+            case 6:
+                if (follower.getPose().getX() < (pushFirstSampPose.getX() - 1)) {
+                    follower.followPath(moveToSecondSampPath, true);
+                    setPathState(7);
+                }
+                break;
+
+            case 7:
+                if (follower.getPose().getX() > (moveToSecondSampPose.getX() - 1)) {
+                    follower.followPath(pushSecondSampPath, true);
+                    setPathState(8);
+                }
+                break;
+
+            case 8:
+                if (follower.getPose().getX() < (pushSecondSampPose.getX() - 1)) {
+                    //follower.followPath(moveToThirdSampPath, true);
+                    setPathState(9);
+                }
+                break;
+
+//            case 9:
+//                if (follower.getPose().getX() > (moveToThirdSampPose.getX() - 1) && follower.getPose().getY() > (moveToThirdSampPose.getY() - 1)) {
+//                    follower.followPath(strafeToThirdSampPath, true);
+//                    setPathState(10);
+//                }
+//                break;
+//
+//            case 10:
+//                if (follower.getPose().getX() > (strafeToThirdSampPose.getX() - 1) && follower.getPose().getY() > (strafeToThirdSampPose.getY() - 1)) {
+//                    follower.followPath(pushThirdSampPath, true);
+//                    setPathState(11);
+//                }
+//                break;
+//            case 11:
+//                break;
+
         }
     }
 }
