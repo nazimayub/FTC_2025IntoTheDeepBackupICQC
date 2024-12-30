@@ -1022,4 +1022,10 @@ public class Follower {
     private void resetIMU() throws InterruptedException {
         poseUpdater.resetIMU();
     }
+
+    public boolean isAtTarget(Pose targetPose, double thresholdDist, double thresholdDeg) {
+        return Math.hypot(getPose().getX() - targetPose.getX(), getPose().getY() - targetPose.getY()) <= thresholdDist &&
+                Math.abs(getPose().getHeading() - targetPose.getHeading()) <= Math.toRadians(thresholdDeg);
+    }
+
 }

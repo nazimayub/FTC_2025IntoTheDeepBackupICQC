@@ -27,6 +27,8 @@ public class Constants {
             distSpecimenGrab = .339, rotSpecimenGrab = .755, distSpecimenGrabFinal = 0.6,
             distSpecimenScorePos = .599, rotSpecimenScorePos = .44, distFinalSpecimenScorePos = .4;
 
+    //Auto
+    public static double thresholdDist = 1.0, thresholdDeg = 5.0;
 
     public static String direction = "forward";
     public static final double tickInInch = 590/24.0, lateralTickInInch = 540/24.0, tickInDeg = 1600/360.0;

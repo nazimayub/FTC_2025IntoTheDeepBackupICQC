@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class AutonBackup extends LinearOpMode{
+public class AutoBackup extends LinearOpMode{
 
     static DcMotorEx fl;
     static DcMotorEx fr;
