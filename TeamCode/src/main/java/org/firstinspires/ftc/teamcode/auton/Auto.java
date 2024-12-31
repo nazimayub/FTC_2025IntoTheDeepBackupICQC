@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.commands.ServoCommand;
+import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
@@ -47,7 +52,7 @@ public class Auto extends CommandOpMode {
     private final Pose pushSecondSampPose = new Pose(5.00, 2.802, Math.toRadians(0));
 
     private final Pose moveToThirdSampPose = new Pose(60.319, 2.802, Math.toRadians(0));
-    private final Pose strafeToThirdSampPose = new Pose(60.319, 0.802, Math.toRadians(0));
+    private final Pose strafeToThirdSampPose = new Pose(60.319, 0.802, Math.toRadians(180));
     private final Pose pushThirdSampPose = new Pose(5.00, 0.802, Math.toRadians(0));
 
     @Override
@@ -133,7 +138,7 @@ public class Auto extends CommandOpMode {
                 .addPath(new BezierLine(new Point(strafeToSecondSampPose), new Point(pushSecondSampPose)))
                 .setLinearHeadingInterpolation(strafeToSecondSampPose.getHeading(), pushSecondSampPose.getHeading())
                 .build();
-//
+
 //        moveToThirdSampPath = follower.pathBuilder()
 //                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
 //                .setLinearHeadingInterpolation(pushSecondSampPose.getHeading(), moveToThirdSampPose.getHeading())
@@ -158,6 +163,15 @@ public class Auto extends CommandOpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(scorePreloadPath, true);
+
+                schedule(
+                        new SequentialCommandGroup(
+                            new ServoCommand(outtakeClaw, Constants.grab),
+                            new ServoCommand(outtakeClawDist, Constants.distBasketPos),
+                            new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
+                            new SetPIDFSlideArmCommand(slide, 525)
+                ));
+
                 if (follower.isAtTarget(scorePreloadPose, Constants.thresholdDist, Constants.thresholdDeg)) {
                     setPathState(1);
                 }
