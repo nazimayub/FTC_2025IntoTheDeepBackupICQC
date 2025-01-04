@@ -1,32 +1,26 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.commands.ServoCommand;
-import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
-import org.firstinspires.ftc.teamcode.subsystems.*;
 
 @Autonomous
-public class Auto extends CommandOpMode {
-    public static PIDFSlideSubsystem slide;
-    public static ServoSubsystem intakeClaw, outtakeClawRot, outtakeClaw, intakeClawDist,
-            intakeClawRot, outtakeClawDist, blocker;
-    public static IntakeSubsystem intake;
-    public static LimitSwitchSubsystem vertical, horizontal;
-    public static PIDFSingleSlideSubsystem hSlide;
-    public static WaitSubsystem pause;
+public class Auto extends OpMode {
+    public static DcMotorEx lSlide;
+    public static DcMotorEx rSlide;
+    public static Servo outtakeClawDist;
+    public static Servo outtakeClawRot;
+    public static Servo outtakeClaw;
 
     //Paths
     private Follower follower;
@@ -45,45 +39,38 @@ public class Auto extends CommandOpMode {
     private final Pose moveToSampsPose = new Pose(60.319, 17.802, Math.toRadians(0));
 
     private final Pose moveToFirstSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
-    private final Pose pushFirstSampPose = new Pose(5.00, 5.802, Math.toRadians(0));
+    private final Pose pushFirstSampPose = new Pose(11.00, 5.802, Math.toRadians(0));
 
     private final Pose moveToSecondSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
-    private final Pose strafeToSecondSampPose = new Pose(60.319, 2.802, Math.toRadians(0));
-    private final Pose pushSecondSampPose = new Pose(5.00, 2.802, Math.toRadians(0));
+    private final Pose strafeToSecondSampPose = new Pose(60.319, -2.802, Math.toRadians(0));
+    private final Pose pushSecondSampPose = new Pose(11.00, -2.802, Math.toRadians(0));
 
-    private final Pose moveToThirdSampPose = new Pose(60.319, 2.802, Math.toRadians(0));
-    private final Pose strafeToThirdSampPose = new Pose(60.319, 0.802, Math.toRadians(180));
-    private final Pose pushThirdSampPose = new Pose(5.00, 0.802, Math.toRadians(0));
+    private final Pose moveToThirdSampPose = new Pose(60.319, -2.802, Math.toRadians(180));
+    private final Pose strafeToThirdSampPose = new Pose(60.319, -19, Math.toRadians(180));
+    private final Pose pushThirdSampPose = new Pose(5.00, -19, Math.toRadians(180));
 
     @Override
-    public void initialize() {
+    public void init() {
         pathTimer = new Timer();
         pathTimer.resetTimer();
         follower = new Follower(hardwareMap);
-        intake = new IntakeSubsystem(hardwareMap, Constants.intake);
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0, 0.0007, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide,
-                DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD,
-                0.005, 0, 0.0, 0.1, 0.005, 0, 0.0, 0.1);
-        pause = new WaitSubsystem();
-        outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeDist);
-        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeDist);
-        vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
-        horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
-        blocker = new ServoSubsystem(hardwareMap, "servo6");
-        outtakeClawRot = new ServoSubsystem(hardwareMap, Constants.outtakeRot);
+
+        lSlide = hardwareMap.get(DcMotorEx.class, Constants.lSlide);
+        rSlide = hardwareMap.get(DcMotorEx.class, Constants.rSlide);
+        outtakeClawDist = hardwareMap.get(Servo.class, Constants.outtakeDist);
+        outtakeClawRot = hardwareMap.get(Servo.class, Constants.outtakeRot);
+        outtakeClaw = hardwareMap.get(Servo.class, Constants.outtakeClaw);
+
+        lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         follower.setStartingPose(startPose);
-
-        pathing();
-
+        path();
         pathState = 0;
     }
 
     @Override
-    public void run() {
+    public void loop() {
         follower.update();
         updatePath();
         telemetry.addData("Path State", pathState);
@@ -93,7 +80,7 @@ public class Auto extends CommandOpMode {
         telemetry.update();
     }
 
-    public void pathing() {
+    public void path() {
         scorePreloadPath = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(startPose), new Point(scorePreloadPose)))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePreloadPose.getHeading())
@@ -139,23 +126,23 @@ public class Auto extends CommandOpMode {
                 .setLinearHeadingInterpolation(strafeToSecondSampPose.getHeading(), pushSecondSampPose.getHeading())
                 .build();
 
-//        moveToThirdSampPath = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
-//                .setLinearHeadingInterpolation(pushSecondSampPose.getHeading(), moveToThirdSampPose.getHeading())
-//                .build();
-//
-//        strafeToThirdSampPath = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(moveToThirdSampPose), new Point(strafeToThirdSampPose)))
-//                .setLinearHeadingInterpolation(moveToThirdSampPose.getHeading(), strafeToThirdSampPose.getHeading())
-//                .build();
-//
-//       pushThirdSampPath = follower.pathBuilder()
-//                .addPath(new BezierLine(new Point(strafeToThirdSampPose), new Point(pushThirdSampPose)))
-//                .setLinearHeadingInterpolation(strafeToThirdSampPose.getHeading(), pushThirdSampPose.getHeading())
-//                .build();
+        moveToThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
+                .setLinearHeadingInterpolation(pushSecondSampPose.getHeading(), moveToThirdSampPose.getHeading())
+                .build();
+
+        strafeToThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToThirdSampPose), new Point(strafeToThirdSampPose)))
+                .setConstantHeadingInterpolation(strafeToThirdSampPose.getHeading())
+                .build();
+
+       pushThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToThirdSampPose), new Point(pushThirdSampPose)))
+                .setConstantHeadingInterpolation(pushThirdSampPose.getHeading())
+                .build();
     }
 
-    public void setPathState(int num){
+    public void setPathState(int num) {
         pathState = num;
     }
 
@@ -163,175 +150,120 @@ public class Auto extends CommandOpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(scorePreloadPath, true);
-
-                schedule(
-                        new SequentialCommandGroup(
-                            new ServoCommand(outtakeClaw, Constants.grab),
-                            new ServoCommand(outtakeClawDist, Constants.distBasketPos),
-                            new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
-                            new SetPIDFSlideArmCommand(slide, 525)
-                ));
-
-                if (follower.isAtTarget(scorePreloadPose, Constants.thresholdDist, Constants.thresholdDeg)) {
-                    setPathState(1);
-                }
+                scoreSpecimen();
+                setPathState(1);
                 break;
 
             case 1:
-                follower.followPath(moveFromFirstSpecimenScorePath, true);
-                if (follower.isAtTarget(moveFromScorePreloadPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
+                    follower.followPath(moveFromFirstSpecimenScorePath, true);
                     setPathState(2);
                 }
                 break;
 
             case 2:
-                follower.followPath(strafeToSampsPath, true);
-                if (follower.isAtTarget(strafeToSampsPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getX() < (moveFromScorePreloadPose.getX() + 1)) {
+                    follower.followPath(strafeToSampsPath, true);
                     setPathState(3);
                 }
                 break;
 
             case 3:
-                follower.followPath(moveToSampsPath, true);
-                if (follower.isAtTarget(moveToSampsPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getY() < (strafeToSampsPose.getY() + 1)) {
+                    follower.followPath(moveToSampsPath, true);
                     setPathState(4);
                 }
                 break;
 
             case 4:
-                follower.followPath(moveToFirstSampPath, true);
-                if (follower.isAtTarget(moveToFirstSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getX() > (moveToSampsPose.getX() - 1)) {
+                    follower.followPath(moveToFirstSampPath, true);
                     setPathState(5);
                 }
                 break;
 
             case 5:
-                follower.followPath(pushFirstSampPath, true);
-                if (follower.isAtTarget(pushFirstSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getY() < (moveToFirstSampPose.getY() + 1)) {
+                    follower.followPath(pushFirstSampPath, true);
                     setPathState(6);
                 }
                 break;
 
             case 6:
-                follower.followPath(moveToSecondSampPath, true);
-                if (follower.isAtTarget(moveToSecondSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getX() < (pushFirstSampPose.getX() + 1)) {
+                    follower.followPath(moveToSecondSampPath, true);
                     setPathState(7);
                 }
                 break;
 
             case 7:
-                follower.followPath(strafeToSecondSampPath, true);
-                if (follower.isAtTarget(strafeToSecondSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getX() > (moveToSecondSampPose.getX() - 1)) {
+                    follower.followPath(strafeToSecondSampPath, true);
                     setPathState(8);
                 }
                 break;
 
             case 8:
-                follower.followPath(pushSecondSampPath, true);
-                if (follower.isAtTarget(pushSecondSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
+                if (follower.getPose().getY() < (strafeToSecondSampPose.getY() + 1)) {
+                    follower.followPath(pushSecondSampPath, true);
                     setPathState(9);
                 }
                 break;
 
             case 9:
-                // follower.followPath(moveToThirdSampPath, true);
-                // if (follower.isAtTarget(moveToThirdSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
-                //     setPathState(10);
-                // }
+                if (follower.getPose().getX() < (pushSecondSampPose.getX() + 1)) {
+                    follower.followPath(moveToThirdSampPath, true);
+                    setPathState(10);
+                }
                 break;
 
             case 10:
-                // follower.followPath(pushThirdSampPath, true);
-                // if (follower.isAtTarget(pushThirdSampPose, Constants.thresholdDist, Constants.thresholdDeg)) {
-                //     setPathState(11);
-                // }
+                if (follower.getPose().getX() > (moveToThirdSampPose.getX() - 1)) {
+                    follower.followPath(strafeToThirdSampPath, true);
+                    setPathState(11);
+                }
                 break;
 
             case 11:
+                if (follower.getPose().getY() < (strafeToThirdSampPose.getY() + 1)) {
+                    follower.followPath(pushThirdSampPath, true);
+                }
                 break;
-//        switch (pathState) {
-//            case 0:
-//                follower.followPath(scorePreloadPath, true);
-////                schedule(new SequentialCommandGroup(
-////                        new ServoCommand(outtakeClaw, Constants.grab),
-////                        new ServoCommand(outtakeClawDist, Constants.distBasketPos),
-////                        new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
-////                        new SetPIDFSlideArmCommand(slide, 525)
-////                ));
-//                setPathState(1);
-//                break;
-//
-//            case 1:
-//                if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
-//                    follower.followPath(moveFromFirstSpecimenScorePath, true);
-//                    setPathState(2);
-//                }
-//                break;
-//
-//            case 2:
-//                if (follower.getPose().getX() < (moveFromScorePreloadPose.getX() - 1)) {
-//                    follower.followPath(strafeToSampsPath, true);
-//                    setPathState(3);
-//                }
-//                break;
-//
-//            case 3:
-//                if (follower.getPose().getX() > (strafeToSampsPose.getX() - 1)) {
-//                    follower.followPath(moveToSampsPath, true);
-//                    setPathState(4);
-//                }
-//                break;
-//
-//            case 4:
-//                if (follower.getPose().getX() > (moveToSampsPose.getX() - 1)) {
-//                    follower.followPath(moveToFirstSampPath, true);
-//                    setPathState(5);
-//                }
-//                break;
-//
-//            case 5:
-//                if (follower.getPose().getY() < (moveToFirstSampPose.getY() - 1)) {
-//                    follower.followPath(pushFirstSampPath, true);
-//                    setPathState(6);
-//                }
-//                break;
-//
-//            case 6:
-//                if (follower.getPose().getX() < (pushFirstSampPose.getX() - 1)) {
-//                    follower.followPath(moveToSecondSampPath, true);
-//                    setPathState(7);
-//                }
-//                break;
-//
-//            case 7:
-//                if (follower.getPose().getX() > (moveToSecondSampPose.getX() - 1)) {
-//                    follower.followPath(pushSecondSampPath, true);
-//                    setPathState(8);
-//                }
-//                break;
-//
-//            case 8:
-//                if (follower.getPose().getX() > (strafeToSecondSampPose.getX() - 1)) {
-//                    //follower.followPath(moveToThirdSampPath, true);
-//                    setPathState(9);
-//                }
-//                break;
-//
-//            case 9:
-//                if (follower.getPose().getX() > (pushSecondSampPose.getX() - 1) && follower.getPose().getY() > (moveToThirdSampPose.getY() - 1)) {
-//                    //follower.followPath(strafeToThirdSampPath, true);
-//                    setPathState(10);
-//                }
-//                break;
-//
-//            case 10:
-////                if (follower.getPose().getX() > (moveToThirdSampPose.getX() - 1) && follower.getPose().getY() > (strafeToThirdSampPose.getY() - 1)) {
-////                    follower.followPath(pushThirdSampPath, true);
-////                    setPathState(11);
-////                }
-//                break;
-//            case 11:
-//                break;
         }
     }
+
+    public static void scoreSpecimen() {
+        outtakeClaw.setPosition(Constants.grab);
+        outtakeClawDist.setPosition(Constants.distBasketPos);
+        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
+        lSlide.setTargetPosition(525);
+        rSlide.setTargetPosition(525);
+        lSlide.setPower(.8);
+        rSlide.setPower(.8);
+        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        outtakeClawDist.setPosition(Constants.distBasketPos-0.1);
+        lSlide.setTargetPosition(0);
+        rSlide.setTargetPosition(0);
+        lSlide.setPower(-.8);
+        rSlide.setPower(-.8);
+        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtakeClaw.setPosition(Constants.release);
+
+    }
+
+    public static void reset() {
+        rSlide.setTargetPosition(0);
+        lSlide.setTargetPosition(0);
+        lSlide.setPower(.8);
+        rSlide.setPower(.8);
+        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtakeClawDist.setPosition(Constants.outtakeClawDistInitTransfer);
+        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
+        outtakeClaw.setPosition(Constants.grab);
+    }
+
 }

@@ -17,15 +17,15 @@ public class Constants {
             imu = "imu", odo = "odo";
 
     //Intake
-    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .235, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
+    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .247, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = .931, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .0399,
+    public static double outtakeClawDistTempTransfer = 0.7, outtakeClawDistInitTransfer = 1, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .6, outtakeClawRotTransfer = .743,
             grab = 0.22, release = 0.5,
             distBasketPos = .619, rotBasketPos = .194,
-            distSpecimenGrab = .339, rotSpecimenGrab = .755, distSpecimenGrabFinal = 0.6,
-            distSpecimenScorePos = .599, rotSpecimenScorePos = .44, distFinalSpecimenScorePos = .4;
+            distSpecimenGrab = .33, rotSpecimenGrab = .69, distSpecimenGrabFinal = 0.6,
+            distSpecimenScorePos = .58, rotSpecimenScorePos = .35, distFinalSpecimenScorePos = .4;
 
     //Auto
     public static double thresholdDist = 1.0, thresholdDeg = 5.0;

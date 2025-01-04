@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+// 0 + 1 Auto
+
 @Autonomous
 public class AutoBackup extends LinearOpMode{
 
@@ -38,25 +40,6 @@ public class AutoBackup extends LinearOpMode{
             setPos(50);
             sleep(500);
             drive(-500);
-//            sleep(1000);
-//            rot(275);
-//            drive(1000);
-//            rot(450);
-//            sleep(1000);
-//            grabPos();
-//            sleep(1500);
-//            drive(500);
-//            sleep(500);
-//            grab();
-//            sleep(1000);
-//            drive(-300);
-//            rot(-450);
-//            drive(-1200);
-//            rot(-275);
-//            drive(500);
-//            scorePos();
-//            sleep(1000);
-//            score();
             break;
         }
     }
