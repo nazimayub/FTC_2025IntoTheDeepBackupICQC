@@ -44,7 +44,7 @@ public class Duo extends CommandOpMode {
         outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeDist);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Constants.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Constants.hLimit);
-        blocker = new ServoSubsystem(hardwareMap, "servo6");
+        blocker = new ServoSubsystem(hardwareMap, Constants.blocker);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Constants.outtakeRot);
 
         //Default Commands
@@ -80,14 +80,15 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, Constants.intakeSecondFinalTransferPos),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer)
+                new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
+                new ServoCommand(outtakeClawRot, Constants.rotBasketPos)
         ));
 
 
         //Basket Score
         new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(
                 new SequentialCommandGroup(
-                        new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
+                        new ServoCommand(outtakeClawRot, Constants.rotBasketPos),
                         new ServoCommand(outtakeClawDist, Constants.outtakeClawDistFinalTransfer),
                         new SetPIDFSlideArmCommand(slide, 2750)
                 ));
@@ -119,8 +120,8 @@ public class Duo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Constants.grab),
                 new ServoCommand(outtakeClawDist, Constants.distBasketPos),
-                new ServoCommand(outtakeClawRot, Constants.outtakeClawRotTransfer),
-                new SetPIDFSlideArmCommand(slide, 525)
+                new ServoCommand(outtakeClawRot, Constants.rotBasketPos),
+                new SetPIDFSlideArmCommand(slide, 575)
         ));
 
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(

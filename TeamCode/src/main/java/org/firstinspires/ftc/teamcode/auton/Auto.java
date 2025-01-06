@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,12 +15,14 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 @Autonomous
-public class Auto extends OpMode {
+public class Auto extends LinearOpMode {
     public static DcMotorEx lSlide;
     public static DcMotorEx rSlide;
     public static Servo outtakeClawDist;
     public static Servo outtakeClawRot;
     public static Servo outtakeClaw;
+    public static Servo blocker;
+    public static Servo intake;
 
     //Paths
     private Follower follower;
@@ -47,10 +49,10 @@ public class Auto extends OpMode {
 
     private final Pose moveToThirdSampPose = new Pose(60.319, -2.802, Math.toRadians(180));
     private final Pose strafeToThirdSampPose = new Pose(60.319, -19, Math.toRadians(180));
-    private final Pose pushThirdSampPose = new Pose(5.00, -19, Math.toRadians(180));
+    private final Pose pushThirdSampPose = new Pose(11.00, -19, Math.toRadians(180));
 
     @Override
-    public void init() {
+    public void runOpMode() {
         pathTimer = new Timer();
         pathTimer.resetTimer();
         follower = new Follower(hardwareMap);
@@ -60,24 +62,24 @@ public class Auto extends OpMode {
         outtakeClawDist = hardwareMap.get(Servo.class, Constants.outtakeDist);
         outtakeClawRot = hardwareMap.get(Servo.class, Constants.outtakeRot);
         outtakeClaw = hardwareMap.get(Servo.class, Constants.outtakeClaw);
-
+        blocker = hardwareMap.get(Servo.class, Constants.blocker);
+        intake = hardwareMap.get(Servo.class, Constants.intake);
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         follower.setStartingPose(startPose);
         path();
         pathState = 0;
-    }
 
-    @Override
-    public void loop() {
-        follower.update();
-        updatePath();
-        telemetry.addData("Path State", pathState);
-        telemetry.addData("X", follower.getPose().getX());
-        telemetry.addData("Y", follower.getPose().getY());
-        telemetry.addData("Heading", follower.getPose().getHeading());
-        telemetry.update();
+        while(opModeIsActive()) {
+            follower.update();
+            updatePath();
+            telemetry.addData("Path State", pathState);
+            telemetry.addData("X", follower.getPose().getX());
+            telemetry.addData("Y", follower.getPose().getY());
+            telemetry.addData("Heading", follower.getPose().getHeading());
+            telemetry.update();
+        }
     }
 
     public void path() {
@@ -149,14 +151,16 @@ public class Auto extends OpMode {
     public void updatePath() {
         switch (pathState) {
             case 0:
+                grabInit();
                 follower.followPath(scorePreloadPath, true);
-                scoreSpecimen();
+                score();
                 setPathState(1);
                 break;
 
             case 1:
                 if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
                     follower.followPath(moveFromFirstSpecimenScorePath, true);
+                    reset();
                     setPathState(2);
                 }
                 break;
@@ -220,6 +224,7 @@ public class Auto extends OpMode {
             case 10:
                 if (follower.getPose().getX() > (moveToThirdSampPose.getX() - 1)) {
                     follower.followPath(strafeToThirdSampPath, true);
+                    grabSpecimen();
                     setPathState(11);
                 }
                 break;
@@ -232,38 +237,43 @@ public class Auto extends OpMode {
         }
     }
 
-    public static void scoreSpecimen() {
-        outtakeClaw.setPosition(Constants.grab);
-        outtakeClawDist.setPosition(Constants.distBasketPos);
-        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
-        lSlide.setTargetPosition(525);
-        rSlide.setTargetPosition(525);
-        lSlide.setPower(.8);
-        rSlide.setPower(.8);
-        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        outtakeClawDist.setPosition(Constants.distBasketPos-0.1);
-        lSlide.setTargetPosition(0);
-        rSlide.setTargetPosition(0);
-        lSlide.setPower(-.8);
-        rSlide.setPower(-.8);
-        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void grabSpecimen() {
         outtakeClaw.setPosition(Constants.release);
-
+        outtakeClawDist.setPosition(Constants.distSpecimenGrab);
+        outtakeClawRot.setPosition(Constants.rotSpecimenGrab);
+        sleep(6000);
+        outtakeClaw.setPosition(Constants.grab);
     }
 
-    public static void reset() {
-        rSlide.setTargetPosition(0);
-        lSlide.setTargetPosition(0);
+    public void grabInit() {
+        outtakeClaw.setPosition(Constants.grab);
+    }
+    public void score() {
+        outtakeClaw.setPosition(Constants.grab);
+        outtakeClawDist.setPosition(Constants.distSpecimenScorePos);
+        outtakeClawRot.setPosition(Constants.rotSpecimenScorePos);
+        setPos(575);
+        outtakeClawDist.setPosition(Constants.distSpecimenScorePos-0.1);
+        setPos(0);
+    }
+
+    public void setPos(int t) {
+        lSlide.setTargetPosition(t);
+        rSlide.setTargetPosition(t);
         lSlide.setPower(.8);
         rSlide.setPower(.8);
         lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        outtakeClawDist.setPosition(Constants.outtakeClawDistInitTransfer);
-        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
+    }
+
+    public void reset() {
+        setPos(0);
+        blocker.setPosition(Constants.block);
+        intake.setPosition(Constants.intakeInitTransferPos);
         outtakeClaw.setPosition(Constants.grab);
+        outtakeClawDist.setPosition(Constants.outtakeClawDistTempTransfer);
+        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
+        intake.setPosition(Constants.intakeFinalTransferPos);
     }
 
 }

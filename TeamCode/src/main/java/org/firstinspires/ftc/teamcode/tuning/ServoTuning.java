@@ -11,10 +11,10 @@ public class ServoTuning extends OpMode {
 
     @Override
     public void init() {
-        s1 = 0.245;
-        s3 = 0.5;
-        s4 = 0.933;
-        s5 = 0.198;
+        s1 = 0;
+        s3 = 0;
+        s4 = 0;
+        s5 = 0;
 
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo3 = hardwareMap.get(Servo.class, "servo3");
@@ -61,8 +61,8 @@ public class ServoTuning extends OpMode {
 
         telemetry.addLine("Servo 1 (intake arm) value " + s1);
         telemetry.addLine("Servo 3 (outtake claw) value " + s3);
-        telemetry.addLine("Servo 4 (outtake dist) value " + s4);
-        telemetry.addLine("Servo 5 (outtake rot) value " + s5);
+        telemetry.addLine("Servo 4 (outtake rot) value " + s4);
+        telemetry.addLine("Servo 5 (outtake dist) value " + s5);
         telemetry.update();
     }
 }
