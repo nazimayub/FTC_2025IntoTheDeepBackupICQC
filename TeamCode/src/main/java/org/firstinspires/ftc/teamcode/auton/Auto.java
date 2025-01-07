@@ -158,11 +158,11 @@ public class Auto extends LinearOpMode {
             case 0:
                 grabPreload();
                 follower.followPath(scorePreloadPath, true);
-                score();
                 setPathState(1);
                 break;
 
             case 1:
+                score();
                 if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
                     follower.followPath(moveFromFirstSpecimenScorePath, true);
                     //reset();
