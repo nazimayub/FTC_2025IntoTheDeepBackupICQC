@@ -21,14 +21,13 @@ public class Constants {
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.74, outtakeClawDistInitTransfer = 1, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .605, outtakeClawRotTransfer = .808,
+    public static double outtakeClawDistTempTransfer = 0.74, outtakeClawDistInitTransfer = 1, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .605, outtakeClawRotTransfer = .788,
             grab = 0, release = 0.235,
             distBasketPos = .619, rotBasketPos = .404,
-            distSpecimenGrab = .323, rotSpecimenGrab = .789, distSpecimenGrabFinal = 0.6,
-            distSpecimenScorePos = .604, rotSpecimenScorePos = .393, distFinalSpecimenScorePos = .4;
+            distSpecimenGrab = .321, rotSpecimenGrab = .753, distSpecimenGrabFinal = 0.6;
 
     //Slides
-    public static double hSlideExtend = 400, vSlideBasket = 2750, vSlideBar = 575;
+    public static double hSlideExtend = 400, vSlideBasket = 2750, vSlideBar = 600;
 
     //Misc
     public static long pause = 300;

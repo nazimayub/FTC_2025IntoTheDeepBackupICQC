@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
@@ -12,6 +14,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
+import org.firstinspires.ftc.teamcode.pedroPathing.util.PIDFController;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 @Autonomous
@@ -37,19 +40,19 @@ public class Auto extends LinearOpMode {
     private final Pose startPose = new Pose(0.504, 57.802, Math.toRadians(0));
     private final Pose scorePreloadPose = new Pose(30.319, 57.802, Math.toRadians(0));
     private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Math.toRadians(0));
-    private final Pose strafeToSampsPose = new Pose(23.319, 17.802, Math.toRadians(0));
-    private final Pose moveToSampsPose = new Pose(60.319, 17.802, Math.toRadians(0));
+    private final Pose strafeToSampsPose = new Pose(23.319, 25.802, Math.toRadians(0));
+    private final Pose moveToSampsPose = new Pose(50.319, 25.802, Math.toRadians(0));
 
-    private final Pose moveToFirstSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
-    private final Pose pushFirstSampPose = new Pose(11.00, 5.802, Math.toRadians(0));
+    private final Pose moveToFirstSampPose = new Pose(50.319, 17.802, Math.toRadians(0));
+    private final Pose pushFirstSampPose = new Pose(11.00, 17.802, Math.toRadians(0));
 
-    private final Pose moveToSecondSampPose = new Pose(60.319, 5.802, Math.toRadians(0));
-    private final Pose strafeToSecondSampPose = new Pose(60.319, -2.802, Math.toRadians(0));
-    private final Pose pushSecondSampPose = new Pose(11.00, -2.802, Math.toRadians(0));
+    private final Pose moveToSecondSampPose = new Pose(50.319, 17.802, Math.toRadians(0));
+    private final Pose strafeToSecondSampPose = new Pose(50.319, 9.802, Math.toRadians(0));
+    private final Pose pushSecondSampPose = new Pose(11.00, 9.802, Math.toRadians(0));
 
-    private final Pose moveToThirdSampPose = new Pose(60.319, -2.802, Math.toRadians(180));
-    private final Pose strafeToThirdSampPose = new Pose(60.319, -19, Math.toRadians(180));
-    private final Pose pushThirdSampPose = new Pose(11.00, -19, Math.toRadians(180));
+    private final Pose moveToThirdSampPose = new Pose(65.319, 9.802, Math.toRadians(180));
+    private final Pose strafeToThirdSampPose = new Pose(65.319, -8, Math.toRadians(180));
+    private final Pose pushThirdSampPose = new Pose(8.00, -8, Math.toRadians(180));
 
     @Override
     public void runOpMode() {
@@ -63,7 +66,8 @@ public class Auto extends LinearOpMode {
         outtakeClawRot = hardwareMap.get(Servo.class, Constants.outtakeRot);
         outtakeClaw = hardwareMap.get(Servo.class, Constants.outtakeClaw);
         blocker = hardwareMap.get(Servo.class, Constants.blocker);
-        intake = hardwareMap.get(Servo.class, Constants.intake);
+        intake = hardwareMap.get(Servo.class, Constants.intakeRot);
+
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -71,6 +75,7 @@ public class Auto extends LinearOpMode {
         path();
         pathState = 0;
 
+        waitForStart();
         while(opModeIsActive()) {
             follower.update();
             updatePath();
@@ -151,7 +156,7 @@ public class Auto extends LinearOpMode {
     public void updatePath() {
         switch (pathState) {
             case 0:
-                grabInit();
+                grabPreload();
                 follower.followPath(scorePreloadPath, true);
                 score();
                 setPathState(1);
@@ -160,7 +165,7 @@ public class Auto extends LinearOpMode {
             case 1:
                 if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
                     follower.followPath(moveFromFirstSpecimenScorePath, true);
-                    reset();
+                    //reset();
                     setPathState(2);
                 }
                 break;
@@ -224,7 +229,7 @@ public class Auto extends LinearOpMode {
             case 10:
                 if (follower.getPose().getX() > (moveToThirdSampPose.getX() - 1)) {
                     follower.followPath(strafeToThirdSampPath, true);
-                    grabSpecimen();
+                    //grabSpecimen();
                     setPathState(11);
                 }
                 break;
@@ -237,43 +242,26 @@ public class Auto extends LinearOpMode {
         }
     }
 
-    public void grabSpecimen() {
-        outtakeClaw.setPosition(Constants.release);
-        outtakeClawDist.setPosition(Constants.distSpecimenGrab);
-        outtakeClawRot.setPosition(Constants.rotSpecimenGrab);
-        sleep(6000);
+    public void grabPreload() {
         outtakeClaw.setPosition(Constants.grab);
+        outtakeClawDist.setPosition(Constants.distBasketPos);
+        outtakeClawRot.setPosition(Constants.rotBasketPos);
+        setPos(-575);
     }
 
-    public void grabInit() {
-        outtakeClaw.setPosition(Constants.grab);
-    }
     public void score() {
-        outtakeClaw.setPosition(Constants.grab);
-        outtakeClawDist.setPosition(Constants.distSpecimenScorePos);
-        outtakeClawRot.setPosition(Constants.rotSpecimenScorePos);
-        setPos(575);
-        outtakeClawDist.setPosition(Constants.distSpecimenScorePos-0.1);
+        outtakeClawDist.setPosition(Constants.distBasketPos - .1);
         setPos(0);
     }
 
-    public void setPos(int t) {
-        lSlide.setTargetPosition(t);
-        rSlide.setTargetPosition(t);
-        lSlide.setPower(.8);
-        rSlide.setPower(.8);
+    public void setPos(int targetPosition) {
+        lSlide.setTargetPosition(targetPosition);
+        rSlide.setTargetPosition(targetPosition);
+        lSlide.setPower(-1.0);
+        rSlide.setPower(-1.0);
         lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void reset() {
-        setPos(0);
-        blocker.setPosition(Constants.block);
-        intake.setPosition(Constants.intakeInitTransferPos);
-        outtakeClaw.setPosition(Constants.grab);
-        outtakeClawDist.setPosition(Constants.outtakeClawDistTempTransfer);
-        outtakeClawRot.setPosition(Constants.outtakeClawRotTransfer);
-        intake.setPosition(Constants.intakeFinalTransferPos);
-    }
 
 }
