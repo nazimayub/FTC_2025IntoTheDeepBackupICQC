@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Const;
 
 @TeleOp
 public class DriveTest2 extends LinearOpMode {
@@ -14,10 +14,10 @@ public class DriveTest2 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        fl = hardwareMap.get(DcMotorEx.class, Constants.fl);
-        bl = hardwareMap.get(DcMotorEx.class, Constants.bl);
-        fr = hardwareMap.get(DcMotorEx.class, Constants.fr);
-        br = hardwareMap.get(DcMotorEx.class, Constants.br);
+        fl = hardwareMap.get(DcMotorEx.class, Const.fl);
+        bl = hardwareMap.get(DcMotorEx.class, Const.bl);
+        fr = hardwareMap.get(DcMotorEx.class, Const.fr);
+        br = hardwareMap.get(DcMotorEx.class, Const.br);
         waitForStart();
 
         while(opModeIsActive()){

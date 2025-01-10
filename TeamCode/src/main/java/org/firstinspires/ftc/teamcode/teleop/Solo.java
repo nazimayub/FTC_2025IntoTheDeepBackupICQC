@@ -33,15 +33,15 @@ public class Solo extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
 
-        drive = new Drive(hardwareMap, Constants.imu,new MotorConfig(Constants.fr,Constants.fl,Constants.br,Constants.bl),new MotorDirectionConfig(false,true,false,true));
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Constants.hSlide, 0.05, 0.1, 0.0005, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Constants.rSlide, Constants.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
+        drive = new Drive(hardwareMap, Const.imu,new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),new MotorDirectionConfig(false,true,false,true));
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.05, 0.1, 0.0005, 0);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, .05, 0.25, 0.0, 0.2, 0.05, 0.25, 0.0, 0.25);
         pause = new WaitSubsystem();
-        intakeClaw = new ServoSubsystem(hardwareMap, Constants.intake);
-        outtakeClaw = new ServoSubsystem(hardwareMap, Constants.outtakeClaw);
-        intakeClawDist = new ServoSubsystem(hardwareMap, Constants.intakeDist);
-        intakeClawRot = new ServoSubsystem(hardwareMap, Constants.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Constants.outtakeDist);
+        intakeClaw = new ServoSubsystem(hardwareMap, Const.intake);
+        outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
+        intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
+        intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDist);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");

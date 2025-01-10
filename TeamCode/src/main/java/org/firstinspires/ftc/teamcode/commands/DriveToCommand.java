@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 
 import java.util.function.DoubleSupplier;
@@ -30,10 +30,10 @@ public class DriveToCommand extends CommandBase {
         d.getBl().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         d.getBr().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        d.getFl().setTargetPosition((int)((-1)*(y*Constants.tickInInch + x * Constants.lateralTickInInch - theta * Constants.tickInDeg)));
-        d.getFr().setTargetPosition((int)(y* Constants.tickInInch - x * Constants.lateralTickInInch + theta * Constants.tickInDeg));
-        d.getBl().setTargetPosition((int)(y*Constants.tickInInch - x * Constants.lateralTickInInch - theta * Constants.tickInDeg));
-        d.getBr().setTargetPosition((int)((-1)*(y*Constants.tickInInch + x * Constants.lateralTickInInch + theta * Constants.tickInDeg)));
+        d.getFl().setTargetPosition((int)((-1)*(y* Const.tickInInch + x * Const.lateralTickInInch - theta * Const.tickInDeg)));
+        d.getFr().setTargetPosition((int)(y* Const.tickInInch - x * Const.lateralTickInInch + theta * Const.tickInDeg));
+        d.getBl().setTargetPosition((int)(y* Const.tickInInch - x * Const.lateralTickInInch - theta * Const.tickInDeg));
+        d.getBr().setTargetPosition((int)((-1)*(y* Const.tickInInch + x * Const.lateralTickInInch + theta * Const.tickInDeg)));
         d.getFl().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         d.getFr().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         d.getBl().setMode(DcMotor.RunMode.RUN_TO_POSITION);
