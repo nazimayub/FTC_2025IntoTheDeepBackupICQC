@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Const;
+import org.firstinspires.ftc.teamcode.Constants;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -245,7 +245,7 @@ public class AutoBackup extends LinearOpMode{
         outtakeClawDist.setPosition(.5);
         outtakeClawRot.setPosition(0.2);
         setPos(0);
-        outtakeClaw.setPosition(Const.release);
+        outtakeClaw.setPosition(Constants.release);
     }
 
     public static void setPos(int t){
@@ -267,7 +267,7 @@ public class AutoBackup extends LinearOpMode{
     }
 
     public static void reset() {
-        outtakeClaw.setPosition(Const.grab);
+        outtakeClaw.setPosition(Constants.grab);
         outtakeClawDist.setPosition(.8);
         outtakeClawRot.setPosition(.6);
     }

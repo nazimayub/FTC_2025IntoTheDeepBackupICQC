@@ -1,22 +1,24 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
-import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Const;
-import org.firstinspires.ftc.teamcode.pedroPathing.*;
+import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.*;
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
+import org.firstinspires.ftc.teamcode.pedroPathing.util.PIDFController;
+import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 @Autonomous
-public class Auto extends OpMode {
+public class Auto extends LinearOpMode {
     public static DcMotorEx lSlide;
     public static DcMotorEx rSlide;
     public static Servo outtakeClawDist;
@@ -53,18 +55,18 @@ public class Auto extends OpMode {
     private final Pose pushThirdSampPose = new Pose(8.00, -8, Math.toRadians(180));
 
     @Override
-    public void init() {
+    public void runOpMode() {
         pathTimer = new Timer();
         pathTimer.resetTimer();
         follower = new Follower(hardwareMap);
 
-        lSlide = hardwareMap.get(DcMotorEx.class, Const.lSlide);
-        rSlide = hardwareMap.get(DcMotorEx.class, Const.rSlide);
-        outtakeClawDist = hardwareMap.get(Servo.class, Const.outtakeDist);
-        outtakeClawRot = hardwareMap.get(Servo.class, Const.outtakeRot);
-        outtakeClaw = hardwareMap.get(Servo.class, Const.outtakeClaw);
-        blocker = hardwareMap.get(Servo.class, Const.blocker);
-        intake = hardwareMap.get(Servo.class, Const.intakeRot);
+        lSlide = hardwareMap.get(DcMotorEx.class, Constants.lSlide);
+        rSlide = hardwareMap.get(DcMotorEx.class, Constants.rSlide);
+        outtakeClawDist = hardwareMap.get(Servo.class, Constants.outtakeDist);
+        outtakeClawRot = hardwareMap.get(Servo.class, Constants.outtakeRot);
+        outtakeClaw = hardwareMap.get(Servo.class, Constants.outtakeClaw);
+        blocker = hardwareMap.get(Servo.class, Constants.blocker);
+        intake = hardwareMap.get(Servo.class, Constants.intakeRot);
 
         lSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,17 +74,17 @@ public class Auto extends OpMode {
         follower.setStartingPose(startPose);
         path();
         pathState = 0;
-    }
 
-    @Override
-    public void loop() {
-        follower.update();
-        updatePath();
-        telemetry.addData("Path State", pathState);
-        telemetry.addData("X", follower.getPose().getX());
-        telemetry.addData("Y", follower.getPose().getY());
-        telemetry.addData("Heading", follower.getPose().getHeading());
-        telemetry.update();
+        waitForStart();
+        while(opModeIsActive()) {
+            follower.update();
+            updatePath();
+            telemetry.addData("Path State", pathState);
+            telemetry.addData("X", follower.getPose().getX());
+            telemetry.addData("Y", follower.getPose().getY());
+            telemetry.addData("Heading", follower.getPose().getHeading());
+            telemetry.update();
+        }
     }
 
     public void path() {
@@ -160,9 +162,10 @@ public class Auto extends OpMode {
                 break;
 
             case 1:
+                score();
                 if (follower.getPose().getX() > (scorePreloadPose.getX() - 1)) {
-                    score();
                     follower.followPath(moveFromFirstSpecimenScorePath, true);
+                    //reset();
                     setPathState(2);
                 }
                 break;
@@ -240,24 +243,25 @@ public class Auto extends OpMode {
     }
 
     public void grabPreload() {
-        outtakeClaw.setPosition(Const.grab);
-        outtakeClawDist.setPosition(Const.distBasketPos);
-        outtakeClawRot.setPosition(Const.rotBasketPos);
-        lSlide.setTargetPosition(-575);
-        rSlide.setTargetPosition(-575);
+        outtakeClaw.setPosition(Constants.grab);
+        outtakeClawDist.setPosition(Constants.distBasketPos);
+        outtakeClawRot.setPosition(Constants.rotBasketPos);
+        setPos(-575);
+    }
+
+    public void score() {
+        outtakeClawDist.setPosition(Constants.distBasketPos - .1);
+        setPos(0);
+    }
+
+    public void setPos(int targetPosition) {
+        lSlide.setTargetPosition(targetPosition);
+        rSlide.setTargetPosition(targetPosition);
         lSlide.setPower(-1.0);
         rSlide.setPower(-1.0);
         lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void score() {
-        outtakeClawDist.setPosition(Const.distBasketPos - .1);
-        lSlide.setTargetPosition(0);
-        rSlide.setTargetPosition(0);
-        lSlide.setPower(-1.0);
-        rSlide.setPower(-1.0);
-        lSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+
 }

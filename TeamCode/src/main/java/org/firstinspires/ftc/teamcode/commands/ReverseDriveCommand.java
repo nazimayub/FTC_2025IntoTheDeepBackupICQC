@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Const;
+import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.subsystems.*;
 
 
 import java.util.function.DoubleSupplier;
@@ -16,11 +18,11 @@ public class ReverseDriveCommand extends CommandBase {
 
 
     public ReverseDriveCommand() {
-        if(Const.direction.equals("forward")){
-            Const.direction = "backward";
+        if(Constants.direction.equals("forward")){
+            Constants.direction = "backward";
         }
         else {
-            Const.direction = "forward";
+            Constants.direction = "forward";
         }
     }
 

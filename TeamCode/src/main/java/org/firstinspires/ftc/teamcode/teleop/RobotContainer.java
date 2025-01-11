@@ -7,14 +7,14 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Const;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
-@TeleOp(name = "TeleOp", group = Const.GROUP_ANDROID)
+@TeleOp(name = "TeleOp", group = Constants.GROUP_ANDROID)
 public class RobotContainer extends CommandOpMode {
     public static Drive drive;
     public static SimpleLogger log;
