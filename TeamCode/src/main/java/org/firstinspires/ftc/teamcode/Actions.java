@@ -17,11 +17,11 @@ public class Actions {
     public static GamepadEx op = new GamepadEx(gamepad2);
     public static SimpleLogger log = new SimpleLogger();
     public static IntakeSubsystem intake = new IntakeSubsystem(hardwareMap, Const.intake);
-    public static Drive drive = new Drive(hardwareMap, Const.imu,new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),
-            new MotorDirectionConfig(false,true,false,true));
+    public static Drive drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),
+            new MotorDirectionConfig(false, true, false, true));
     public static PIDFSingleSlideSubsystem hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.05, 0, 0.0007, 0);
     public static PIDFSlideSubsystem slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide,
-            DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
+            DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0, 0.0, 0.1, 0.005, 0, 0.0, 0.1);
     public static WaitSubsystem pause = new WaitSubsystem();
     public static ServoSubsystem outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
     public static ServoSubsystem intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -35,6 +35,7 @@ public class Actions {
     public static DriveCommand drive() {
         return new DriveCommand(drive, base);
     }
+
     public static IntakeCommand intake() {
         return new IntakeCommand(intake, -1);
     }
@@ -122,7 +123,7 @@ public class Actions {
 
     public static SequentialCommandGroup moveFromSpecimenScore() {
         return new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, Const.distBasketPos-0.1),
+                new ServoCommand(outtakeClawDist, Const.distBasketPos - 0.1),
                 new SlideResetCommand(slide, vLimit),
                 new ServoCommand(outtakeClaw, Const.release)
         );
@@ -135,5 +136,4 @@ public class Actions {
     public static SetPIDFSlideArmCommand setVertSlidesTo2400TicksForSomeReason() {
         return new SetPIDFSlideArmCommand(slide, 2400);
     }
-
 }
