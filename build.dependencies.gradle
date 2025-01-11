@@ -6,8 +6,7 @@ repositories {
 }
 
 dependencies {
-    //implementation 'com.pedropathing:pedro:1.0.5'
-    implementation 'com.pedropathing:dev:1.0.6-beta2'
+    implementation 'com.pedropathing:pedro:1.0.5'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.16'
 
     implementation 'org.firstinspires.ftc:Inspection:10.1.1'
