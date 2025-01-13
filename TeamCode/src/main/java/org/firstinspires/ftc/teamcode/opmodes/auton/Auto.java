@@ -92,20 +92,20 @@ public class Auto extends OpMode {
                         new ServoCommand(outtakeClawDist, Const.distBasketPos),
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
                         new SetPIDFSlideArmCommand(slide, Const.vSlideBar),
-                        new FollowPathCommand(scorePreloadPath, 3000),
+                        new FollowPathCommand(follower, scorePreloadPath, 3000),
                         new ServoCommand(outtakeClawDist, Const.distBasketPos-0.1),
                         new SlideResetCommand(slide, vLimit),
-                        new FollowPathCommand(moveFromFirstSpecimenScorePath,3000),
-                        new FollowPathCommand(strafeToSampsPath,3000),
-                        new FollowPathCommand(moveToSampsPath,3000),
-                        new FollowPathCommand(moveToFirstSampPath,3000),
-                        new FollowPathCommand(pushFirstSampPath,3000),
-                        new FollowPathCommand(moveToSecondSampPath,3000),
-                        new FollowPathCommand(strafeToSecondSampPath,3000),
-                        new FollowPathCommand(pushSecondSampPath,3000),
-                        new FollowPathCommand(moveToThirdSampPath,3000),
-                        new FollowPathCommand(strafeToThirdSampPath,3000),
-                        new FollowPathCommand(pushThirdSampPath,3000)
+                        new FollowPathCommand(follower, moveFromFirstSpecimenScorePath,3000),
+                        new FollowPathCommand(follower, strafeToSampsPath,3000),
+                        new FollowPathCommand(follower, moveToSampsPath,3000),
+                        new FollowPathCommand(follower, moveToFirstSampPath,3000),
+                        new FollowPathCommand(follower, pushFirstSampPath,3000),
+                        new FollowPathCommand(follower, moveToSecondSampPath,3000),
+                        new FollowPathCommand(follower, strafeToSecondSampPath,3000),
+                        new FollowPathCommand(follower, pushSecondSampPath,3000),
+                        new FollowPathCommand(follower, moveToThirdSampPath,3000),
+                        new FollowPathCommand(follower, strafeToThirdSampPath,3000),
+                        new FollowPathCommand(follower, pushThirdSampPath,3000)
                 )
         );
     }

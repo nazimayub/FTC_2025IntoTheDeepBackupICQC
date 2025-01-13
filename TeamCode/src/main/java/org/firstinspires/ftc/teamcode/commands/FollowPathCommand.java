@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.commands;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -10,8 +11,11 @@ public class FollowPathCommand extends CommandBase {
     private final Timer pathTimer = new Timer();
     Follower follower;
     private final int time;
+    private int currentPathIndex = 0;
 
-    public FollowPathCommand(PathChain pathChain, int time) {
+
+    public FollowPathCommand(Follower follower, PathChain pathChain, int time) {
+        this.follower = follower;
         this.pathChain = pathChain;
         this.time = time;
         addRequirements();
@@ -24,13 +28,16 @@ public class FollowPathCommand extends CommandBase {
 
     @Override
     public void execute() {
-        for(int i = 0; i < pathChain.size(); i++)
-            if(!follower.isBusy() || pathTimer.getElapsedTime() > time)
-                follower.followPath(pathChain.getPath(i));
+        if (currentPathIndex < pathChain.size()) {
+            if (!follower.isBusy() || pathTimer.getElapsedTime() > time) {
+                follower.followPath(pathChain.getPath(currentPathIndex));
+                currentPathIndex++;
+            }
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return !follower.isBusy() || pathTimer.getElapsedTime() > time;
+        return currentPathIndex >= pathChain.size() || pathTimer.getElapsedTime() > time;
     }
 }
