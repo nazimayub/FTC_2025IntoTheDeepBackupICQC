@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -39,7 +36,7 @@ public class Drive extends SubsystemBase {
         }
         // Retrieve the IMU from the hardware map
         this.imu = hMap.get(IMU.class, imu);
-        IMU.Parameters parameters = Constants.IMU_ORIENTATION;
+        IMU.Parameters parameters = Const.IMU_ORIENTATION;
         this.imu.initialize(parameters);
         this.fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -66,7 +63,7 @@ public class Drive extends SubsystemBase {
      */
     public void robotCentricDrive(double x, double y, double r){
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(r), 1);
-        if(Constants.direction.equals("forward")){
+        if(Const.direction.equals("forward")){
             fl.setPower((y-x-r)/denominator);
             bl.setPower((y+x-r)/denominator);
             fr.setPower((y+x+r)/denominator);

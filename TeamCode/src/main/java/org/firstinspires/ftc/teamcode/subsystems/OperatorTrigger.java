@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
-import org.firstinspires.ftc.teamcode.teleop.Duo;
+import org.firstinspires.ftc.teamcode.opmodes.teleop.Duo;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
