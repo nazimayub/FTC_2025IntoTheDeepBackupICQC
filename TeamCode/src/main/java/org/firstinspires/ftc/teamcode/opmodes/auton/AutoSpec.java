@@ -29,13 +29,12 @@ import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
 
 @Autonomous
-public class Auto extends OpMode {
+public class AutoSpec extends OpMode {
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
     public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
     public static PIDFSlideSubsystem slide;
     public static PIDFSingleSlideSubsystem hSlide;
-    public static TelemetrySubsystem telemetrySubsystem;
     public static WaitSubsystem pause;
 
     //Paths
@@ -92,20 +91,20 @@ public class Auto extends OpMode {
                         new ServoCommand(outtakeClawDist, Const.distBasketPos),
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
                         new SetPIDFSlideArmCommand(slide, Const.vSlideBar),
-                        new FollowPathCommand(follower, scorePreloadPath, 3000),
+                        new FollowPathCommand(follower, scorePreloadPath.getPath(0), 3000),
                         new ServoCommand(outtakeClawDist, Const.distBasketPos-0.1),
                         new SlideResetCommand(slide, vLimit),
-                        new FollowPathCommand(follower, moveFromFirstSpecimenScorePath,3000),
-                        new FollowPathCommand(follower, strafeToSampsPath,3000),
-                        new FollowPathCommand(follower, moveToSampsPath,3000),
-                        new FollowPathCommand(follower, moveToFirstSampPath,3000),
-                        new FollowPathCommand(follower, pushFirstSampPath,3000),
-                        new FollowPathCommand(follower, moveToSecondSampPath,3000),
-                        new FollowPathCommand(follower, strafeToSecondSampPath,3000),
-                        new FollowPathCommand(follower, pushSecondSampPath,3000),
-                        new FollowPathCommand(follower, moveToThirdSampPath,3000),
-                        new FollowPathCommand(follower, strafeToThirdSampPath,3000),
-                        new FollowPathCommand(follower, pushThirdSampPath,3000)
+                        new FollowPathCommand(follower, moveFromFirstSpecimenScorePath.getPath(0),3000),
+                        new FollowPathCommand(follower, strafeToSampsPath.getPath(0),3000),
+                        new FollowPathCommand(follower, moveToSampsPath.getPath(0),3000),
+                        new FollowPathCommand(follower, moveToFirstSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, pushFirstSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, moveToSecondSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, strafeToSecondSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, pushSecondSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, moveToThirdSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, strafeToThirdSampPath.getPath(0),3000),
+                        new FollowPathCommand(follower, pushThirdSampPath.getPath(0),3000)
                 )
         );
     }

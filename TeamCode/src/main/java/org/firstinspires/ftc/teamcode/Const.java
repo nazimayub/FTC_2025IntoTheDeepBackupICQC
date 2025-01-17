@@ -17,13 +17,13 @@ public class Const {
             imu = "imu", odo = "odo";
 
     //Intake
-    public static double intakeInitTransferPos = .3, intakeFinalTransferPos = .241, intakeDownPos = 0.53, intakeSecondFinalTransferPos = .35,
+    public static double intakeInitTransferPos = .569, intakeFinalTransferPos = .839, intakeDownPos = 0.204, intakeSecondFinalTransferPos = .569,
             block = 0.03, unblock = 0.12;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = 0.74, outtakeClawDistInitTransfer = 1, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .605, outtakeClawRotTransfer = .788,
+    public static double outtakeClawDistTempTransfer = 0.74, outtakeClawDistInitTransfer = 1, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = .605, outtakeClawRotTransfer = .768,
             grab = 0, release = 0.235,
-            distBasketPos = .619, rotBasketPos = .404,
+            distBasketPos = .615, rotBasketPos = .448,
             distSpecimenGrab = .321, rotSpecimenGrab = .753, distSpecimenGrabFinal = 0.6;
 
     //Slides
