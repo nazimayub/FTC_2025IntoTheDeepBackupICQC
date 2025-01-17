@@ -1,35 +1,31 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class IntakeAutoSubsystem extends SubsystemBase {
 
     private final DcMotorEx intake;
-    private final int ticksPerRevolution = 28;
+    private final ElapsedTime elapsedTime;
 
-    public IntakeAutoSubsystem(HardwareMap h, String name) {
+    public IntakeAutoSubsystem(HardwareMap h, String name, ElapsedTime elapsedTime) {
         this.intake = h.get(DcMotorEx.class, name);
-        this.intake.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        this.intake.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        this.intake.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        this.intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.elapsedTime = elapsedTime;
     }
 
     public void set(double speed) {
         this.intake.setPower(speed);
     }
 
-    public void resetEncoder() {
-        intake.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        intake.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+    public double getElapsedTime() {
+        return this.elapsedTime.seconds();
     }
 
-    public double getCurrentRotations() {
-        return (double) intake.getCurrentPosition() / ticksPerRevolution;
-    }
-
-    public void stop() {
-        this.intake.setPower(0);
+    public void resetElapsedTime() {
+        this.elapsedTime.reset();
     }
 }

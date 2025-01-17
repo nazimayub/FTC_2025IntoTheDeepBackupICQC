@@ -3,38 +3,40 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.subsystems.IntakeAutoSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 
 /**
- * A command to run the intake at a specified speed for a given number of rotations.
+ * A command to control the intake subsystem at a specified speed.
  */
 public class IntakeAutoCommand extends CommandBase {
 
     private final IntakeAutoSubsystem intake;
     private final double speed;
-    private final double targetRotations;
+    private final int time;
 
-    public IntakeAutoCommand(IntakeAutoSubsystem intake, double speed, int rots) {
+    public IntakeAutoCommand(IntakeAutoSubsystem intake, double speed, int time) {
         this.intake = intake;
         this.speed = speed;
-        this.targetRotations = rots;
-
+        this.time = time;
         addRequirements(intake);
     }
 
     @Override
     public void initialize() {
-        intake.resetEncoder();
+        intake.resetElapsedTime();
     }
 
     @Override
     public void execute() {
-        intake.set(speed);
+        if (intake.getElapsedTime() < time) {
+            intake.set(speed);
+        } else {
+            intake.set(0);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return intake.getCurrentRotations() >= targetRotations;
+        return intake.getElapsedTime() >= time;
     }
 
     @Override
