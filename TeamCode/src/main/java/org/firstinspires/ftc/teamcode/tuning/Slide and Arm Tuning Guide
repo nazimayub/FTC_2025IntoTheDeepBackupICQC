@@ -1,6 +1,10 @@
 NOTE: If you are tuning 2 slides, usually p1 and p, d1 and d, etc, will be the same. Only have these be different if you have a large weight or something of that nature on one side and you know what you are doing.
 1. Make sure motor directions are set correctly
 2. ARM ONLY find how many ticks are in each degree and set TICKINDEGREE
+
+SETUP FTC DASHBOARD
+You need to ensure that you are graphing the target position and current position while the tuning opmode is running
+
 3. Make f some arbitrary number like .1, but make sure the slides/arm move
 4. decrease f until arm/slides just dont move NOTE: For more advanced users, you may create a funtion that increases f based off of the slides current position because it requires more power to stop the slides from dropping higher up. ARM USERS DO NOT NEED TO DO THIS, THIS IS ALREADY TAKEN CARE OF
 5. Graph current and target pos
