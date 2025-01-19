@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ServoTuning extends OpMode {
     double s1, s3, s4, s5;
     Servo servo1, servo3, servo4, servo5;
+    double s6, s7, s8, s9;
+    Servo servo6, servo7, servo8, servo9;
 
     @Override
     public void init() {
@@ -16,10 +18,21 @@ public class ServoTuning extends OpMode {
         s4 = 0;
         s5 = 0;
 
-        servo1 = hardwareMap.get(Servo.class, "servo1");
-        servo3 = hardwareMap.get(Servo.class, "servo3");
-        servo4 = hardwareMap.get(Servo.class, "servo4");
-        servo5 = hardwareMap.get(Servo.class, "servo5");
+        servo1 = hardwareMap.get(Servo.class, "servo5");
+        servo3 = hardwareMap.get(Servo.class, "servo0");
+        servo4 = hardwareMap.get(Servo.class, "servo1");
+        servo5 = hardwareMap.get(Servo.class, "servo3");
+
+        s6 = 0;
+        s7 = 0;
+        s8 = 0;
+        s9 = 0;
+
+        servo6 = hardwareMap.get(Servo.class, "servo4");
+        servo7 = hardwareMap.get(Servo.class, "servo2");
+        servo8 = hardwareMap.get(Servo.class, "servo8");
+        servo9 = hardwareMap.get(Servo.class, "servo7");
+
     }
 
     @Override
@@ -36,16 +49,16 @@ public class ServoTuning extends OpMode {
         else if (gamepad1.a){
             s3-=0.001;
         }
-        if(gamepad1.right_bumper){
+        if(gamepad1.dpad_up){
             s4+=0.001;
         }
-        else if (gamepad1.left_bumper){
+        else if (gamepad1.dpad_right){
             s4-=0.001;
         }
-        if(gamepad1.right_stick_button){
+        if(gamepad1.dpad_left){
             s5+=0.001;
         }
-        else if (gamepad1.left_stick_button){
+        else if (gamepad1.dpad_down){
             s5-=0.001;
         }
 
@@ -60,9 +73,49 @@ public class ServoTuning extends OpMode {
         servo5.setPosition(s5);
 
         telemetry.addLine("Servo 1 (intake arm) value " + s1);
-        telemetry.addLine("Servo 3 (outtake claw) value " + s3);
-        telemetry.addLine("Servo 4 (outtake rot) value " + s4);
-        telemetry.addLine("Servo 5 (outtake dist) value " + s5);
+        telemetry.addLine("Servo 3 (outtake dist 1) value " + s3);
+        telemetry.addLine("Servo 4 (outtake dist 2) value " + s4);
+        telemetry.addLine("Servo 5 (outtake twist) value " + s5);
+
+        if(gamepad2.y){
+            s6+=0.001;
+        }
+        else if (gamepad2.b){
+            s6-=0.001;
+        }
+        if(gamepad2.x){
+            s7+=0.001;
+        }
+        else if (gamepad2.a){
+            s7-=0.001;
+        }
+        if(gamepad2.dpad_up){
+            s8+=0.001;
+        }
+        else if (gamepad2.dpad_right){
+            s8-=0.001;
+        }
+        if(gamepad2.dpad_left){
+            s9+=0.001;
+        }
+        else if (gamepad2.dpad_down){
+            s9-=0.001;
+        }
+
+        s6 = Math.max(Math.min(1, s6), 0);
+        s7 = Math.max(Math.min(1, s7), 0);
+        s8 = Math.max(Math.min(1, s8), 0);
+        s9 = Math.max(Math.min(1, s9), 0);
+
+        servo6.setPosition(s6);
+        servo7.setPosition(s7);
+        servo8.setPosition(s8);
+        servo9.setPosition(s9);
+
+        telemetry.addLine("Servo 6 (outtake claw) value " + s6);
+        telemetry.addLine("Servo 7 (outtake rot) value " + s7);
+        telemetry.addLine("Servo 8 (left hang) value " + s8);
+        telemetry.addLine("Servo 9 (right hang) value " + s9);
         telemetry.update();
     }
 }

@@ -61,7 +61,7 @@ public class AutoSamp extends OpMode {
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDist);
+        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
         blocker = new ServoSubsystem(hardwareMap, Const.blocker);

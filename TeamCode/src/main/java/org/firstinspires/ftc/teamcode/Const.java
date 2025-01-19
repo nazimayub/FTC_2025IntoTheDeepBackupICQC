@@ -12,9 +12,9 @@ public class Const {
 
     //Names for motors and servos
     public static final String fr = "fr", fl = "fl", br = "br", bl = "bl",
-            lSlide= "motor1", rSlide = "motor2", hSlide = "motor3", intake = "motor4", vLimit = "vSlide", hLimit = "hSlide",
-            intakeRot = "servo1", intakeDist = "servo0", outtakeClaw = "servo3", outtakeRot = "servo4", outtakeDist = "servo5", blocker = "servo6",
-            imu = "imu", odo = "odo";
+            lSlide= "lSlide", rSlide = "rSlide", hSlide = "hSlide", intake = "intakeMotor", vLimit = "vertLimitSwitch", hLimit = "horizontalLimitSwitch",
+            intakeRot = "servo5", intakeDist = "servo0", outtakeClaw = "servo4", outtakeRot = "servo2", outtakeTwist = "servo3", outtakeDistRight = "servo1", outtakeDistLeft = "servo0", blocker = "servo6",
+            imu = "imu", odo = "odo", rightHang = "servo7", leftHang = "servo8";
 
     //Intake
     public static double intakeInitTransferPos = .569, intakeFinalTransferPos = .839, intakeDownPos = 0.204, intakeSecondFinalTransferPos = .569,

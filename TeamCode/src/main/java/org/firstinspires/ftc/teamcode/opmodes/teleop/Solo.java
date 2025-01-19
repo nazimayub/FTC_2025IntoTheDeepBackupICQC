@@ -19,7 +19,7 @@ public class Solo extends CommandOpMode {
     SimpleLogger log;
 
     public static Drive drive;
-    public static ServoSubsystem intakeClaw, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
+    public static ServoSubsystem intakeClaw, outtakeClaw, rHang, lHang, intakeClawDist, intakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, blocker;
     public static ServoIntakeSubsystem intake;
     public static LimitSwitchSubsystem vertical, horizontal;
     public static PIDFSlideSubsystem slide;
@@ -41,7 +41,10 @@ public class Solo extends CommandOpMode {
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDist);
+        outtakeClawDistRight = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
+        outtakeClawDistLeft = new ServoSubsystem(hardwareMap, Const.outtakeDistLeft);
+        rHang = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
+        lHang = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
         vertical = new LimitSwitchSubsystem(hardwareMap, "vSlide");
         horizontal = new LimitSwitchSubsystem(hardwareMap, "hSlide");
         blocker = new ServoSubsystem(hardwareMap, "servo6");
@@ -74,7 +77,7 @@ public class Solo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, 0.05),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, 0.682),
+                new ServoCommand(outtakeClawDistRight, 0.682),
                 new WaitCommand(pause, 500),
                 new SlideResetCommand(hSlide, horizontal),
                 new ServoCommand(blocker, block),
@@ -82,7 +85,7 @@ public class Solo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClaw, 0.44),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, 0.344)
+                new ServoCommand(outtakeClawDistRight, 0.344)
         ));
 
         //Place Specimen
@@ -93,7 +96,7 @@ public class Solo extends CommandOpMode {
         //Place Specimen
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 365),
-                new ServoCommand(outtakeClawDist, 0.1),
+                new ServoCommand(outtakeClawDistRight, 0.1),
                 new ServoCommand(outtakeClaw, 0.343)
         ));
 
@@ -107,7 +110,7 @@ public class Solo extends CommandOpMode {
         //Slides up
         new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
                 new SetPIDFSlideArmCommand(slide, 1900),
-                new ServoCommand(outtakeClawDist, 0.1)
+                new ServoCommand(outtakeClawDistRight, 0.1)
         ));
 
         //Intakes
@@ -125,7 +128,7 @@ public class Solo extends CommandOpMode {
         ));
         //Moves outtake claw to specimen position
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, .08),
+                new ServoCommand(outtakeClawDistRight, .08),
                 new ServoCommand(outtakeClaw, 0.343)
         ));
 
@@ -133,7 +136,7 @@ public class Solo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, .533),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, .128)
+                new ServoCommand(outtakeClawDistRight, .128)
         ));
 
     }

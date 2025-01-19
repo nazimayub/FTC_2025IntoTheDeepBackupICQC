@@ -20,7 +20,7 @@ public class Duo extends CommandOpMode {
     SimpleLogger log;
 
     public static Drive drive;
-    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
+    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, rHang, lHang, blocker;
     public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
     public static PIDFSlideSubsystem slide;
@@ -41,11 +41,15 @@ public class Duo extends CommandOpMode {
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDist);
+        outtakeClawDistLeft = new ServoSubsystem(hardwareMap, Const.outtakeDistLeft);
+        outtakeClawDistRight = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
+        rHang = new ServoSubsystem(hardwareMap, Const.rightHang);
+        lHang = new ServoSubsystem(hardwareMap, Const.leftHang);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
         blocker = new ServoSubsystem(hardwareMap, Const.blocker);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
+        outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));
@@ -66,13 +70,13 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(intakeClawRot, Const.intakeInitTransferPos),
                 new ServoCommand(outtakeClawRot, Const.outtakeClawRotTransfer),
-                new ServoCommand(outtakeClawDist, Const.outtakeClawDistTempTransfer),
+                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistTempTransfer),
                 new SlideResetCommand(slide, vLimit),
                 new SlideResetCommand(hSlide, hLimit),
                 new ServoCommand(blocker, Const.block),
                 new ServoCommand(outtakeClaw, Const.release),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, Const.outtakeClawDistInitTransfer),
+                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistInitTransfer),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, Const.intakeFinalTransferPos),
                 new WaitCommand(pause, 300),
@@ -80,7 +84,7 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, Const.intakeSecondFinalTransferPos),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, Const.outtakeClawDistFinalTransfer),
+                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistFinalTransfer),
                 new ServoCommand(outtakeClawRot, Const.rotBasketPos)
         ));
 
@@ -89,7 +93,7 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(
                 new SequentialCommandGroup(
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistFinalTransfer),
+                        new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistFinalTransfer),
                         new SetPIDFSlideArmCommand(slide, 2750)
                 ));
 
@@ -98,7 +102,7 @@ public class Duo extends CommandOpMode {
 
         //Specimen Grab Pos
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, Const.distSpecimenGrab),
+                new ServoCommand(outtakeClawDistRight, Const.distSpecimenGrab),
                 new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
                 new ServoCommand(outtakeClaw, Const.release)
         ));
@@ -107,7 +111,7 @@ public class Duo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDist, Const.distSpecimenGrabFinal)
+                new ServoCommand(outtakeClawDistRight, Const.distSpecimenGrabFinal)
         ));
 
         //Release
@@ -119,13 +123,13 @@ public class Duo extends CommandOpMode {
         //Specimen Score
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
-                new ServoCommand(outtakeClawDist, Const.distBasketPos),
+                new ServoCommand(outtakeClawDistRight, Const.distBasketPos),
                 new ServoCommand(outtakeClawRot, Const.rotBasketPos),
                 new SetPIDFSlideArmCommand(slide, 575)
         ));
 
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawDist, Const.distBasketPos-0.1),
+                new ServoCommand(outtakeClawDistRight, Const.distBasketPos-0.1),
                 new SlideResetCommand(slide, vLimit),
                 new ServoCommand(outtakeClaw, Const.release)
         ));
