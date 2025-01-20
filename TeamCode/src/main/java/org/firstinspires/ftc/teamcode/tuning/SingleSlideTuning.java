@@ -9,13 +9,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 @TeleOp
 public class SingleSlideTuning extends OpMode {
     private PIDController controller, controller1;
+    private Servo intake;
 
-    public static double p = 0.43, i=0, d=0.001;
+    public static double p = 0.1, i=0, d=0.01;
     public static double f = 0.01;
 
     public static double target = 0;
@@ -26,9 +28,11 @@ public class SingleSlideTuning extends OpMode {
 
     @Override
     public void init() {
+        intake = hardwareMap.get(Servo.class, "servo5");
+        intake.setPosition(.5);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
-        this.motor3 = h.get(DcMotorEx.class, "motor3");
+        this.motor3 = h.get(DcMotorEx.class, "horizontalSlide");
         //this.left = h.get(DcMotorEx.class, "motor2");
         this.motor3.setDirection(DcMotorSimple.Direction.REVERSE);
         //this.left.setDirection(DcMotorSimple.Direction.FORWARD);

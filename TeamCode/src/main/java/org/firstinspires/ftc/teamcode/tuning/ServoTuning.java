@@ -8,13 +8,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ServoTuning extends OpMode {
     double s1, s3, s4, s5;
     Servo servo1, servo3, servo4, servo5;
-    double s6, s7, s8, s9;
-    Servo servo6, servo7, servo8, servo9;
+    double s6, s7, s8, s9, s10;
+    Servo servo6, servo7, servo8, servo9, servo10;
 
     @Override
     public void init() {
-        s1 = 0;
-        s3 = 0;
+        s1 = 0.2;
+        s3 = 0.07;
         s4 = 0;
         s5 = 0;
 
@@ -23,16 +23,17 @@ public class ServoTuning extends OpMode {
         servo4 = hardwareMap.get(Servo.class, "servo1");
         servo5 = hardwareMap.get(Servo.class, "servo3");
 
-        s6 = 0;
-        s7 = 0;
+        s6 = 0.45;
+        s7 = 0.45;
         s8 = 0;
         s9 = 0;
+        s10 = .2;
 
         servo6 = hardwareMap.get(Servo.class, "servo4");
         servo7 = hardwareMap.get(Servo.class, "servo2");
         servo8 = hardwareMap.get(Servo.class, "servo8");
         servo9 = hardwareMap.get(Servo.class, "servo7");
-
+        servo10 = hardwareMap.get(Servo.class, "servo6");
     }
 
     @Override
@@ -101,21 +102,30 @@ public class ServoTuning extends OpMode {
         else if (gamepad2.dpad_down){
             s9-=0.001;
         }
+        else if (gamepad1.right_bumper){
+            s10+=0.001;
+        }
+        else if (gamepad1.left_bumper) {
+            s10-=0.001;
+        }
 
         s6 = Math.max(Math.min(1, s6), 0);
         s7 = Math.max(Math.min(1, s7), 0);
         s8 = Math.max(Math.min(1, s8), 0);
         s9 = Math.max(Math.min(1, s9), 0);
+        s10 = Math.max(Math.min(1, s10), 0);
 
         servo6.setPosition(s6);
         servo7.setPosition(s7);
         servo8.setPosition(s8);
         servo9.setPosition(s9);
+        servo10.setPosition(s10);
 
         telemetry.addLine("Servo 6 (outtake claw) value " + s6);
         telemetry.addLine("Servo 7 (outtake rot) value " + s7);
         telemetry.addLine("Servo 8 (left hang) value " + s8);
         telemetry.addLine("Servo 9 (right hang) value " + s9);
+        telemetry.addLine("Servo 10 (gear shifter) value " + s10);
         telemetry.update();
     }
 }

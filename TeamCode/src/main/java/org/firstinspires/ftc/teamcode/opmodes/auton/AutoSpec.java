@@ -79,7 +79,7 @@ public class AutoSpec extends OpMode {
         outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
-        blocker = new ServoSubsystem(hardwareMap, Const.blocker);
+        blocker = new ServoSubsystem(hardwareMap, Const.gearShifter);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
 
         follower.setStartingPose(startPose);

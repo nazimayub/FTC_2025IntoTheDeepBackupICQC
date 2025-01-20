@@ -11,6 +11,7 @@ buildscript {
         agp_version2 = '8.3.0'
         agp_version3 = '8.7.3'
         agp_version4 = '8.5.2'
+        agp_version5 = '8.8.0'
     }
     repositories {
         mavenCentral()
@@ -18,7 +19,7 @@ buildscript {
     }
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
-        classpath "com.android.tools.build:gradle:$agp_version4"
+        classpath "com.android.tools.build:gradle:$agp_version5"
     }
 }
 

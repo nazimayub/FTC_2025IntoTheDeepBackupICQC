@@ -35,7 +35,7 @@ public class Duo extends CommandOpMode {
         log = new SimpleLogger();
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
         drive = new Drive(hardwareMap, Const.imu,new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),new MotorDirectionConfig(false,true,false,true));
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.05, 0, 0.0007, 0);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.1, 0, 0, 0.01);
         slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
@@ -47,7 +47,7 @@ public class Duo extends CommandOpMode {
         lHang = new ServoSubsystem(hardwareMap, Const.leftHang);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
-        blocker = new ServoSubsystem(hardwareMap, Const.blocker);
+        blocker = new ServoSubsystem(hardwareMap, Const.gearShifter);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 

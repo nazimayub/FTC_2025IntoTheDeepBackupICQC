@@ -25,8 +25,8 @@ public class DualSlideTuning extends OpMode {
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        motor1 = hardwareMap.get(DcMotorEx.class, "motor1");
-        motor2 = hardwareMap.get(DcMotorEx.class, "motor2");
+        motor1 = hardwareMap.get(DcMotorEx.class, "lSlide");
+        motor2 = hardwareMap.get(DcMotorEx.class, "rSlide");
 
         motor1.setDirection(DcMotorSimple.Direction.FORWARD);
         motor2.setDirection(DcMotorSimple.Direction.REVERSE);
