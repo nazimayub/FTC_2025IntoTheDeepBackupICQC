@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp
 public class DualSlideTuning extends OpMode {
 
-    public static double p = 0.005, i = 0, d = 0.0;
-    public static double f = 0.1;
+    public static double p = 0, i = 0, d = 0.0;
+    public static double f = 0;
     public static double target = 500;
 
     private PIDController controller1, controller2;
@@ -45,13 +45,13 @@ public class DualSlideTuning extends OpMode {
         controller1.setPID(p, i, d);
         pos1 = motor1.getCurrentPosition();
         double pid1 = controller1.calculate(pos1, target);
-        double power1 = pid1 + f;
+        double power1 = pid1 + f*pid1/Math.abs(pid1);
         motor1.setPower(power1);
 
         controller2.setPID(p, i, d);
         pos2 = motor2.getCurrentPosition();
         double pid2 = controller2.calculate(pos2, target);
-        double power2 = pid2 + f;
+        double power2 = pid2 + f*pid2/Math.abs(pid2);
         motor2.setPower(power2);
 
         telemetry.addData("pos1", pos1);

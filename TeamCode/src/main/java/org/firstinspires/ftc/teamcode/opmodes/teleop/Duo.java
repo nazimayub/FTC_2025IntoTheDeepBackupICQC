@@ -20,12 +20,11 @@ public class Duo extends CommandOpMode {
     SimpleLogger log;
 
     public static Drive drive;
-    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, rHang, lHang, blocker;
+    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
     public static PIDFSlideSubsystem slide;
     public static PIDFSingleSlideSubsystem hSlide;
-    public static TelemetrySubsystem telemetrySubsystem;
     public static WaitSubsystem pause;
 
     @Override
@@ -43,11 +42,9 @@ public class Duo extends CommandOpMode {
         intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
         outtakeClawDistLeft = new ServoSubsystem(hardwareMap, Const.outtakeDistLeft);
         outtakeClawDistRight = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
-        rHang = new ServoSubsystem(hardwareMap, Const.rightHang);
-        lHang = new ServoSubsystem(hardwareMap, Const.leftHang);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
-        blocker = new ServoSubsystem(hardwareMap, Const.gearShifter);
+        shifter = new ServoSubsystem(hardwareMap, Const.gearShifter);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
@@ -60,32 +57,21 @@ public class Duo extends CommandOpMode {
 
         //Bring intake down
         new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(blocker, Const.unblock),
-                new WaitCommand(pause, 300),
                 new SetPIDFSlideArmCommand(hSlide, Const.hSlideExtend),
                 new ServoCommand(intakeClawRot, Const.intakeDownPos)
         ));
 
         //Transfer
         new GamepadButton(op, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClaw, Const.release),
                 new ServoCommand(intakeClawRot, Const.intakeInitTransferPos),
                 new ServoCommand(outtakeClawRot, Const.outtakeClawRotTransfer),
-                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistTempTransfer),
+                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistInitTransfer),
+                new ServoCommand(outtakeClawDistLeft, 1-Const.outtakeClawDistInitTransfer),
                 new SlideResetCommand(slide, vLimit),
                 new SlideResetCommand(hSlide, hLimit),
-                new ServoCommand(blocker, Const.block),
-                new ServoCommand(outtakeClaw, Const.release),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistInitTransfer),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, Const.intakeFinalTransferPos),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, Const.grab),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, Const.intakeSecondFinalTransferPos),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistFinalTransfer),
-                new ServoCommand(outtakeClawRot, Const.rotBasketPos)
+                new ServoCommand(outtakeClaw, Const.grab)
         ));
 
 
@@ -123,8 +109,8 @@ public class Duo extends CommandOpMode {
         //Specimen Score
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
-                new ServoCommand(outtakeClawDistRight, Const.distBasketPos),
-                new ServoCommand(outtakeClawRot, Const.rotBasketPos),
+                new ServoCommand(outtakeClawDistRight, Const.distSpecimenScore),
+                new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
                 new SetPIDFSlideArmCommand(slide, 575)
         ));
 

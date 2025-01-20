@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImpl;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class ServoSubsystem extends SubsystemBase {
     /**
@@ -11,6 +14,7 @@ public class ServoSubsystem extends SubsystemBase {
     private final Servo hand;
     public ServoSubsystem(HardwareMap h, String name) {
         this.hand = h.get(Servo.class, name);
+        ((ServoImplEx)(hand)).setPwmRange(new PwmControl.PwmRange(500, 2500, 5000));
     }
     public void set(double pos) {
         this.hand.setPosition(pos);
