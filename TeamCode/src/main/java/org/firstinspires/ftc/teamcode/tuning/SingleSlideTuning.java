@@ -34,7 +34,7 @@ public class SingleSlideTuning extends OpMode {
         h = this.hardwareMap;
         this.motor3 = h.get(DcMotorEx.class, "horizontalSlide");
         //this.left = h.get(DcMotorEx.class, "motor2");
-        this.motor3.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.motor3.setDirection(DcMotorSimple.Direction.FORWARD);
         //this.left.setDirection(DcMotorSimple.Direction.FORWARD);
         this.motor3.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.motor3.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);

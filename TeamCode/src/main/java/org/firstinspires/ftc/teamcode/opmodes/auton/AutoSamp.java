@@ -96,7 +96,7 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(blocker, Const.block),
                         new ServoCommand(outtakeClaw, Const.release),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistInitTransfer),
+                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistRightInitTransfer),
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, Const.intakeFinalTransferPos),
                         new WaitCommand(pause, 300),
