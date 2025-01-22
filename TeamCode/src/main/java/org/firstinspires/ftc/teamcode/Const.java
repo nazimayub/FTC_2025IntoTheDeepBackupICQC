@@ -17,12 +17,12 @@ public class Const {
             imu = "imu", odo = "odo", rightHang = "servo7", leftHang = "servo8";
 
     //Intake
-    public static double intakeInitTransferPos = .45, intakeFinalTransferPos = 0, intakeDownPos = 0.24, intakeSecondFinalTransferPos = -1,
-            block = 0.03, unblock = 0.12, twist = 0.944, untwist = 0.255;
+    public static double intakeInitTransferPos = .25, intakeFinalTransferPos = 0, intakeDownPos = 0.24, intakeSecondFinalTransferPos = -1,
+            block = 0.03, unblock = 0.12, twist = 0.946, untwist = 0.255;
 
     //Outtake
-    public static double outtakeClawDistTempTransfer = -1, outtakeClawDistRightInitTransfer = 1, outtakeClawDistLeftInitTransfer = 0, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = -1, outtakeClawRotTransfer = .505,
-            grab = 0.42, release = .25,
+    public static double outtakeClawDistTempTransfer = -1, outtakeClawDistRightInitTransfer = 1, outtakeClawDistLeftInitTransfer = 0, outtakeClawDistNew = 0.7, outtakeClawDistFinalTransfer = -1, outtakeClawRotInitTransfer = 0.347, outtakeClawRotTransfer = .505,
+            grab = 0.497, release = .25,
             distBasketPos = .24, rotBasketPos = .45,
             distSpecimenGrab = 0, rotSpecimenGrab = .74, distSpecimenGrabFinal = 0.6, rotSpecimenScore = .55, distSpecimenScore = .81;
 
