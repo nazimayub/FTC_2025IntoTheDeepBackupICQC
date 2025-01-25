@@ -43,7 +43,7 @@ public class hang extends CommandOpMode {
 //        gearShifter = new ServoSubsystem(hardwareMap, Const.gearShifter);
 //        outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
 //        outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
-        vSlides = new SlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD);
+        vSlides = new SlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE);
 
         //Default Commands
         drive.setDefaultCommand(new DriveCommand(drive,base));

@@ -35,7 +35,7 @@ public class Duo extends CommandOpMode {
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
         drive = new Drive(hardwareMap, Const.imu,new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.1, 0, 0, 0.0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.02, 0,  0.000003, 0, 0.02, 0, 0.000003, 0);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -59,7 +59,8 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, 0.377),
                 //new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 1),
+
+                new ServoCommand(intakeClawRot, 0.646),
                 //new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawDistLeft, 0.963),
                 new ServoCommand(outtakeClawDistRight, 0.037),
@@ -68,7 +69,7 @@ public class Duo extends CommandOpMode {
                 //new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawTwist, 0.924),
                 //new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.4),
+                //new ServoCommand(intakeClawRot, 0.4),
                 //new WaitCommand(pause, 300),
                 new SlideResetCommand(hSlide, hLimit),
                 new WaitCommand(pause, 300),
@@ -79,12 +80,10 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, 0.4429),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.05),
+                new ServoCommand(intakeClawRot, 0.4),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 0.30 )
-
-
-
+                new ServoCommand(outtakeClaw, 0.30 ),
+                new SetPIDFSlideArmCommand(slide, 15000)
         ));
 
         //Old transfer
@@ -117,7 +116,7 @@ public class Duo extends CommandOpMode {
         new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(
                 new SequentialCommandGroup(
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDistRight, Const.outtakeClawDistFinalTransfer),
+                        new ServoCommand(outtakeClawDistRight, 0.5),
                         new SetPIDFSlideArmCommand(slide, 2750)
                 ));
 

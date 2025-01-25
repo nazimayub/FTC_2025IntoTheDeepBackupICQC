@@ -75,7 +75,7 @@ public class AutoSamp extends OpMode {
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, path1.getPath(0),3000),
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistFinalTransfer),
+                        new ServoCommand(outtakeClawDist, 0.5),
                         new SetPIDFSlideArmCommand(slide, 2750),
                         new ServoCommand(outtakeClaw, Const.release),
                         new FollowPathCommand(follower, path2.getPath(0), 3000)
@@ -104,10 +104,10 @@ public class AutoSamp extends OpMode {
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, Const.intakeSecondFinalTransferPos),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistFinalTransfer),
+                        new ServoCommand(outtakeClawDist, 0.5),
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
                         new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistFinalTransfer),
+                        new ServoCommand(outtakeClawDist, 0.5),
                         new SetPIDFSlideArmCommand(slide, 2750),
                         new WaitCommand(pause, 2000),
                         new ServoCommand(outtakeClaw, Const.release)
