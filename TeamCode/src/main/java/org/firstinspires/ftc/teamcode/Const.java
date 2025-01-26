@@ -13,18 +13,18 @@ public class Const {
     //Names for motors and servos
     public static final String fr = "fr", fl = "fl", br = "br", bl = "bl",
             lSlide= "lSlide", rSlide = "rSlide", hSlide = "horizontalSlide", intake = "intakeMotor", vLimit = "vertLimitSwitch", hLimit = "horizontalLimitSwitch",
-            intakeRot = "servo5", intakeDist = "servo0", outtakeClaw = "servo4", outtakeRot = "servo2", outtakeTwist = "servo3", outtakeDistRight = "servo1", outtakeDistLeft = "servo0", gearShifter = "servo6",
+            intakeRot = "servo4", intakeDist = "servo0", outtakeClaw = "servo5", outtakeRot = "servo2", outtakeTwist = "servo3", outtakeDistRight = "servo1", outtakeDistLeft = "servo0", gearShifter = "servo6",
             imu = "imu", odo = "odo", rightHang = "servo7", leftHang = "servo8";
 
     //Intake
-    public static double intakeInitTransferPos = .25, intakeFinalTransferPos = 0, intakeDownPos = 0.24, intakeSecondFinalTransferPos = -1,
+    public static double intakeInitTransferPos = .25, intakeFinalTransferPos = 0, intakeDownPos = 0.22, intakeSecondFinalTransferPos = -1,
             block = 0.03, unblock = 0.12, twist = 0.946, untwist = 0.255;
 
     //Outtake
     public static double outtakeClawDistTempTransfer = -1, outtakeClawDistRightInitTransfer = 1, outtakeClawDistLeftInitTransfer = 0, outtakeClawDistNew = 0.7, outtakeClawDistRightFinalTransfer = -1, outtakeClawDistLeftFinalTransfer = -1, outtakeClawRotInitTransfer = 0.347, outtakeClawRotTransfer = .505,
-            grab = 0.497, release = .25,
-            distBasketPos = .24, rotBasketPos = .45,
-            distSpecimenGrab = 0, rotSpecimenGrab = .74, distSpecimenGrabFinal = 0.6, rotSpecimenScore = .55, distSpecimenScore = .81;
+            release = 0.497, grab = .25,
+            distBasketPos = .4, rotBasketPos = 0,
+            distSpecimenGrab = 0, rotSpecimenGrab = .4, distSpecimenGrabFinal = .786, rotSpecimenScore = 0, distSpecimenScore = .786;
 
     //Gear Shifter
     public static double maxTorque = .328, minTorque = .552;
