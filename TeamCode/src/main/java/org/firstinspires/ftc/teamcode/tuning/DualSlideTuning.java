@@ -42,12 +42,8 @@ public class DualSlideTuning extends OpMode {
     @Override
     public void loop() {
         controller.setPID(p, i, d);
-
         pos1 = motor1.getCurrentPosition();
-        pos2 = motor2.getCurrentPosition();
-
-        int averagePos = (pos1 + pos2) / 2;
-        double pid = controller.calculate(averagePos, target);
+        double pid = controller.calculate(pos1, target);
         double power = pid + f;
 
         motor1.setPower(power);
@@ -55,7 +51,6 @@ public class DualSlideTuning extends OpMode {
 
         telemetry.addData("pos1", pos1);
         telemetry.addData("pos2", pos2);
-        telemetry.addData("averagePos", averagePos);
         telemetry.addData("target", target);
         telemetry.addData("power", power);
         telemetry.update();
