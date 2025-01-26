@@ -63,7 +63,6 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(intakeClawRot, .54),
                 new WaitCommand(pause, 300),
                 new SetPIDFSlideArmCommand(hSlide, -400),
-                new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, .22)
                 ));
         //Transfer

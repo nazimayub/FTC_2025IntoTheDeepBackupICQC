@@ -32,7 +32,7 @@ public class SingleSlideTuning extends OpMode {
         intake.setPosition(.5);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
-        this.motor3 = h.get(DcMotorEx.class, "horizontalSlide");
+        this.motor3 = h.get(DcMotorEx.class, "lSlide");
         //this.left = h.get(DcMotorEx.class, "motor2");
         this.motor3.setDirection(DcMotorSimple.Direction.FORWARD);
         //this.left.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -69,6 +69,7 @@ public class SingleSlideTuning extends OpMode {
             target-=.2;
         }
     }
+
 
     /*ArmPIDF(int target){
         controller.setPID(p, i, d);
