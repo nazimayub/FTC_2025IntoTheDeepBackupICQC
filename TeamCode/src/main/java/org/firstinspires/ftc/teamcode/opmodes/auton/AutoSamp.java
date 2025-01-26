@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commands.ServoCommand;
 import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
 import org.firstinspires.ftc.teamcode.commands.SlideResetCommand;
+import org.firstinspires.ftc.teamcode.commands.WaitCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
@@ -52,7 +53,7 @@ public class AutoSamp extends OpMode {
 
     //Poses
     private final Pose startPose = new Pose(0, 0, Math.toRadians(0));
-    private final Pose scorePreloadPose = new Pose(0, -15, Math.toRadians(45));
+    private final Pose scorePreloadPose = new Pose(5, 15, Math.toRadians(315));
     private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Math.toRadians(0));
     private final Pose strafeToSampsPose = new Pose(23.319, 25.802, Math.toRadians(0));
     private final Pose moveToSampsPose = new Pose(50.319, 25.802, Math.toRadians(0));
@@ -93,7 +94,13 @@ public class AutoSamp extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, scorePreloadPath.getPath(0))
+                        new FollowPathCommand(follower, scorePreloadPath.getPath(0)),
+                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new SetPIDFSlideArmCommand(slide, 40000),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release)
                 )
         );
     }
