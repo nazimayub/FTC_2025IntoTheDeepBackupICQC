@@ -23,13 +23,13 @@ public class Drive extends SubsystemBase {
         this.br=hMap.get(DcMotorEx.class,config.getBr());
         this.bl=hMap.get(DcMotorEx.class,config.getBl());
         if(directionConfig.getFr()){
-            this.fr.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.fr.setDirection(DcMotorSimple.Direction.FORWARD);
         }
         if(directionConfig.getFl()){
             this.fl.setDirection(DcMotorSimple.Direction.REVERSE);
         }
         if(directionConfig.getBr()){
-            this.br.setDirection(DcMotorSimple.Direction.REVERSE);
+            this.br.setDirection(DcMotorSimple.Direction.FORWARD);
         }
         if(directionConfig.getBl()){
             this.bl.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -64,10 +64,10 @@ public class Drive extends SubsystemBase {
     public void robotCentricDrive(double x, double y, double r){
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(r), 1);
         if(Const.direction.equals("forward")){
-            fl.setPower((y-x-r)/denominator);
-            bl.setPower((y+x-r)/denominator);
-            fr.setPower((y+x+r)/denominator);
-            br.setPower((y-x+r)/denominator);
+            fl.setPower((-y-x+r)/denominator);
+            bl.setPower((-y+x+r)/denominator);
+            fr.setPower((-y-x-r)/denominator);
+            br.setPower((-y+x-r)/denominator);
         }
         else {
             fl.setPower((-y+x-r)/denominator);

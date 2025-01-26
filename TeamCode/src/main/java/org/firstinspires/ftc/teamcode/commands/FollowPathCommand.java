@@ -9,32 +9,23 @@ import com.pedropathing.util.Timer;
 
 public class FollowPathCommand extends CommandBase {
     private final Path path;
-    private final Timer pathTimer = new Timer();
     Follower follower;
-    private final int time;
 
 
-    public FollowPathCommand(Follower follower, Path path, int time) {
+    public FollowPathCommand(Follower follower, Path path) {
         this.follower = follower;
         this.path = path;
-        this.time = time;
         addRequirements();
     }
 
     @Override
-    public void initialize() {
-        pathTimer.resetTimer();
-    }
-
-    @Override
     public void execute() {
-        if (!follower.isBusy() || pathTimer.getElapsedTime() > time) {
+        if(!follower.isBusy())
             follower.followPath(path);
-        }
     }
 
     @Override
     public boolean isFinished() {
-        return !follower.isBusy() || pathTimer.getElapsedTime() > time;
+        return !follower.isBusy();
     }
 }

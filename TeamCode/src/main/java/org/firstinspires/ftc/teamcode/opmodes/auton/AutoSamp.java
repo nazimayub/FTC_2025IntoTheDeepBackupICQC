@@ -12,28 +12,30 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Const;
+import org.firstinspires.ftc.teamcode.Const2;
 import org.firstinspires.ftc.teamcode.commands.FollowPathCommand;
-import org.firstinspires.ftc.teamcode.commands.IntakeAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.ServoCommand;
 import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
 import org.firstinspires.ftc.teamcode.commands.SlideResetCommand;
-import org.firstinspires.ftc.teamcode.commands.WaitCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeAutoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LimitSwitchSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.TelemetrySubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
+import org.firstinspires.ftc.teamcode.utils.MotorConfig;
+import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
 @Autonomous
 public class AutoSamp extends OpMode {
-    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawDist, blocker;
-    public static IntakeAutoSubsystem intake;
+    public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
+    public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
     public static PIDFSlideSubsystem slide;
     public static PIDFSingleSlideSubsystem hSlide;
@@ -42,88 +44,119 @@ public class AutoSamp extends OpMode {
     //Paths
     private Follower follower;
     private Timer pathTimer;
-    private PathChain path1, path2, path3, path4, path5;
+    private int pathState;
+    private PathChain scorePreloadPath, moveFromFirstSpecimenScorePath, strafeToSampsPath,
+            moveToSampsPath, moveToFirstSampPath, pushFirstSampPath, moveToSecondSampPath,
+            strafeToSecondSampPath, pushSecondSampPath, moveToThirdSampPath, strafeToThirdSampPath,
+            pushThirdSampPath;
 
     //Poses
-    private final Pose pose0 = new Pose(0, 0, Math.toRadians(0));
-    private final Pose pose1 = new Pose(5, 28, Math.toRadians(130));
-    private final Pose pose2 = new Pose(5, 28, Math.toRadians(60));
+    private final Pose startPose = new Pose(0, 0, Math.toRadians(0));
+    private final Pose scorePreloadPose = new Pose(0, -15, Math.toRadians(45));
+    private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Math.toRadians(0));
+    private final Pose strafeToSampsPose = new Pose(23.319, 25.802, Math.toRadians(0));
+    private final Pose moveToSampsPose = new Pose(50.319, 25.802, Math.toRadians(0));
+
+    private final Pose moveToFirstSampPose = new Pose(50.319, 17.802, Math.toRadians(0));
+    private final Pose pushFirstSampPose = new Pose(11.00, 17.802, Math.toRadians(0));
+
+    private final Pose moveToSecondSampPose = new Pose(50.319, 17.802, Math.toRadians(0));
+    private final Pose strafeToSecondSampPose = new Pose(50.319, 9.802, Math.toRadians(0));
+    private final Pose pushSecondSampPose = new Pose(11.00, 9.802, Math.toRadians(0));
+
+    private final Pose moveToThirdSampPose = new Pose(65.319, 9.802, Math.toRadians(180));
+    private final Pose strafeToThirdSampPose = new Pose(65.319, -8, Math.toRadians(180));
+    private final Pose pushThirdSampPose = new Pose(8.00, -8, Math.toRadians(180));
 
     @Override
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
-        intake = new IntakeAutoSubsystem(hardwareMap, Const.intake, new ElapsedTime());
-        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.05, 0, 0.0007, 0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
-        pause = new WaitSubsystem();
+        intake = new IntakeSubsystem(hardwareMap, Const.intake);
+        hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.2, 0.001, 0, 0, 0.2);        pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
         intakeClawRot = new ServoSubsystem(hardwareMap, Const.intakeRot);
-        outtakeClawDist = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
+        outtakeClawDistLeft = new ServoSubsystem(hardwareMap, Const.outtakeDistLeft);
+        outtakeClawDistRight = new ServoSubsystem(hardwareMap, Const.outtakeDistRight);
         vLimit = new LimitSwitchSubsystem(hardwareMap, Const.vLimit);
         hLimit = new LimitSwitchSubsystem(hardwareMap, Const.hLimit);
-        blocker = new ServoSubsystem(hardwareMap, Const.gearShifter);
+        shifter = new ServoSubsystem(hardwareMap, Const.gearShifter);
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
+        outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
+        pause = new WaitSubsystem();
 
-        follower.setStartingPose(pose0);
+        follower.setStartingPose(startPose);
         path();
 
         CommandScheduler.getInstance().schedule(
-                //Score Preload
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path1.getPath(0),3000),
-                        new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDist, 0.5),
-                        new SetPIDFSlideArmCommand(slide, 2750),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new FollowPathCommand(follower, path2.getPath(0), 3000)
-                ),
-
-                //Score first sample
-                new SequentialCommandGroup(
-                        new ServoCommand(blocker, Const.unblock),
-                        new WaitCommand(pause, 300),
-                        new SetPIDFSlideArmCommand(hSlide, 400),
-                        new ServoCommand(intakeClawRot, Const.intakeDownPos),
-                        new IntakeAutoCommand(intake, -1, 3),
-                        new ServoCommand(intakeClawRot, Const.intakeInitTransferPos),
-                        new ServoCommand(outtakeClawRot, Const.outtakeClawRotTransfer),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistTempTransfer),
-                        new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit),
-                        new ServoCommand(blocker, Const.block),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawDist, Const.outtakeClawDistRightInitTransfer),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, Const.intakeFinalTransferPos),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, Const.intakeSecondFinalTransferPos),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawDist, 0.5),
-                        new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawRot, Const.rotBasketPos),
-                        new ServoCommand(outtakeClawDist, 0.5),
-                        new SetPIDFSlideArmCommand(slide, 2750),
-                        new WaitCommand(pause, 2000),
-                        new ServoCommand(outtakeClaw, Const.release)
+                        new FollowPathCommand(follower, scorePreloadPath.getPath(0))
                 )
         );
     }
 
     public void path() {
-        path1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(pose0), new Point(pose1)))
-                .setLinearHeadingInterpolation(pose0.getHeading(), pose1.getHeading())
+        scorePreloadPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(startPose), new Point(scorePreloadPose)))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePreloadPose.getHeading())
                 .build();
 
-        path2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(pose1), new Point(pose2)))
-                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+        moveFromFirstSpecimenScorePath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(scorePreloadPose), new Point(moveFromScorePreloadPose)))
+                .setLinearHeadingInterpolation(scorePreloadPose.getHeading(), moveFromScorePreloadPose.getHeading())
+                .build();
+
+        strafeToSampsPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveFromScorePreloadPose), new Point(strafeToSampsPose)))
+                .setLinearHeadingInterpolation(moveFromScorePreloadPose.getHeading(), strafeToSampsPose.getHeading())
+                .build();
+
+        moveToSampsPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToSampsPose), new Point(moveToSampsPose)))
+                .setLinearHeadingInterpolation(strafeToSampsPose.getHeading(), moveToSampsPose.getHeading())
+                .build();
+
+        moveToFirstSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToSampsPose), new Point(moveToFirstSampPose)))
+                .setLinearHeadingInterpolation(moveToSampsPose.getHeading(), moveToFirstSampPose.getHeading())
+                .build();
+
+        pushFirstSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToFirstSampPose), new Point(pushFirstSampPose)))
+                .setLinearHeadingInterpolation(moveToFirstSampPose.getHeading(), pushFirstSampPose.getHeading())
+                .build();
+
+        moveToSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(pushFirstSampPose), new Point(moveToSecondSampPose)))
+                .setLinearHeadingInterpolation(pushFirstSampPose.getHeading(), moveToSecondSampPose.getHeading())
+                .build();
+
+        strafeToSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToSecondSampPose), new Point(strafeToSecondSampPose)))
+                .setLinearHeadingInterpolation(moveToSecondSampPose.getHeading(), strafeToSecondSampPose.getHeading())
+                .build();
+
+        pushSecondSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToSecondSampPose), new Point(pushSecondSampPose)))
+                .setLinearHeadingInterpolation(strafeToSecondSampPose.getHeading(), pushSecondSampPose.getHeading())
+                .build();
+
+        moveToThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(pushSecondSampPose), new Point(moveToThirdSampPose)))
+                .setLinearHeadingInterpolation(pushSecondSampPose.getHeading(), moveToThirdSampPose.getHeading())
+                .build();
+
+        strafeToThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(moveToThirdSampPose), new Point(strafeToThirdSampPose)))
+                .setConstantHeadingInterpolation(strafeToThirdSampPose.getHeading())
+                .build();
+
+        pushThirdSampPath = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(strafeToThirdSampPose), new Point(pushThirdSampPose)))
+                .setConstantHeadingInterpolation(pushThirdSampPose.getHeading())
                 .build();
     }
 
@@ -133,10 +166,10 @@ public class AutoSamp extends OpMode {
 
         CommandScheduler.getInstance().run();
 
+        telemetry.addData("Path State", pathState);
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading", follower.getPose().getHeading());
-        telemetry.addData("Busy", follower.isBusy());
         telemetry.update();
     }
 }
