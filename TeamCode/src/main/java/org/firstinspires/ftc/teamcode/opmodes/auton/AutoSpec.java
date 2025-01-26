@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Const;
+import org.firstinspires.ftc.teamcode.Const2;
 import org.firstinspires.ftc.teamcode.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.commands.ServoCommand;
 import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
@@ -69,7 +70,7 @@ public class AutoSpec extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
-        intake = new IntakeSubsystem(hardwareMap, Const.intake);
+        intake = new IntakeSubsystem(hardwareMap, Const2.intake);
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, 0.05, 0, 0.0007, 0);
         slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.005, 0,  0.0, 0.1, 0.005, 0, 0.0, 0.1);
         pause = new WaitSubsystem();

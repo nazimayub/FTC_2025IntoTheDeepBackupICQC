@@ -103,12 +103,12 @@ public class SetPIDFSlideArmCommand extends CommandBase {
 
 
     }
-    @Override
-    public void end(boolean inturrupted){
-        if (PIDFSlide != null){
-            PIDFSlide.set(PIDFSlide.getF(), PIDFSlide.getF());
-        }
-
-    }
+//    @Override
+//    public void end(boolean inturrupted){
+//        if (PIDFSlide != null){
+//            PIDFSlide.set(PIDFSlide.getF(), PIDFSlide.getF());
+//        }
+//
+//    }
 
 }
