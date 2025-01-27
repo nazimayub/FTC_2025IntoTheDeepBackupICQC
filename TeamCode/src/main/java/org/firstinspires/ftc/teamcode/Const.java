@@ -17,14 +17,14 @@ public class Const {
             imu = "imu", odo = "odo", rightHang = "servo7", leftHang = "servo8";
 
     //Intake
-    public static double intakeInitTransferPos = .25, intakeFinalTransferPos = 0, intakeDownPos = 0.22, intakeSecondFinalTransferPos = -1,
+    public static double intakeInitTransferPos = .25, intakeFinalTransferPos = 0, intakeDownPos = 0.220, intakeSecondFinalTransferPos = -1,
             block = 0.03, unblock = 0.12, twist = 0.946, untwist = 0.255;
 
     //Outtake
     public static double outtakeClawDistTempTransfer = -1, outtakeClawDistRightInitTransfer = 1, outtakeClawDistLeftInitTransfer = 0, outtakeClawDistNew = 0.7, outtakeClawDistRightFinalTransfer = -1, outtakeClawDistLeftFinalTransfer = -1, outtakeClawRotInitTransfer = 0.347, outtakeClawRotTransfer = .505,
             release = 0.497, grab = .25,
             distBasketPos = .4, rotBasketPos = 0,
-            distSpecimenGrab = 0, rotSpecimenGrab = .4, distSpecimenGrabFinal = .786, rotSpecimenScore = 0, distSpecimenScore = .786;
+            distSpecimenGrab = 0, rotSpecimenGrab = .916, distSpecimenGrabFinal = .785, rotSpecimenScore = 0.4, distSpecimenScore = .786;
 
     //Gear Shifter
     public static double maxTorque = .328, minTorque = .552;
