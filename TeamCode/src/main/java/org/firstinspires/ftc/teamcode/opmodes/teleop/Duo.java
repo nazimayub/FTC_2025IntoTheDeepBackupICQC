@@ -67,49 +67,22 @@ public class Duo extends CommandOpMode {
 
         //Transfer
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
-<<<<<<< Updated upstream
-                new ServoCommand(intakeClawRot, 0.35),
-                //new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 1),
-                //new WaitCommand(pause, 300),
+
+                new ServoCommand(outtakeClaw, Const.release),
+                new ServoCommand(intakeClawRot, .3),
                 new ServoCommand(outtakeClawDistLeft, 1),
                 new ServoCommand(outtakeClawDistRight, 0),
-                //new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawRot, 0.7),
-                //new WaitCommand(pause, 300),
-=======
-                new ServoCommand(outtakeClaw, 0.377),
-                new ServoCommand(intakeClawRot, .3),
-                new ServoCommand(outtakeClawDistLeft, 0.963),
-                new ServoCommand(outtakeClawDistRight, 0.037),
-                new ServoCommand(outtakeClawRot, 0.24),
->>>>>>> Stashed changes
                 new ServoCommand(outtakeClawTwist, 0.924),
                 new SlideResetCommand(slide, vLimit),
-                //new WaitCommand(pause, 300),
-
-                //new WaitCommand(pause, 300),
                 new SlideResetCommand(hSlide, hLimit),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawRot, 0.79),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, 0.46),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDistLeft, 1),
-                new ServoCommand(outtakeClawDistRight, 0),
+                new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 0.4429),
-                new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.05),
-                new WaitCommand(pause, 300),
-<<<<<<< Updated upstream
-                new ServoCommand(outtakeClaw, 0.30 ),
-                new ServoCommand(intakeClawRot, 0.377),
-=======
-                new ServoCommand(intakeClawRot, 0.774),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClaw, 0.30),
->>>>>>> Stashed changes
                 new SetPIDFSlideArmCommand(slide, 5000)
 
         ));
