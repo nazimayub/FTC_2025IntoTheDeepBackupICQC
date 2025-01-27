@@ -52,8 +52,8 @@ public class AutoSamp extends OpMode {
             pushThirdSampPath;
 
     //Poses
-    private final Pose startPose = new Pose(0, 0, Math.toRadians(0));
-    private final Pose scorePreloadPose = new Pose(5, 15, Math.toRadians(315));
+    private final Pose startPose = new Pose(6.689, 110.741, Math.toRadians(0));
+    private final Pose scorePreloadPose = new Pose(12.307, 135.994, Math.toRadians(315));
     private final Pose moveFromScorePreloadPose = new Pose(23.319, 57.802, Math.toRadians(0));
     private final Pose strafeToSampsPose = new Pose(23.319, 25.802, Math.toRadians(0));
     private final Pose moveToSampsPose = new Pose(50.319, 25.802, Math.toRadians(0));
@@ -94,12 +94,13 @@ public class AutoSamp extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, scorePreloadPath.getPath(0)),
+                        new ServoCommand(intakeClawRot, .58),
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new FollowPathCommand(follower, scorePreloadPath, true),
                         new ServoCommand(outtakeClawRot, 0.5),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new SetPIDFSlideArmCommand(slide, 40000),
-                        new WaitCommand(pause, 300),
                         new ServoCommand(outtakeClaw, Const.release)
                 )
         );
@@ -177,6 +178,7 @@ public class AutoSamp extends OpMode {
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading", follower.getPose().getHeading());
+        telemetry.addData("Busy", follower.isBusy());
         telemetry.update();
     }
 }
