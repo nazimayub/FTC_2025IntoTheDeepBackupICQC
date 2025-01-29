@@ -83,6 +83,7 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
+                new ServoCommand(intakeClawRot, .3),
                 new SetPIDFSlideArmCommand(slide, 5000)
 
         ));
@@ -93,7 +94,7 @@ public class Duo extends CommandOpMode {
                         new ServoCommand(outtakeClawRot, 0.5),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000)
+                        new SetPIDFSlideArmCommand(slide, 38000)
                 ));
 
         //Release in Basket
