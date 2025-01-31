@@ -58,9 +58,6 @@ public class AutoSamp extends OpMode {
             new Pose(71.164, 94.204, Math.toRadians(0))
     };
 
-    //Commands
-    Command init, reset, grab, score;
-
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeAutoSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
@@ -89,71 +86,18 @@ public class AutoSamp extends OpMode {
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
         follower.setStartingPose(poses[0]);
-        comms();
 
         Command scorePreload =
                 new SequentialCommandGroup(
-                        init,
-                        new FollowPathCommand(follower, path(0), true),
-                        score,
-                        reset
-                );
-
-        Command scoreFirstSamp =
-                new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(1), true),
-                        grab,
-                        new FollowPathCommand(follower, path(2), true),
-                        score,
-                        reset
-                );
-
-        Command scoreSecondSamp =
-                new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(3), true),
-                        grab,
-                        new FollowPathCommand(follower, path(4), true),
-                        score,
-                        reset
-                );
-
-        Command scoreThirdSamp =
-                new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(5), true),
-                        grab,
-                        new FollowPathCommand(follower, path(6), true),
-                        score,
-                        reset
-                );
-
-        Command park =
-                new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(7), true)
-                );
-
-        CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-                scorePreload, scoreFirstSamp, scoreSecondSamp, park
-        ));
-    }
-
-    public PathChain path(int i) {
-        paths[i] = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(poses[i]), new Point(poses[i + 1])))
-                .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
-                .build();
-
-        return paths[i];
-    }
-
-    public void comms() {
-        init =
-                new SequentialCommandGroup(
                         new ServoCommand(intakeClawRot, .58),
-                        new ServoCommand(outtakeClaw, Const.grab)
-                );
-
-        reset =
-                new SequentialCommandGroup(
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new FollowPathCommand(follower, path(0), true),
+                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new SetPIDFSlideArmCommand(slide, 40000),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
                         new WaitCommand(pause, 300),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
@@ -165,23 +109,98 @@ public class AutoSamp extends OpMode {
                         new SlideResetCommand(hSlide, hLimit)
                 );
 
-        grab =
+        Command scoreFirstSamp =
                 new SequentialCommandGroup(
+                        new FollowPathCommand(follower, path(1), true),
                         new ServoCommand(intakeClawRot, 0.5),
                         new SetPIDFSlideArmCommand(hSlide, -700),
                         new ServoCommand(intakeClawRot, .22),
-                        new IntakeAutoCommand(intake, .5, 3)
-                );
-
-        score =
-                new SequentialCommandGroup(
+                        new IntakeAutoCommand(intake, .5, 3),
+                        new FollowPathCommand(follower, path(2), true),
                         new ServoCommand(outtakeClawRot, 0.5),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new SetPIDFSlideArmCommand(slide, 40000),
                         new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300)
+                        new WaitCommand(pause, 300),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924),
+                        new SlideResetCommand(slide, vLimit),
+                        new SlideResetCommand(hSlide, hLimit)
                 );
+
+        Command scoreSecondSamp =
+                new SequentialCommandGroup(
+                        new FollowPathCommand(follower, path(3), true),
+                        new ServoCommand(intakeClawRot, 0.5),
+                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new ServoCommand(intakeClawRot, .22),
+                        new IntakeAutoCommand(intake, .5, 3),
+                        new FollowPathCommand(follower, path(4), true),
+                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new SetPIDFSlideArmCommand(slide, 40000),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924),
+                        new SlideResetCommand(slide, vLimit),
+                        new SlideResetCommand(hSlide, hLimit)
+                );
+
+        Command scoreThirdSamp =
+                new SequentialCommandGroup(
+                        new FollowPathCommand(follower, path(5), true),
+                        new ServoCommand(intakeClawRot, 0.5),
+                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new ServoCommand(intakeClawRot, .22),
+                        new IntakeAutoCommand(intake, .5, 3),
+                        new FollowPathCommand(follower, path(6), true),
+                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new SetPIDFSlideArmCommand(slide, 40000),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924),
+                        new SlideResetCommand(slide, vLimit),
+                        new SlideResetCommand(hSlide, hLimit)
+                );
+
+        Command park =
+                new SequentialCommandGroup(
+                        new FollowPathCommand(follower, path(7), true)
+                );
+
+        CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
+                scorePreload, scoreFirstSamp, scoreSecondSamp, scoreThirdSamp, park
+        ));
+    }
+
+    public PathChain path(int i) {
+        paths[i] = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(poses[i]), new Point(poses[i + 1])))
+                .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
+                .build();
+
+        return paths[i];
     }
 
     @Override
