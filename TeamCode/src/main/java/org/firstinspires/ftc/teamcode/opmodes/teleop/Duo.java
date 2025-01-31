@@ -134,10 +134,16 @@ public class Duo extends CommandOpMode {
         //High Basket Score
         new GamepadButton(op, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Const.release));
 
-        //VSlide Down
+        // Reset
         new GamepadButton(op, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.release),
-                new SlideResetCommand(slide, vLimit)
+                new ServoCommand(intakeClawRot, .3),
+                new ServoCommand(outtakeClawDistLeft, 1),
+                new ServoCommand(outtakeClawDistRight, 0),
+                new ServoCommand(outtakeClawRot, 0.7),
+                new ServoCommand(outtakeClawTwist, 0.924),
+                new SlideResetCommand(slide, vLimit),
+                new SlideResetCommand(hSlide, hLimit)
         ));
     }
 }
