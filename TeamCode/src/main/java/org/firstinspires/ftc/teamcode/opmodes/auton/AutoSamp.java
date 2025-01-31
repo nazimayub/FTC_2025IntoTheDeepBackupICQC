@@ -96,8 +96,6 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new SetPIDFSlideArmCommand(slide, 40000),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
                         new WaitCommand(pause, 300),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
