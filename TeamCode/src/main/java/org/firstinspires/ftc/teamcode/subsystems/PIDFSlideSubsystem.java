@@ -19,7 +19,6 @@ public class PIDFSlideSubsystem extends SubsystemBase {
     private double target = 0;
     boolean use = true;
     private PIDController controller;
-    private PIDController controller1;
     public PIDFSlideSubsystem(HardwareMap h, String right, String left, Direction rightD, Direction leftD, double p, double i, double d, double f, double p1, double i1, double d1, double f1) {
         this.p = p;
         this.i = i;
@@ -38,7 +37,6 @@ public class PIDFSlideSubsystem extends SubsystemBase {
         this.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         controller = new PIDController(p, i, d);
-        controller1 = new PIDController(p, i, d);
     }
 
     public void set(double target) {

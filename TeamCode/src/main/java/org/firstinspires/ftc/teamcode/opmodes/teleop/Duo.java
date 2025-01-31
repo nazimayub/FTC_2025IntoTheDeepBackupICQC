@@ -38,7 +38,7 @@ public class Duo extends CommandOpMode {
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
         drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.bl, Const.br, Const.fl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.2, 0.001, 0, 0, 0.2);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.05, 0.001, 0, 0, 0.05);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -101,7 +101,6 @@ public class Duo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new ServoCommand(outtakeClaw, Const.release));
 
         //Specimen Grab Pos
-
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClawTwist, Const.untwist),
                 new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
