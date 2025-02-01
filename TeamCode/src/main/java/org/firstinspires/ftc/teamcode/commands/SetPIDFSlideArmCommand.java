@@ -85,7 +85,7 @@ public class SetPIDFSlideArmCommand extends CommandBase {
     public boolean isFinished(){
 
         if(PIDFSlide!=null){
-            return PIDFSlide.getTick()<change+3&&PIDFSlide.getTick()>change-3;
+            return PIDFSlide.getTick()<change+100&&PIDFSlide.getTick()>change-100;
         }
         else if(PIDFSlideAdv != null){
             return PIDFSlideAdv.getTick()<change+3&&PIDFSlideAdv.getTick()>change-3;

@@ -60,7 +60,6 @@ public class Duo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
         //Specimen Grab
-        /*
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
                 new SlideResetCommand(slide, vLimit),
                 new ServoCommand(intakeClawRot, .3),
@@ -71,9 +70,8 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
                 new ServoCommand(outtakeClaw, Const.release)
         ));
-*/
+
         //Specimen Score
-        /*
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
@@ -84,17 +82,7 @@ public class Duo extends CommandOpMode {
                 new SetPIDFSlideArmCommand(slide, 7000) // CHANGE THIS IRFAAAAAAAAN
 
         ));
-/*
-        //Gear shifter
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whileHeld(new SequentialCommandGroup(
-                new ServoCommand(shifter, .290)
-        ));
 
-        //Gear shifter
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whileHeld(new SequentialCommandGroup(
-                new ServoCommand(shifter, .552)
-        ));
-*/
         // OPERATOR
 
         //Intake Sample
@@ -134,7 +122,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawRot, 0.5),
                 new ServoCommand(outtakeClawDistRight, 1-0.378),
                 new ServoCommand(outtakeClawDistLeft, 0.378),
-                new SetPIDFSlideArmCommand(slide, 40000)
+                new SetPIDFSlideArmCommand(slide, 38000)
         ));
 
         //High Basket Score
@@ -148,8 +136,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawDistRight, 0),
                 new ServoCommand(outtakeClawRot, 0.7),
                 new ServoCommand(outtakeClawTwist, 0.924),
-                new SlideResetCommand(slide, vLimit),
-                new SlideResetCommand(hSlide, hLimit)
+                new SlideResetCommand(slide, vLimit)
         ));
     }
 }

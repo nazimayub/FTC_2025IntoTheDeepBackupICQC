@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -44,17 +45,16 @@ public class AutoSamp extends OpMode {
     /** POSES
      * X - Forward Positive, Backwards Negative
      * Y - Left Positive, Right Negative
-     * @Irfan adjust positions to be correct
      */
     private final Pose[] poses = {
-            new Pose(6.689, 110.741, Math.toRadians(0)),
-            new Pose(14.307, 130.994, Math.toRadians(315)),
-            new Pose(25.084, 120.588, Math.toRadians(0)),
-            new Pose(14.307, 130.994, Math.toRadians(315)),
-            new Pose(24.155, 130.622, Math.toRadians(0)),
-            new Pose(14.307, 130.994, Math.toRadians(315)),
+            new Pose(6.689, 110.741, Math.toRadians(315)),
+            new Pose(10.189, 128.994, Math.toRadians(315)),
+            new Pose(14.189, 118.588, Math.toRadians(0)),
+            new Pose(10.289, 128.994, Math.toRadians(315)),
+            new Pose(16.155, 128.622, Math.toRadians(0)),
+            new Pose(10.289, 128.994, Math.toRadians(315)),
             new Pose(23.969, 136.196, Math.toRadians(15)),
-            new Pose(14.307, 130.994, Math.toRadians(315)),
+            new Pose(10.289, 128.994, Math.toRadians(315)),
             new Pose(71.164, 94.204, Math.toRadians(0))
     };
 
@@ -86,42 +86,39 @@ public class AutoSamp extends OpMode {
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
         follower.setStartingPose(poses[0]);
+        intakeClawRot.set(.58);
 
         Command scorePreload =
                 new SequentialCommandGroup(
-                        new ServoCommand(intakeClawRot, .58),
+                        new SlideResetCommand(hSlide, hLimit),
                         new ServoCommand(outtakeClaw, Const.grab),
-                        new FollowPathCommand(follower, path(0), true),
-                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawRot, 0.9),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000),
+                        new FollowPathCommand(follower, path(0), true).setMaxPower(.7),
+                        new SetPIDFSlideArmCommand(slide, 38000),
+                        new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
                         new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, .3),
                         new ServoCommand(outtakeClawDistLeft, 1),
                         new ServoCommand(outtakeClawDistRight, 0),
                         new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924),
-                        new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit)
+                        new ServoCommand(outtakeClawTwist, 0.924)
                 );
 
         Command scoreFirstSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(1), true),
+                        new FollowPathCommand(follower, path(1), true).setMaxPower(.7),
+                        new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .22),
-                        new IntakeAutoCommand(intake, .5, 3),
-                        new FollowPathCommand(follower, path(2), true),
-                        new ServoCommand(outtakeClawRot, 0.5),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new WaitCommand(pause, 300),
+                        new ParallelCommandGroup(
+                                new SetPIDFSlideArmCommand(hSlide, -735),
+                                new IntakeAutoCommand(intake, -0.8, 3)
+                        ),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
                         new ServoCommand(outtakeClawDistLeft, 1),
@@ -129,24 +126,43 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(outtakeClawRot, 0.7),
                         new ServoCommand(outtakeClawTwist, 0.924),
                         new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit)
+                        new SlideResetCommand(hSlide, hLimit),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClawRot, 0.83),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, 0.46),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new ServoCommand(outtakeClawRot, 0.9),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new FollowPathCommand(follower, path(2), true).setMaxPower(.7),
+                        new SetPIDFSlideArmCommand(slide, 38000),
+                        new ServoCommand(outtakeClawRot, 0.4),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924)
                 );
 
         Command scoreSecondSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(3), true),
+                        new FollowPathCommand(follower, path(3), true).setMaxPower(.7),
+                        new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .22),
-                        new IntakeAutoCommand(intake, .5, 3),
-                        new FollowPathCommand(follower, path(4), true),
-                        new ServoCommand(outtakeClawRot, 0.5),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new WaitCommand(pause, 300),
+                        new ParallelCommandGroup(
+                                new SetPIDFSlideArmCommand(hSlide, -735),
+                                new IntakeAutoCommand(intake, -0.8, 3)
+                        ),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
                         new ServoCommand(outtakeClawDistLeft, 1),
@@ -154,24 +170,43 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(outtakeClawRot, 0.7),
                         new ServoCommand(outtakeClawTwist, 0.924),
                         new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit)
+                        new SlideResetCommand(hSlide, hLimit),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClawRot, 0.83),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, 0.46),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new ServoCommand(outtakeClawRot, 0.9),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new FollowPathCommand(follower, path(4), true).setMaxPower(.7),
+                        new SetPIDFSlideArmCommand(slide, 38000),
+                        new ServoCommand(outtakeClawRot, 0.4),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924)
                 );
 
         Command scoreThirdSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(5), true),
+                        new FollowPathCommand(follower, path(5), true).setMaxPower(.7),
+                        new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .22),
-                        new IntakeAutoCommand(intake, .5, 3),
-                        new FollowPathCommand(follower, path(6), true),
-                        new ServoCommand(outtakeClawRot, 0.5),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new WaitCommand(pause, 300),
+                        new ParallelCommandGroup(
+                                new SetPIDFSlideArmCommand(hSlide, -750),
+                                new IntakeAutoCommand(intake, -0.8, 3)
+                        ),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
                         new ServoCommand(outtakeClawDistLeft, 1),
@@ -179,16 +214,43 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(outtakeClawRot, 0.7),
                         new ServoCommand(outtakeClawTwist, 0.924),
                         new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit)
+                        new SlideResetCommand(hSlide, hLimit),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClawRot, 0.83),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, 0.46),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new ServoCommand(outtakeClawRot, 0.9),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new FollowPathCommand(follower, path(6), true).setMaxPower(.7),
+                        new SetPIDFSlideArmCommand(slide, 38000),
+                        new ServoCommand(outtakeClawRot, 0.4),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(intakeClawRot, .3),
+                        new ServoCommand(outtakeClawDistLeft, 1),
+                        new ServoCommand(outtakeClawDistRight, 0),
+                        new ServoCommand(outtakeClawRot, 0.7),
+                        new ServoCommand(outtakeClawTwist, 0.924)
                 );
 
         Command park =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(7), true)
+                        new FollowPathCommand(follower, path( 7), true)
                 );
 
         CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-                scorePreload, scoreFirstSamp, scoreSecondSamp, scoreThirdSamp, park
+                scorePreload,
+                scoreFirstSamp,
+                scoreSecondSamp
+                //scoreThirdSamp
+                //park
         ));
     }
 
