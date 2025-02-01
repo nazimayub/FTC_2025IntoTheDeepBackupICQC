@@ -28,11 +28,11 @@ public class SingleSlideTuning extends OpMode {
 
     @Override
     public void init() {
-        intake = hardwareMap.get(Servo.class, "servo5");
+        intake = hardwareMap.get(Servo.class, "servo4");
         intake.setPosition(.5);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         h = this.hardwareMap;
-        this.motor3 = h.get(DcMotorEx.class, "lSlide");
+        this.motor3 = h.get(DcMotorEx.class, "horizontalSlide");
         //this.left = h.get(DcMotorEx.class, "motor2");
         this.motor3.setDirection(DcMotorSimple.Direction.FORWARD);
         //this.left.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -54,7 +54,7 @@ public class SingleSlideTuning extends OpMode {
         //pos1 = left.getCurrentPosition();
         //double pid1 = controller.calculate(pos, target);
         //double power1 = pid1+f;
-
+        intake.setPosition(.2);
         motor3.setPower(power);
         //left.setPower(power1);
 

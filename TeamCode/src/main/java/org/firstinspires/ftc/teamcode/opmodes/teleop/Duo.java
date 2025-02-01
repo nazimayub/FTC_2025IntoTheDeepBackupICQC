@@ -37,11 +37,11 @@ public class Duo extends CommandOpMode {
         op = new GamepadEx(gamepad2);
         log = new SimpleLogger();
 
+        log = new SimpleLogger();
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
         drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.bl, Const.br, Const.fl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
         slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.05, 0.001, 0, 0, 0.05);
-        torqueSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.05, 0.001, 0, 0, 0.05);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -60,44 +60,42 @@ public class Duo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
         //Specimen Grab
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new SlideResetCommand(slide, vLimit),
-                new ServoCommand(intakeClawRot, .3),
-                new SlideResetCommand(hSlide, hLimit),
-                new ServoCommand(outtakeClawTwist, Const.untwist),
-                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
-                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
-                new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
-                new ServoCommand(outtakeClaw, Const.release)
-        ));
+//        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
+//                new SlideResetCommand(slide, vLimit),
+//                new ServoCommand(intakeClawRot, .3),
+//                new SlideResetCommand(hSlide, hLimit),
+//                new ServoCommand(outtakeClawTwist, Const.untwist),
+//                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
+//                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
+//                new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
+//                new ServoCommand(outtakeClaw, Const.release)
+//        ));
 
-        //Specimen Score
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, Const.grab),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
-                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
-                new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
-                new ServoCommand(outtakeClawTwist, Const.twist),
-                new SetPIDFSlideArmCommand(slide, 7000) // CHANGE THIS IRFAAAAAAAAN
+//        //Specimen Score
+//        new GamepadButton(op, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
+//                new ServoCommand(outtakeClaw, Const.grab),
+//                new WaitCommand(pause, 300),
+//                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
+//                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
+//                new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
+//                new ServoCommand(outtakeClawTwist, Const.twist),
+//                new SetPIDFSlideArmCommand(slide, 7000) // CHANGE THIS IRFAAAAAAAAN
+//
+//        ));
 
-        ));
-
-        // OPERATOR
-
-        //Intake Sample
+        //Intake
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, -0.5)).whenReleased(new IntakeCommand(intake, 0));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenReleased(new IntakeCommand(intake, 0));
 
-        //Intake from submersible
+        //HorizontalSlide Extend
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(intakeClawRot, 0.5),
                 new SetPIDFSlideArmCommand(hSlide, -700),
                 new ServoCommand(intakeClawRot, .22)
         ));
 
-        //Transfer Sample
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
+        //Transfer
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.release),
                 new ServoCommand(intakeClawRot, .3),
                 new ServoCommand(outtakeClawDistLeft, 1),
@@ -117,25 +115,21 @@ public class Duo extends CommandOpMode {
                 new SetPIDFSlideArmCommand(slide, 5000)
         ));
 
-        //High Basket Position
-        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawRot, 0.5),
-                new ServoCommand(outtakeClawDistRight, 1-0.378),
-                new ServoCommand(outtakeClawDistLeft, 0.378),
-                new SetPIDFSlideArmCommand(slide, 38000)
-        ));
+        //Basket Score
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(
+                new SequentialCommandGroup(
+                        new ServoCommand(outtakeClawRot, 0.5),
+                        new ServoCommand(outtakeClawDistRight, 1-0.378),
+                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        new SetPIDFSlideArmCommand(slide, 40000)
+                ));
 
-        //High Basket Score
-        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Const.release));
+        //Release in Basket
+        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new ServoCommand(outtakeClaw, Const.release));
 
-        // Reset
+        //VSlide Down
         new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.release),
-                new ServoCommand(intakeClawRot, .3),
-                new ServoCommand(outtakeClawDistLeft, 1),
-                new ServoCommand(outtakeClawDistRight, 0),
-                new ServoCommand(outtakeClawRot, 0.7),
-                new ServoCommand(outtakeClawTwist, 0.924),
                 new SlideResetCommand(slide, vLimit)
         ));
     }
