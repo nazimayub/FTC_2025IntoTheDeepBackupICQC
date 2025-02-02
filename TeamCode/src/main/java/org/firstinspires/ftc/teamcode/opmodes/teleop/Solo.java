@@ -98,11 +98,6 @@ public class Solo extends CommandOpMode {
         //Release in Basket
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Const.release));
 
-
-
-
-
-
         //Specimen Grab Pos
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClawTwist, Const.untwist),
