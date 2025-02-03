@@ -48,13 +48,13 @@ public class AutoSamp3 extends OpMode {
      */
     private final Pose[] poses = {
             new Pose(6.689, 110.741, Math.toRadians(315)), //Start
-            new Pose(11, 129.5, Math.toRadians(315)), //Score Preload
-            new Pose(17, 115.588, Math.toRadians(0)), //Grab first
-            new Pose(11, 129.5, Math.toRadians(315)), //Score first
-            new Pose(17, 128.5, Math.toRadians(0)), //Grab second
-            new Pose(11, 129.5, Math.toRadians(315)), //Score second
+            new Pose(11, 127.5, Math.toRadians(315)), //Score Preload
+            new Pose(17, 118.588, Math.toRadians(0)), //Grab first
+            new Pose(11, 127.5, Math.toRadians(315)), //Score first
+            new Pose(17, 130.5, Math.toRadians(0)), //Grab second
+            new Pose(11, 127.5, Math.toRadians(315)), //Score second
             new Pose(23.969, 136.196, Math.toRadians(15)), //Grab third
-            new Pose(11, 129.5, Math.toRadians(315)), //Score third
+            new Pose(11, 127.5, Math.toRadians(315)), //Score third
             new Pose(71.164, 94.204, Math.toRadians(0)) //Park
     };
 

@@ -12,7 +12,10 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
@@ -42,6 +45,7 @@ public class StraightBackAndForth extends OpMode {
 
     private Path forwards;
     private Path backwards;
+    public Servo intakeRot;
 
     /**
      * This initializes the Follower and creates the forward and backward Paths. Additionally, this
@@ -51,7 +55,8 @@ public class StraightBackAndForth extends OpMode {
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-
+        intakeRot = hardwareMap.get(Servo.class, Const.intakeRot);
+        intakeRot.setPosition(.58);
         forwards = new Path(new BezierLine(new Point(0,0, Point.CARTESIAN), new Point(DISTANCE,0, Point.CARTESIAN)));
         forwards.setConstantHeadingInterpolation(0);
         backwards = new Path(new BezierLine(new Point(DISTANCE,0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
