@@ -79,7 +79,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
                 new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
                 new ServoCommand(outtakeClawTwist, Const.twist),
-                new SetPIDFSlideArmCommand(slide, 7000) // CHANGE THIS IRFAAAAAAAAN
+                new SetPIDFSlideArmCommand(slide, 7000)
         ));
 
         // OPERATOR
