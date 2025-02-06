@@ -47,7 +47,7 @@ public class AutoSamp3 extends OpMode {
      * Y - Left Positive, Right Negative
      */
     private final Pose[] poses = {
-            new Pose(6.689, 110.741, Math.toRadians(315)), //Start
+            new Pose(6.689, 110.741, Math.toRadians(90)), //Start
             new Pose(11, 127.5, Math.toRadians(315)), //Score Preload
             new Pose(17, 118.588, Math.toRadians(0)), //Grab first
             new Pose(11, 127.5, Math.toRadians(315)), //Score first
