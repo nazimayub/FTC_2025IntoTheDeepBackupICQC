@@ -17,7 +17,7 @@ public class Tuning extends OpMode {
     public static DcMotorEx vSlideRight, vSlideLeft, hSlide;
     public static Servo outtakeRot, outtakeDistRight, outtakeDistLeft, intakeRot, outtakeClaw, outtakeTwist;
 
-    public static int vSlideRightPos = 0, vSlideLeftPos = 0, hSlidePos = 0;
+    public static int vSlidePos = 0, hSlidePos = 0;
     public static double outtakeRotPos = 0.5, outtakeDistRightPos = 0.5, outtakeDistLeftPos = 0.5;
     public static double intakeRotPos = 0.5, outtakeClawPos = 0.5, outtakeTwistPos = 0.5;
 
@@ -51,8 +51,8 @@ public class Tuning extends OpMode {
 
     @Override
     public void loop() {
-        vSlideRight.setTargetPosition(vSlideRightPos);
-        vSlideLeft.setTargetPosition(vSlideLeftPos);
+        vSlideRight.setTargetPosition(vSlidePos);
+        vSlideLeft.setTargetPosition(vSlidePos);
         hSlide.setTargetPosition(hSlidePos);
 
         for (DcMotorEx motor : new DcMotorEx[]{vSlideRight, vSlideLeft, hSlide}) {
@@ -67,8 +67,7 @@ public class Tuning extends OpMode {
         outtakeClaw.setPosition(Math.max(0, Math.min(1, outtakeClawPos)));
         outtakeTwist.setPosition(Math.max(0, Math.min(1, outtakeTwistPos)));
 
-        telemetry.addData("VSlide Right Position", vSlideRightPos);
-        telemetry.addData("VSlide Left Position", vSlideLeftPos);
+        telemetry.addData("VSlide Position", vSlidePos);
         telemetry.addData("HSlide Position", hSlidePos);
         telemetry.addData("Outtake Rot Position", outtakeRot.getPosition());
         telemetry.addData("Outtake Dist Right Position", outtakeDistRight.getPosition());

@@ -90,9 +90,9 @@ public class Duo extends CommandOpMode {
 
         //HorizontalSlide Extend
         new GamepadButton(op, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(intakeClawRot, 0.5),
+                new ServoCommand(intakeClawRot, 0.4),
                 new SetPIDFSlideArmCommand(hSlide, -700),
-                new ServoCommand(intakeClawRot, .22)
+                new ServoCommand(intakeClawRot, 0.12)
         ));
 
         //Transfer
@@ -108,11 +108,11 @@ public class Duo extends CommandOpMode {
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClawRot, 0.83),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, 0.46),
+                new ServoCommand(intakeClawRot, 0.36),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
-                new ServoCommand(intakeClawRot, .3),
+                new ServoCommand(intakeClawRot, .2),
                 new SetPIDFSlideArmCommand(slide, 5000)
         ));
 
@@ -130,7 +130,12 @@ public class Duo extends CommandOpMode {
 
         //VSlide Down
         new GamepadButton(op, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
-                new SlideResetCommand(slide, vLimit)
+                new SlideResetCommand(slide, vLimit),
+                new ServoCommand(outtakeClawDistLeft, 1),
+                new ServoCommand(outtakeClawDistRight, 0),
+                new ServoCommand(outtakeClawRot, 0.7),
+                new ServoCommand(outtakeClawTwist, 0.924)
+
         ));
 
 

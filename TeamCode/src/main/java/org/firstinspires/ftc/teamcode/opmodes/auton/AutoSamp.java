@@ -116,7 +116,7 @@ public class AutoSamp extends OpMode {
                         new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
                         new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .22),
+                        new ServoCommand(intakeClawRot, .12),
                         new ParallelCommandGroup(
                                 new SetPIDFSlideArmCommand(hSlide, -735),
                                 new IntakeAutoCommand(intake, -0.8, 1)
@@ -160,7 +160,7 @@ public class AutoSamp extends OpMode {
                         new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
                         new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .22),
+                        new ServoCommand(intakeClawRot, .12),
                         new ParallelCommandGroup(
                                 new SetPIDFSlideArmCommand(hSlide, -735),
                                 new IntakeAutoCommand(intake, -0.8, 1)
@@ -204,7 +204,7 @@ public class AutoSamp extends OpMode {
                         new SlideResetCommand(slide, vLimit),
                         new ServoCommand(intakeClawRot, 0.5),
                         new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .22),
+                        new ServoCommand(intakeClawRot, .12),
                         new ParallelCommandGroup(
                                 new SetPIDFSlideArmCommand(hSlide, -660),
                                 new IntakeAutoCommand(intake, -0.8, 1)
