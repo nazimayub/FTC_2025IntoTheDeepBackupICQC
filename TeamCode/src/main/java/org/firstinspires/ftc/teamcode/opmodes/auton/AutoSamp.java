@@ -40,10 +40,6 @@ import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
 @Autonomous
 public class AutoSamp extends OpMode {
-    // Paths
-    private Follower follower;
-    private PathChain[] paths = new PathChain[8];
-
     /** POSES
      * X - Forward Positive, Backwards Negative
      * Y - Left Positive, Right Negative
@@ -59,6 +55,10 @@ public class AutoSamp extends OpMode {
             new Pose(8, 126.5, Math.toRadians(315)),
             new Pose(71.164, 90.204, Math.toRadians(90))
     };
+
+    // Paths
+    private Follower follower;
+    private PathChain[] paths = new PathChain[poses.length - 1];
 
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeAutoSubsystem intake;
@@ -93,7 +93,7 @@ public class AutoSamp extends OpMode {
 
         Command scorePreload =
                 new SequentialCommandGroup(
-                        new SlideResetCommand(hSlide, hLimit),
+                        //new SlideResetCommand(hSlide, hLimit),
                         new ParallelCommandGroup(
                                 new ServoCommand(outtakeClaw, Const.grab),
                                 new ServoCommand(outtakeClawRot, 0.9),
