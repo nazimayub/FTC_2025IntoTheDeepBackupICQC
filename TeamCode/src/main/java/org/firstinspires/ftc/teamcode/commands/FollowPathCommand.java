@@ -44,13 +44,6 @@ public class FollowPathCommand extends CommandBase {
         this.maxPower = maxPower;
     }
 
-    public FollowPathCommand(Follower follower, PathChain pathChain, boolean isLine, boolean holdEnd, double maxPower) {
-        this.follower = follower;
-        this.path = pathChain;
-        this.holdEnd = holdEnd;
-        this.maxPower = maxPower;
-    }
-
     public FollowPathCommand(Follower follower, Path path) {
         this(follower, new PathChain(path));
     }
