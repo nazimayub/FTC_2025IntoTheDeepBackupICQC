@@ -40,6 +40,9 @@ import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Autonomous
 public class AutoSpec extends OpMode {
 
@@ -47,12 +50,13 @@ public class AutoSpec extends OpMode {
      * X - Forward Positive, Backwards Negative
      * Y - Left Positive, Right Negative
      */
+
     private final Pose[] poses = {
             new Pose(0, 0, Math.toRadians(180)),
             new Pose(32, 6, Math.toRadians(180)),
 
-            //new Pose(20, 0, Math.toRadians(180)),
-            //new Pose(20, -40, Math.toRadians(0)),
+            new Pose(20, 0, Math.toRadians(180)),
+            new Pose(20, -40, Math.toRadians(0)),
             new Pose(45, -40, Math.toRadians(0)),
             new Pose(45, -47, Math.toRadians(0)),
             new Pose(10, -47, Math.toRadians(0)),
@@ -82,7 +86,6 @@ public class AutoSpec extends OpMode {
 
     // Paths
     private Follower follower;
-    private PathChain[] paths = new PathChain[poses.length - 1];
 
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeAutoSubsystem intake;
@@ -125,7 +128,7 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawRot, 1),
                                 new ServoCommand(outtakeClawTwist, Const.twist),
                                 new SetPIDFSlideArmCommand(slide, 4000),
-                                new FollowPathCommand(follower, path(0, true), true, 1)
+                                new FollowPathCommand(follower, lineTo(poses[0], poses[1]), true, 1)
                         ),
                         new ServoCommand(outtakeClaw, Const.release)
                 );
@@ -133,9 +136,9 @@ public class AutoSpec extends OpMode {
 
         Command sampsToHp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(1, false), true, 1),
+                        new FollowPathCommand(follower, lineTo(), true, 1),
                         new SlideResetCommand(slide, vLimit),
-                        new FollowPathCommand(follower, path(2, false), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[1], poses[2]), true, 1),
                         new ParallelCommandGroup(
                                 new ServoCommand(intakeClawRot, .3),
                                 new SlideResetCommand(hSlide, hLimit),
@@ -145,15 +148,15 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
                                 new ServoCommand(outtakeClaw, Const.release)
                         ),
-                        new FollowPathCommand(follower, path(3, true), true, 1),
-                        new FollowPathCommand(follower, path(4, true), true, 1),
-                        new FollowPathCommand(follower, path(5, true), true, 1),
-                        new FollowPathCommand(follower, path(6, true), true, 1),
-                        new FollowPathCommand(follower, path(7, true), true, 1),
-                        new FollowPathCommand(follower, path(8, true), true, 1),
-                        new FollowPathCommand(follower, path(9, true), true, 1),
-                        new FollowPathCommand(follower, path(10, true), true, 1),
-                        new FollowPathCommand(follower, path(11, true), true, 1)
+                        new FollowPathCommand(follower, lineTo(poses[2], poses[3]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[3], poses[4]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[4], poses[5]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[5], poses[6]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[6], poses[7]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[7], poses[8]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[8], poses[9]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[9], poses[10]), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[10], poses[11]), true, 1)
                 );
 
         Command grabAndScore1 = grabAndScore(12);
@@ -171,20 +174,31 @@ public class AutoSpec extends OpMode {
         ));
     }
 
-    public PathChain path(int i, boolean isLine) {
-//        if(isLine)
-//            paths[i] = follower.pathBuilder()
-//                    .addPath(new BezierLine(new Point(poses[i]), new Point(poses[i + 1])))
-//                    .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
-//                    .build();
-//        else
-            paths[i] = follower.pathBuilder()
-                    .addPath(new BezierCurve(new Point(poses[i]), new Point(poses[i + 1])))
-                    .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
-                    .build();
 
-        return paths[i];
+    public PathChain lineTo(Pose... poses) {
+        PathChain path = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(poses[0]), new Point(poses[1])))
+                .setLinearHeadingInterpolation(poses[0].getHeading(), poses[1].getHeading())
+                .build();
+        return path;
     }
+
+    public PathChain curveTo(Pose... poses) {
+        ArrayList<Point> controlPoints = new ArrayList<>();
+        for (Pose pose : poses) {
+            controlPoints.add(new Point(pose.getX(), pose.getY(), 1));
+        }
+
+        BezierCurve bezierCurve = new BezierCurve(controlPoints);
+
+        PathChain path = follower.pathBuilder()
+                .addPath(bezierCurve)
+                .setLinearHeadingInterpolation(poses[0].getHeading(), poses[poses.length - 1].getHeading())
+                .build();
+
+        return path;
+    }
+
     public Command grabAndScore(int i) {
         return new SequentialCommandGroup(
                         new ParallelCommandGroup(
@@ -194,9 +208,9 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
                                 new ServoCommand(outtakeClaw, Const.release)
                         ),
-                        new FollowPathCommand(follower, path(i, true), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[i], poses[i + 1]), true, 1),
                         new WaitCommand(pause, 500),
-                        new FollowPathCommand(follower, path(i+1, true), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[i + 1], poses[i + 2]), true, 1),
                         new WaitCommand(pause, 500),
                         new ServoCommand(outtakeClaw, Const.grab),
                         new WaitCommand(pause, 500),
@@ -207,7 +221,7 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawTwist, Const.twist),
                                 new SetPIDFSlideArmCommand(slide, 7000)
                         ),
-                        new FollowPathCommand(follower, path(i+2, true), true, 1),
+                        new FollowPathCommand(follower, lineTo(poses[i], poses[i + 3]), true, 1),
                         new ParallelCommandGroup(
                                 new ServoCommand(outtakeClaw, Const.release),
                                 new SlideResetCommand(slide, vLimit)

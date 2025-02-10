@@ -2,9 +2,15 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
+import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.Point;
+
+import java.util.ArrayList;
 
 
 public class FollowPathCommand extends CommandBase {
@@ -32,6 +38,13 @@ public class FollowPathCommand extends CommandBase {
     }
 
     public FollowPathCommand(Follower follower, PathChain pathChain, boolean holdEnd, double maxPower) {
+        this.follower = follower;
+        this.path = pathChain;
+        this.holdEnd = holdEnd;
+        this.maxPower = maxPower;
+    }
+
+    public FollowPathCommand(Follower follower, PathChain pathChain, boolean isLine, boolean holdEnd, double maxPower) {
         this.follower = follower;
         this.path = pathChain;
         this.holdEnd = holdEnd;
