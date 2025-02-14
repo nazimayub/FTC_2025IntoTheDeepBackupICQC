@@ -38,11 +38,11 @@ public class AutoSpec2 extends OpMode {
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
-                new Pose(34, 0, Math.toRadians(180))
+                new Pose(38, 0, Math.toRadians(180))
         ),
 
         GO_TO_SAMPLES(
-                new Pose(34,  0, Math.toRadians(180)),
+                new Pose(38,  0, Math.toRadians(180)),
                 new Pose(15, 0, Math.toRadians(180)),
                 new Pose(15, -30, Math.toRadians(0)),
                 new Pose(45, -30, Math.toRadians(0)),
@@ -70,45 +70,45 @@ public class AutoSpec2 extends OpMode {
 
         GRAB_SPECIMEN_1(
                 new Pose(10, -64, Math.toRadians(0)),
-                new Pose(6, -33, Math.toRadians(0)),
-                new Pose(2, -33, Math.toRadians(0))
+                new Pose(10, -37, Math.toRadians(0)),
+                new Pose(2, -37, Math.toRadians(0))
         ),
 
         SCORE_SPECIMEN_1(
-                new Pose(0, -33, Math.toRadians(0)),
+                new Pose(2, -33, Math.toRadians(0)),
                 new Pose(30, 4, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_2(
-                new Pose(30, 6, Math.toRadians(0)),
+                new Pose(30, 4, Math.toRadians(0)),
                 new Pose(6, -33, Math.toRadians(0)),
                 new Pose(4, -33, Math.toRadians(0))
         ),
 
         SCORE_SPECIMEN_2(
-                new Pose(0, -33, Math.toRadians(0)),
+                new Pose(4, -33, Math.toRadians(0)),
                 new Pose(30, 3, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_3(
-                new Pose(30, 6, Math.toRadians(0)),
+                new Pose(30, 3, Math.toRadians(0)),
                 new Pose(6, -33, Math.toRadians(0)),
                 new Pose(4, -33, Math.toRadians(0))
         ),
 
         SCORE_SPECIMEN_3(
-                new Pose(0, -33, Math.toRadians(0)),
+                new Pose(4, -33, Math.toRadians(0)),
                 new Pose(30, 2, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_4(
-                new Pose(30, 6, Math.toRadians(0)),
+                new Pose(30, 2, Math.toRadians(0)),
                 new Pose(6, -33, Math.toRadians(0)),
                 new Pose(4, -33, Math.toRadians(0))
         ),
 
         SCORE_SPECIMEN_4(
-                new Pose(0, -33, Math.toRadians(0)),
+                new Pose(4, -33, Math.toRadians(0)),
                 new Pose(30, 0, Math.toRadians(0))
         );
 
@@ -178,7 +178,7 @@ public class AutoSpec2 extends OpMode {
 
         follower.setPose(AutoPaths.PRELOAD.getPoses()[0]);
         outtakeClaw.set(Const.grab);
-        intakeClawRot.set(.5);
+        intakeClawRot.set(.58);
         slide.reset();
 
         Command scorePreload =
@@ -190,7 +190,7 @@ public class AutoSpec2 extends OpMode {
                                 new ServoCommand(outtakeClawRot, 1),
                                 new ServoCommand(outtakeClawTwist, Const.twist),
                                 new SetPIDFSlideArmCommand(slide, 4000),
-                                new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true)
+                                new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true, 1)
                         ),
                         new ServoCommand(outtakeClaw, Const.release)
                 );
@@ -199,7 +199,7 @@ public class AutoSpec2 extends OpMode {
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GO_TO_SAMPLES.curve(follower), true),
                         new ParallelCommandGroup(
-                                new ServoCommand(intakeClawRot, .3),
+        new ServoCommand(intakeClawRot, .3),
                                 new SlideResetCommand(hSlide, hLimit),
                                 new ServoCommand(outtakeClawTwist, Const.untwist),
                                 new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
@@ -236,7 +236,7 @@ public class AutoSpec2 extends OpMode {
                         new ServoCommand(outtakeClaw, Const.release),
                         new FollowPathCommand(follower, grabPath.curve(follower), true, .7)
                 ),
-                new WaitCommand(pause, 500),
+                new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 500),
                 new ParallelCommandGroup(
