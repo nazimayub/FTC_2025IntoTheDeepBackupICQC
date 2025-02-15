@@ -85,7 +85,7 @@ public class Duo extends CommandOpMode {
         // OPERATOR
 
         //Intake
-        new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, -0.5)).whenReleased(new IntakeCommand(intake, 0));
+        new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(new IntakeCommand(intake, -1)).whenReleased(new IntakeCommand(intake, 0));
         new GamepadButton(op, GamepadKeys.Button.LEFT_BUMPER).whenPressed(new IntakeCommand(intake, 1)).whenReleased(new IntakeCommand(intake, 0));
 
         //HorizontalSlide Extend

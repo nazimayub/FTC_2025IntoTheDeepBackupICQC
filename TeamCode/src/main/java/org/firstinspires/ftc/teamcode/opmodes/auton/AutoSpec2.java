@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 @Autonomous
 public class AutoSpec2 extends OpMode {
+    static Pose grab = new Pose(2, -33, Math.toRadians(0));
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
@@ -64,52 +65,52 @@ public class AutoSpec2 extends OpMode {
         PUSH_SAMPLE_3(
                 new Pose(10, -58, Math.toRadians(0)),
                 new Pose(45, -58, Math.toRadians(0)),
-                new Pose(45, -64, Math.toRadians(0)),
-                new Pose(10, -64, Math.toRadians(0))
+                new Pose(45, -63.5, Math.toRadians(0)),
+                new Pose(10, -63.5, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_1(
-                new Pose(10, -64, Math.toRadians(0)),
-                new Pose(10, -37, Math.toRadians(0)),
-                new Pose(2, -37, Math.toRadians(0))
+                new Pose(10, -63.5, Math.toRadians(0)),
+                new Pose(20, -32, Math.toRadians(0)),
+                new Pose(grab.getX(), grab.getY()-5.5, grab.getHeading())
         ),
 
         SCORE_SPECIMEN_1(
-                new Pose(2, -33, Math.toRadians(0)),
-                new Pose(30, 4, Math.toRadians(0))
+                new Pose(grab.getX(), grab.getY()-5.5, grab.getHeading()),
+                new Pose(34, 4, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_2(
-                new Pose(30, 4, Math.toRadians(0)),
-                new Pose(6, -33, Math.toRadians(0)),
-                new Pose(4, -33, Math.toRadians(0))
+                new Pose(34, 4, Math.toRadians(0)),
+                new Pose(20, -33, Math.toRadians(0)),
+                grab
         ),
 
         SCORE_SPECIMEN_2(
-                new Pose(4, -33, Math.toRadians(0)),
-                new Pose(30, 3, Math.toRadians(0))
+                grab,
+                new Pose(34, 3, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_3(
-                new Pose(30, 3, Math.toRadians(0)),
-                new Pose(6, -33, Math.toRadians(0)),
-                new Pose(4, -33, Math.toRadians(0))
+                new Pose(34, 3, Math.toRadians(0)),
+                new Pose(20, -33, Math.toRadians(0)),
+                grab
         ),
 
         SCORE_SPECIMEN_3(
-                new Pose(4, -33, Math.toRadians(0)),
-                new Pose(30, 2, Math.toRadians(0))
+                grab,
+                new Pose(34, 2, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_4(
-                new Pose(30, 2, Math.toRadians(0)),
-                new Pose(6, -33, Math.toRadians(0)),
-                new Pose(4, -33, Math.toRadians(0))
+                new Pose(34, 2, Math.toRadians(0)),
+                new Pose(20, -33, Math.toRadians(0)),
+                grab
         ),
 
         SCORE_SPECIMEN_4(
-                new Pose(4, -33, Math.toRadians(0)),
-                new Pose(30, 0, Math.toRadians(0))
+                grab,
+                new Pose(34, 0, Math.toRadians(0))
         );
 
         private final Pose[] poses;
@@ -180,7 +181,13 @@ public class AutoSpec2 extends OpMode {
         outtakeClaw.set(Const.grab);
         intakeClawRot.set(.58);
         slide.reset();
-
+        int[] slidePos = {
+                7750,
+                16000,
+                10000,
+                9000,
+                9000
+        };
         Command scorePreload =
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
@@ -189,8 +196,8 @@ public class AutoSpec2 extends OpMode {
                                 new ServoCommand(outtakeClawDistLeft, .2),
                                 new ServoCommand(outtakeClawRot, 1),
                                 new ServoCommand(outtakeClawTwist, Const.twist),
-                                new SetPIDFSlideArmCommand(slide, 4000),
-                                new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true, 1)
+                                new SetPIDFSlideArmCommand(slide, slidePos[0]),
+                                new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true)
                         ),
                         new ServoCommand(outtakeClaw, Const.release)
                 );
@@ -198,58 +205,57 @@ public class AutoSpec2 extends OpMode {
         Command sampsToHp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GO_TO_SAMPLES.curve(follower), true),
+                        new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_1.curve(follower), true),
+                        new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_2.curve(follower), true),
                         new ParallelCommandGroup(
-        new ServoCommand(intakeClawRot, .3),
+                                new ServoCommand(intakeClawRot, .58),
                                 new SlideResetCommand(hSlide, hLimit),
                                 new ServoCommand(outtakeClawTwist, Const.untwist),
                                 new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
                                 new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
                                 new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
-                                new ServoCommand(outtakeClaw, Const.release)
-                        ),
-                        new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_1.curve(follower), true),
-                        new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_2.curve(follower), true),
-                        new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_3.curve(follower), true)
-        );
+                                new ServoCommand(outtakeClaw, Const.release),
+                                new SlideResetCommand(slide, vLimit),
+                                new FollowPathCommand(follower, AutoPaths.PUSH_SAMPLE_3.curve(follower), true)
+                        )
+                        );
 
         Command[] grabAndScore = {
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4)
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, slidePos[1]),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, slidePos[2]),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, slidePos[3]),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, slidePos[4])
         };
 
-        CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-                scorePreload,
-                sampsToHp,
-                grabAndScore[0], grabAndScore[1], grabAndScore[2], grabAndScore[3]
+        CommandScheduler.getInstance().schedule(
+                new SequentialCommandGroup(
+                    scorePreload,
+                    sampsToHp,
+                    grabAndScore[0], grabAndScore[1], grabAndScore[2], grabAndScore[3]
         ));
     }
 
-    public Command grabAndScore(AutoPaths grabPath, AutoPaths scorePath) {
+    public Command grabAndScore(AutoPaths grabPath, AutoPaths scorePath, int pos) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new ServoCommand(outtakeClawTwist, Const.untwist),
                         new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
                         new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
                         new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new FollowPathCommand(follower, grabPath.curve(follower), true, .7)
+                        new ServoCommand(outtakeClaw, .6),
+                        new SlideResetCommand(slide, vLimit),
+                        new FollowPathCommand(follower, grabPath.curve(follower), true)
                 ),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Const.grab),
-                new WaitCommand(pause, 500),
+                new WaitCommand(pause, 300),
                 new ParallelCommandGroup(
                         new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
                         new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
                         new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
                         new ServoCommand(outtakeClawTwist, Const.twist),
-                        new SetPIDFSlideArmCommand(slide, 7000),
+                        new SetPIDFSlideArmCommand(slide, pos),
                         new FollowPathCommand(follower, scorePath.curve(follower), true)
-                ),
-                new ParallelCommandGroup(
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new SlideResetCommand(slide, vLimit)
                 )
         );
     }
