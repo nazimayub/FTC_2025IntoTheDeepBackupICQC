@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.commands.*;
 import org.firstinspires.ftc.teamcode.utils.*;
 
-@TeleOp
+@TeleOp(group="TeleOp")
 public class Solo extends CommandOpMode {
     public static GamepadEx base;
     SimpleLogger log;

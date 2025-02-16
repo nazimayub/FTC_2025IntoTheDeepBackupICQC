@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
 import java.util.ArrayList;
 
-@Autonomous
+@Autonomous(group = "Auton")
 public class AutoSamp2 extends OpMode {
     public enum AutoPaths {
         PRELOAD(
