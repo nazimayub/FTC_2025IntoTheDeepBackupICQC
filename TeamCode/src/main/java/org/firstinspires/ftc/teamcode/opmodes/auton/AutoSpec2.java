@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 @Autonomous
 public class AutoSpec2 extends OpMode {
-    static Pose grab = new Pose(5, -39.13, Math.toRadians(0));
+    static Pose grab = new Pose(5, -35, Math.toRadians(0));
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
@@ -71,7 +71,7 @@ public class AutoSpec2 extends OpMode {
 
         GRAB_SPECIMEN_1(
                 new Pose(10, -63.5, Math.toRadians(0)),
-                new Pose(20, grab.getY() - 2.7, Math.toRadians(0)),
+                new Pose(20, grab.getY(), Math.toRadians(0)),
                 new Pose(grab.getX() - 1, grab.getY() - 2.7, grab.getHeading())
         ),
 
