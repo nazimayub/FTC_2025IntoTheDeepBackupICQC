@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 @Autonomous(group = "Auton")
 public class AutoSpec extends OpMode {
-    static Pose grab = new Pose(5, -35, Math.toRadians(0));
+    static Pose grab = new Pose(1.75, -32.5, Math.toRadians(0));
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
@@ -70,8 +70,8 @@ public class AutoSpec extends OpMode {
         ),
 
         GRAB_SPECIMEN_1(
-                new Pose(10, -63.5, Math.toRadians(0)),
-                new Pose(20, grab.getY(), Math.toRadians(0)),
+                new Pose(10, -66, Math.toRadians(0)),
+                new Pose(20, grab.getY()-10, Math.toRadians(0)),
                 new Pose(grab.getX() - 1, grab.getY() - 2.7, grab.getHeading())
         ),
 
@@ -164,7 +164,7 @@ public class AutoSpec extends OpMode {
 
         intake = new IntakeAutoSubsystem(hardwareMap, Const.intake, new ElapsedTime());
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0, 0, 0.05, 0.001, 0, 0, 0.05);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.0015, 0, 0, 0.15, 0.0015, 0, 0, 0.15);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -215,10 +215,10 @@ public class AutoSpec extends OpMode {
                         );
 
         Command[] grabAndScore = {
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4)
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 7500),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 7500),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 7500),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 7500)
         };
 
         CommandScheduler.getInstance().schedule(
@@ -229,7 +229,7 @@ public class AutoSpec extends OpMode {
         ));
     }
 
-    public Command grabAndScore(AutoPaths grabPath, AutoPaths scorePath) {
+    public Command grabAndScore(AutoPaths grabPath, AutoPaths scorePath, int height) {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new ServoCommand(outtakeClawTwist, Const.untwist),
@@ -242,13 +242,13 @@ public class AutoSpec extends OpMode {
                 ),
                 new WaitCommand(pause, 300),
                 new ServoCommand(outtakeClaw, Const.grab),
-                new WaitCommand(pause, 300),
+                new WaitCommand(pause, 500),
                 new ParallelCommandGroup(
                         new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
                         new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
                         new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
                         new ServoCommand(outtakeClawTwist, Const.twist),
-                        new SetPIDFSlideArmCommand(slide, 7300),
+                        new SetPIDFSlideArmCommand(slide, height),
                         new FollowPathCommand(follower, scorePath.curve(follower), true)
                 )
         );
