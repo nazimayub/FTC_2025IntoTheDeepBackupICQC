@@ -83,6 +83,22 @@ public class Duo extends CommandOpMode {
                 new SetPIDFSlideArmCommand(slide, 7000)
         ));
 
+        //Shift to high torque
+        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
+                new WaitCommand(pause, 1000),
+                new ServoCommand(shifter, .5)
+        )).whenReleased(new SequentialCommandGroup(
+                new ServoCommand(shifter, .2)
+        ));
+
+        //Hang
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
+                new ServoCommand(outtakeClawRot, 0.5),
+                new ServoCommand(outtakeClawDistRight, 1-0.378),
+                new ServoCommand(outtakeClawDistLeft, 0.378),
+                new SetPIDFSlideArmCommand(slide, 40000)
+        ));
+
         // OPERATOR
 
         //Intake
@@ -136,7 +152,6 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClawDistRight, 0),
                 new ServoCommand(outtakeClawRot, 0.7),
                 new ServoCommand(outtakeClawTwist, 0.924)
-
         ));
 
 

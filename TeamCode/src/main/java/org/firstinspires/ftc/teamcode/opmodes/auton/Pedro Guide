@@ -1,0 +1,61 @@
+I'm writing this guide for the ease of people that aren't me in creating a working
+FTCLib-Pedro autonomous
+
+### PRE REQS
+Working teleop
+FTCLib Command Base
+
+### TUNING
+Visit https://pedropathing.com/
+Once you're done localizing and tuning, continue reading
+
+### POSE FINDING
+Run `PoseFinder.java` and drive your bot to each final position you want during auton. Then,
+hit left bumper to save the Pose (x, y, heading) to your telemetry. Once you've found all your poses
+for auton, screenshot or save your telemetry somewhere to add to your actual Auton.
+
+### PATHING
+Add your poses to `AutoPaths` enum and label groups at your convenience.
+
+For Example
+
+        PRELOAD(
+                new Pose(0, 0, Math.toRadians(180)),
+                new Pose(38, 6, Math.toRadians(180))
+        ),
+
+        GO_TO_SAMPLES(
+                new Pose(38,  0, Math.toRadians(180)),
+                new Pose(15, 0, Math.toRadians(180)),
+                new Pose(15, -30, Math.toRadians(0)),
+                new Pose(45, -30, Math.toRadians(0)),
+                new Pose(45, -47, Math.toRadians(0))
+        ),
+
+Note: I use toRadians for my ease, but you can just straight add the heading number given by PoseFinder
+
+### ACTIONS
+Finally, add commands to your init for your auto actions. Make sure to use the `FollowPathCommand` with
+your pose group enums. For all your actions besides drive, copy and paste your teleop code where you see fit.
+
+            Command scorePreload =
+                new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new SlideResetCommand(hSlide, hLimit),
+                                new ServoCommand(outtakeClawDistRight, .8),
+                                new ServoCommand(outtakeClawDistLeft, .2),
+                                new ServoCommand(outtakeClawRot, 1),
+                                new ServoCommand(outtakeClawTwist, Const.twist),
+                                new SetPIDFSlideArmCommand(slide, 7750),
+                                new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true)
+                        ),
+                        new ServoCommand(outtakeClaw, Const.release)
+                );
+
+            CommandScheduler.getInstance().schedule(
+                scorePreload
+            );
+
+That's it, good luck for the season :)
+
+

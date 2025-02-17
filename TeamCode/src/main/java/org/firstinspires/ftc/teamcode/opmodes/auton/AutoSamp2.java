@@ -44,38 +44,38 @@ import java.util.ArrayList;
 public class AutoSamp2 extends OpMode {
     public enum AutoPaths {
         PRELOAD(
-                new Pose(6.689, 110.741, Math.toRadians(90)),
-                new Pose(6.4, 123.5, Math.toRadians(315))
+                new Pose(0, 0, 0),
+                new Pose(14.84, -2.09, 3.98)
         ),
 
         GRAB_SAMPLE_1(
-                new Pose(6.4, 123.5, Math.toRadians(315)),
-                new Pose(6.4, 123.5, Math.toRadians(290))
+                new Pose(14.84, -2.09, 3.98),
+                new Pose(14.31, -3.17, 4.41)
         ),
 
         SCORE_SAMPLE_1(
-                new Pose(6.4, 123.5, Math.toRadians(290)),
-                new Pose(6.4, 123.5, Math.toRadians(315))
+                new Pose(14.31, -3.17, 4.41),
+                new Pose(14.84, -2.09, 3.98)
         ),
 
         GRAB_SAMPLE_2(
-                new Pose(6.4, 123.5, Math.toRadians(315)),
-                new Pose(6.4, 123.5, Math.toRadians(15))
+                new Pose(14.84, -2.09, 3.98),
+                new Pose(14.38, -4.26, 4.77)
         ),
 
         SCORE_SAMPLE_2(
-                new Pose(6.4, 123.5, Math.toRadians(15)),
-                new Pose(6.4, 123.5, Math.toRadians(315))
+                new Pose(14.38, -4.26, 4.77),
+                new Pose(14.84, -2.09, 3.98)
         ),
 
         GRAB_SAMPLE_3(
-                new Pose(6.4, 123.5, Math.toRadians(315)),
-                new Pose(6.4, 123.5, Math.toRadians(40))
+                new Pose(14.84, -2.09, 3.98),
+                new Pose(14.59, -5.23, 5.03)
         ),
 
         SCORE_SAMPLE_3(
-                new Pose(6.4, 123.5, Math.toRadians(40)),
-                new Pose(6.4, 123.5, Math.toRadians(315))
+                new Pose(14.59, -5.23, 5.03),
+                new Pose(14.84, -2.09, 3.98)
         );
 
         private final Pose[] poses;
