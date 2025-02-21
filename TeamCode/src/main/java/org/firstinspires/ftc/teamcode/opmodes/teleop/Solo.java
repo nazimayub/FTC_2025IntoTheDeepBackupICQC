@@ -99,7 +99,7 @@ public class Solo extends CommandOpMode {
         //Release in Basket
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(new ServoCommand(outtakeClaw, Const.release));
 
-        //Specimen Grab Pos
+        //Specimen Grab
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.release),
                 new SlideResetCommand(slide, vLimit),
@@ -112,7 +112,7 @@ public class Solo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Const.release)
         ));
 
-        //Specimen Grab
+        //Specimen Score
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(new SequentialCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),

@@ -16,8 +16,10 @@ import org.firstinspires.ftc.teamcode.*;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.commands.*;
 import org.firstinspires.ftc.teamcode.utils.*;
+import org.firstinspires.ftc.teamcode.actions.SpecimenGrabAction;
+import org.firstinspires.ftc.teamcode.actions.SpecimenScoreAction;
+import org.firstinspires.ftc.teamcode.utils.ActionUtils;
 
-@TeleOp(group="TeleOp")
 public class Duo extends CommandOpMode {
     public static GamepadEx base;
     public static GamepadEx op;
@@ -60,44 +62,18 @@ public class Duo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
         //Specimen Grab
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, Const.release),
-                new SlideResetCommand(slide, vLimit),
-                new ServoCommand(intakeClawRot, .3),
-                new SlideResetCommand(hSlide, hLimit),
-                new ServoCommand(outtakeClawTwist, Const.untwist),
-                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
-                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
-                new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
-                new ServoCommand(outtakeClaw, Const.release)
-        ));
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(ActionUtils.getSpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft));
 
         //Specimen Score
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClaw, Const.grab),
-                new WaitCommand(pause, 300),
-                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
-                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
-                new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
-                new ServoCommand(outtakeClawTwist, Const.twist),
-                new SetPIDFSlideArmCommand(slide, 7000)
-        ));
+        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(ActionUtils.getSpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
 
         //Shift to high torque
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
-                new WaitCommand(pause, 1000),
-                new ServoCommand(shifter, .5)
-        )).whenReleased(new SequentialCommandGroup(
-                new ServoCommand(shifter, .2)
-        ));
-
-        //Hang
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(new SequentialCommandGroup(
-                new ServoCommand(outtakeClawRot, 0.5),
-                new ServoCommand(outtakeClawDistRight, 1-0.378),
-                new ServoCommand(outtakeClawDistLeft, 0.378),
-                new SetPIDFSlideArmCommand(slide, 40000)
-        ));
+        // new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
+        //         new WaitCommand(pause, 1000),
+        //         new ServoCommand(shifter, .2)
+        // )).whenReleased(new SequentialCommandGroup(
+        //         new ServoCommand(shifter, .5)
+        // ));
 
         // OPERATOR
 
@@ -130,7 +106,7 @@ public class Duo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, .2),
-                new SetPIDFSlideArmCommand(slide, 5000)
+                new SetPIDFSlideArmCommand(slide, 200)
         ));
 
         //Raise to Basket
@@ -139,7 +115,7 @@ public class Duo extends CommandOpMode {
                         new ServoCommand(outtakeClawRot, 0.5),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000)
+                        new SetPIDFSlideArmCommand(slide, 1300)
                 ));
 
         //Release in Basket

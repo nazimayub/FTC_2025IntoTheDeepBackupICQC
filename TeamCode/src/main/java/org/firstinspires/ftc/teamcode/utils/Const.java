@@ -27,7 +27,7 @@ public class Const {
             distSpecimenGrab = 0.01, rotSpecimenGrab = .916, distSpecimenGrabFinal = .785, rotSpecimenScore = 0.6, distSpecimenScore = .786;
 
     //Gear Shifter
-    public static double maxTorque = .328, minTorque = .552;
+    public static double torque = .328, speed = .552;
     //Slides
     public static double hSlideExtend = 400, vSlideBasket = 2750, vSlideBar = 675;
 
