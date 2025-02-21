@@ -39,7 +39,7 @@ public class Solo extends CommandOpMode {
         drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.bl, Const.br, Const.fl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
         tSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.05, 0.001, 0, 0, 0.05);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.0015, 0,  0, 0.05, 0.0015, 0, 0, 0.05);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.1, 0, 0.000004, 0.21, 0.1, 0, 0.000004, 0.21);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -84,7 +84,7 @@ public class Solo extends CommandOpMode {
                 new ServoCommand(outtakeClaw, Const.grab),
                 new WaitCommand(pause, 300),
                 new ServoCommand(intakeClawRot, .2),
-                new SetPIDFSlideArmCommand(slide, 5000)
+                new SetPIDFSlideArmCommand(slide, 200)
         ));
 
         //Basket Score
@@ -93,7 +93,7 @@ public class Solo extends CommandOpMode {
                         new ServoCommand(outtakeClawRot, 0.5),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new SetPIDFSlideArmCommand(slide, 40000)
+                        new SetPIDFSlideArmCommand(slide, 1300)
                 ));
 
         //Release in Basket
@@ -120,7 +120,7 @@ public class Solo extends CommandOpMode {
                 new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
                 new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
                 new ServoCommand(outtakeClawTwist, Const.twist),
-                new SetPIDFSlideArmCommand(slide, 7000)
+                new SetPIDFSlideArmCommand(slide, 330)
         ));
 
         //VSlide Down

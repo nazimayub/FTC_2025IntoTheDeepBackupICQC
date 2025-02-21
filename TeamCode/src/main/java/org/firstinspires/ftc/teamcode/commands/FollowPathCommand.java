@@ -83,6 +83,10 @@ public class FollowPathCommand extends CommandBase {
         return this;
     }
 
+    public void turnTo(double d) {
+        follower.turnTo(d);
+    }
+
     @Override
     public void initialize() {
         follower.setMaxPower(this.maxPower);

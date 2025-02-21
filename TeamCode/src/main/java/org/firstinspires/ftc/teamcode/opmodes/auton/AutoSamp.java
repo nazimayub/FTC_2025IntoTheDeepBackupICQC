@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.opmodes.auton;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
@@ -12,7 +11,6 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
-import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -27,38 +25,91 @@ import org.firstinspires.ftc.teamcode.commands.SlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.WaitCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
-import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeAutoSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LimitSwitchSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
-import org.firstinspires.ftc.teamcode.utils.MotorConfig;
-import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
-@Autonomous
+import java.util.ArrayList;
+
+@Autonomous(group = "Auton")
 public class AutoSamp extends OpMode {
-    /** POSES
-     * X - Forward Positive, Backwards Negative
-     * Y - Left Positive, Right Negative
-     */
-    private final Pose[] poses = {
-            new Pose(6.689, 110.741, Math.toRadians(90)),
-            new Pose(6.2, 123.5, Math.toRadians(315)),
-            new Pose(16.055, 117.588, Math.toRadians(0)),
-            new Pose(8, 126.5, Math.toRadians(315)),
-            new Pose(16.055, 126.622, Math.toRadians(0)),
-            new Pose(8, 126.5, Math.toRadians(315)),
-            new Pose(16.055, 126.22, Math.toRadians(22)),
-            new Pose(8, 126.5, Math.toRadians(315)),
-            new Pose(71.164, 90.204, Math.toRadians(90))
-    };
+    public static Pose score = new Pose(14.95, -0.82, 3.86);
+    public enum AutoPaths {
+        PRELOAD(
+                new Pose( 0, 0, 0),
+                score
+        ),
+
+        GRAB_SAMPLE_1(
+                score,
+                new Pose(14.47, -2.48, 4.41)
+        ),
+
+        SCORE_SAMPLE_1(
+                new Pose(14.47, -2.48, 4.41),
+                score
+        ),
+
+        GRAB_SAMPLE_2(
+                score,
+                new Pose(14.8, -4.56, 4.72)
+        ),
+
+        SCORE_SAMPLE_2(
+                new Pose(14.8, -4.56, 4.72),
+                score
+        ),
+
+        GRAB_SAMPLE_3(
+                score,
+                new Pose(14.55, -7.05, 5.16)
+        ),
+
+        SCORE_SAMPLE_3(
+                new Pose(14.55, -7.05, 5.16),
+                score
+        );
+
+        private final Pose[] poses;
+
+        AutoPaths(Pose... poses) {
+            this.poses = poses;
+        }
+
+        public PathChain line(Follower follower) {
+            PathChain path = follower.pathBuilder()
+                    .addPath(new BezierLine(new Point(poses[0]), new Point(poses[1])))
+                    .setLinearHeadingInterpolation(poses[0].getHeading(), poses[1].getHeading())
+                    .build();
+            return path;
+        }
+
+        public PathChain curve(Follower follower) {
+            ArrayList<Point> controlPoints = new ArrayList<>();
+            for (Pose pose : poses) {
+                controlPoints.add(new Point(pose.getX(), pose.getY(), 1));
+            }
+
+            BezierCurve bezierCurve = new BezierCurve(controlPoints);
+
+            PathChain path = follower.pathBuilder()
+                    .addPath(bezierCurve)
+                    .setLinearHeadingInterpolation(poses[0].getHeading(), poses[poses.length - 1].getHeading())
+                    .build();
+
+            return path;
+        }
+
+        public Pose[] getPoses() {
+            return poses;
+        }
+    }
 
     // Paths
     private Follower follower;
-    private PathChain[] paths = new PathChain[poses.length - 1];
 
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeAutoSubsystem intake;
@@ -74,7 +125,7 @@ public class AutoSamp extends OpMode {
 
         intake = new IntakeAutoSubsystem(hardwareMap, Const.intake, new ElapsedTime());
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0, 0, 0.05, 0.001, 0, 0, 0.05);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.1, 0, 0.000004, 0.21, 0.1, 0, 0.000004, 0.21);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -87,43 +138,42 @@ public class AutoSamp extends OpMode {
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
-        follower.setStartingPose(poses[0]);
+        follower.setPose(AutoPaths.PRELOAD.getPoses()[0]);
         outtakeClaw.set(Const.grab);
         intakeClawRot.set(.58);
 
         Command scorePreload =
                 new SequentialCommandGroup(
-                        //new SlideResetCommand(hSlide, hLimit),
                         new ParallelCommandGroup(
                                 new ServoCommand(outtakeClaw, Const.grab),
                                 new ServoCommand(outtakeClawRot, 0.9),
                                 new ServoCommand(outtakeClawDistRight, 1-0.378),
                                 new ServoCommand(outtakeClawDistLeft, 0.378),
-                                new FollowPathCommand(follower, path(0, true), true),
-                                new SetPIDFSlideArmCommand(slide, 38000)
+                                new FollowPathCommand(follower, AutoPaths.PRELOAD.curve(follower), true),
+                                new SetPIDFSlideArmCommand(slide, 1150)
                         ),
                         new ServoCommand(outtakeClawRot, 0.6),
                         new WaitCommand(pause, 300),
                         new ServoCommand(outtakeClaw, Const.release),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924)
+                        new ParallelCommandGroup(
+                                new ServoCommand(intakeClawRot, .3),
+                                new ServoCommand(outtakeClawDistLeft, 1),
+                                new ServoCommand(outtakeClawDistRight, 0),
+                                new ServoCommand(outtakeClawRot, 0.7),
+                                new ServoCommand(outtakeClawTwist, 0.924)
+                        )
                 );
 
         Command scoreFirstSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(1, false), true),
+                        new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_1.curve(follower), true),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new ParallelCommandGroup(
-                                new SlideResetCommand(slide, vLimit),
-                                new SetPIDFSlideArmCommand(hSlide, -230)
-                        ),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .12),
+                        new SlideResetCommand(slide, vLimit),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -550),
+                                new SetPIDFSlideArmCommand(hSlide, -800),
                                 new IntakeAutoCommand(intake, -0.8, 1)
                         ),
                         new ServoCommand(outtakeClaw, Const.release),
@@ -139,16 +189,16 @@ public class AutoSamp extends OpMode {
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, 0.46),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab),
+                        new ServoCommand(outtakeClaw, Const.grab - .3),
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new SetPIDFSlideArmCommand(slide, 200),
                         new ServoCommand(outtakeClawRot, 0.9),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new ParallelCommandGroup(
-                                new FollowPathCommand(follower, path(2, false), true),
-                                new SetPIDFSlideArmCommand(slide, 38000)
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_1.line(follower), true),
+                                new SetPIDFSlideArmCommand(slide, 1200)
                         ),
                         new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
@@ -163,16 +213,14 @@ public class AutoSamp extends OpMode {
 
         Command scoreSecondSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(3, false), true),
+                        new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_2.curve(follower), true),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new ParallelCommandGroup(
-                                new SlideResetCommand(slide, vLimit),
-                                new SetPIDFSlideArmCommand(hSlide, -310)
-                        ),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .12),
+                        new SlideResetCommand(slide, vLimit),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -640),
-                                new IntakeAutoCommand(intake, -0.8, 1)
+                                new SetPIDFSlideArmCommand(hSlide, -800),
+                                new IntakeAutoCommand(intake, -0.8, 2)
                         ),
                         new ServoCommand(outtakeClaw, Const.release),
                         new ServoCommand(intakeClawRot, .3),
@@ -187,16 +235,16 @@ public class AutoSamp extends OpMode {
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, 0.46),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab),
+                        new ServoCommand(outtakeClaw, Const.grab - .3),
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new SetPIDFSlideArmCommand(slide, 200),
                         new ServoCommand(outtakeClawRot, 0.9),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new ParallelCommandGroup(
-                                new FollowPathCommand(follower, path(4, false), true),
-                                new SetPIDFSlideArmCommand(slide, 38000)
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_2.line(follower), true),
+                                new SetPIDFSlideArmCommand(slide, 1200)
                         ),
                         new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
@@ -211,15 +259,13 @@ public class AutoSamp extends OpMode {
 
         Command scoreThirdSamp =
                 new SequentialCommandGroup(
-                        new FollowPathCommand(follower, path(5, false), true),
+                        new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_3.curve(follower), true),
                         new ServoCommand(intakeClawRot, 0.5),
-                        new ParallelCommandGroup(
-                                new SlideResetCommand(slide, vLimit),
-                                new SetPIDFSlideArmCommand(hSlide, -350)
-                        ),
+                        new SetPIDFSlideArmCommand(hSlide, -350),
                         new ServoCommand(intakeClawRot, .12),
+                        new SlideResetCommand(slide, vLimit),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -700),
+                                new SetPIDFSlideArmCommand(hSlide, -800),
                                 new IntakeAutoCommand(intake, -0.8, 1)
                         ),
                         new ServoCommand(outtakeClaw, Const.release),
@@ -235,16 +281,16 @@ public class AutoSamp extends OpMode {
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, 0.46),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab),
+                        new ServoCommand(outtakeClaw, Const.grab - .3),
                         new WaitCommand(pause, 300),
                         new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 5000),
+                        new SetPIDFSlideArmCommand(slide, 200),
                         new ServoCommand(outtakeClawRot, 0.9),
                         new ServoCommand(outtakeClawDistRight, 1-0.378),
                         new ServoCommand(outtakeClawDistLeft, 0.378),
                         new ParallelCommandGroup(
-                                new FollowPathCommand(follower, path(6, false), true),
-                                new SetPIDFSlideArmCommand(slide, 38000)
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_3.line(follower), true),
+                                new SetPIDFSlideArmCommand(slide, 1200)
                         ),
                         new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
@@ -257,34 +303,12 @@ public class AutoSamp extends OpMode {
                         new ServoCommand(outtakeClawTwist, 0.924)
                 );
 
-        Command park =
-                new ParallelCommandGroup(
-                        new SetPIDFSlideArmCommand(slide, 10000),
-                        new FollowPathCommand(follower, path( 7, false), true, 1)
-                );
-
         CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
                 scorePreload,
                 scoreFirstSamp,
                 scoreSecondSamp,
-                scoreThirdSamp,
-                park
+                scoreThirdSamp
         ));
-    }
-
-    public PathChain path(int i, boolean isLine) {
-        if(isLine)
-            paths[i] = follower.pathBuilder()
-                    .addPath(new BezierLine(new Point(poses[i]), new Point(poses[i + 1])))
-                    .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
-                    .build();
-        else
-            paths[i] = follower.pathBuilder()
-                    .addPath(new BezierCurve(new Point(poses[i]), new Point(poses[i + 1])))
-                    .setLinearHeadingInterpolation(poses[i].getHeading(), poses[i + 1].getHeading())
-                    .build();
-
-        return paths[i];
     }
 
     @Override

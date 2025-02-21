@@ -164,7 +164,7 @@ public class AutoSpec extends OpMode {
 
         intake = new IntakeAutoSubsystem(hardwareMap, Const.intake, new ElapsedTime());
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0, 0, 0.15, 0.001, 0, 0, 0.15);
+        slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.1, 0, 0.000004, 0.21, 0.1, 0, 0.000004, 0.21);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
         intakeClawDist = new ServoSubsystem(hardwareMap, Const.intakeDist);
@@ -189,7 +189,7 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawDistLeft, .2),
                                 new ServoCommand(outtakeClawRot, 1),
                                 new ServoCommand(outtakeClawTwist, Const.twist),
-                                new SetPIDFSlideArmCommand(slide, 7750),
+                                new SetPIDFSlideArmCommand(slide, 330),
                                 new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true)
                         ),
                         new ServoCommand(outtakeClaw, Const.release)
@@ -214,10 +214,10 @@ public class AutoSpec extends OpMode {
                         );
 
         Command[] grabAndScore = {
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 7500),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 7500),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 8000),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 7500)
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 330),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 330),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 330),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 330)
         };
 
         CommandScheduler.getInstance().schedule(

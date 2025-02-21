@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
 
+
 import java.util.ArrayList;
 
 @Autonomous(group = "Tuner")
@@ -53,13 +54,14 @@ public class PoseFinder extends OpMode {
             telemetry.addData("Y", String.format("%.2f", currentPose.getY()));
             telemetry.addData("Heading", String.format("%.2f", currentPose.getHeading()));
 
+            // Edge detection for left bumper press
             if (gamepad1.left_bumper && !previousLeftBumper) {
                 poses.add(new Pose(currentPose.getX(), currentPose.getY(), currentPose.getHeading()));
             }
             previousLeftBumper = gamepad1.left_bumper;
 
             for (Pose p : poses) {
-                telemetry.addLine(String.format("(%.2f, %.2f, %.2f)", p.getX(), p.getY(), p.getHeading()));
+                telemetry.addLine(String.format("Pose: (%.2f, %.2f, %.2f)", p.getX(), p.getY(), p.getHeading()));
             }
         }
     }
@@ -67,6 +69,6 @@ public class PoseFinder extends OpMode {
 
     @Override
     public void stop() {
-        CommandScheduler.getInstance().reset();
+        CommandScheduler.getInstance().reset();  // Prevent memory leaks
     }
 }
