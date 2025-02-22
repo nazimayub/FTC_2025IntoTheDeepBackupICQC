@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -50,10 +49,14 @@ public class Actions {
         );
     }
 
-    public static SequentialCommandGroup ShiftGearAction(double gear, ServoSubsystem shifter, WaitSubsystem pause) {
+    public static SequentialCommandGroup ShiftGearAction(PIDFSlideSubsystem slide, PIDFSlideSubsystem tSlide, LimitSwitchSubsystem vLimit, double gear, ServoSubsystem shifter, WaitSubsystem pause, double hangHeight) {
         return new SequentialCommandGroup(
+            new SlideResetCommand(slide, vLimit),
+            new ServoCommand(shifter, gear),
+            new SetSlideArmCommand(slide, 1),
             new WaitCommand(pause, 1000),
-            new ServoCommand(shifter, gear)
+            new SetSlideArmCommand(tSlide, hangHeight),
+            new SlideResetCommand(tSlide, vLimit)
         );
     }
 
@@ -85,6 +88,27 @@ public class Actions {
             new ServoCommand(outtakeClawDistRight, 1-0.378),
             new ServoCommand(outtakeClawDistLeft, 0.378),
             new SetPIDFSlideArmCommand(slide, 1300)
+        );
+    }
+
+    public static SequentialCommandGroup RaiseToBasketAutoAction(ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, PIDFSlideSubsystem slide) {
+        return new SequentialCommandGroup(
+                new SetPIDFSlideArmCommand(slide, 1300),
+                new ServoCommand(outtakeClawRot, 0.5),
+                new ServoCommand(outtakeClawDistRight, 1-0.378),
+                new ServoCommand(outtakeClawDistLeft, 0.378)
+        );
+    }
+    public static SequentialCommandGroup BasketSlides(PIDFSlideSubsystem slide) {
+        return new SequentialCommandGroup(
+                new SetPIDFSlideArmCommand(slide, 1300)
+        );
+    }
+    public static SequentialCommandGroup BasketServos(ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft) {
+        return new SequentialCommandGroup(
+                new ServoCommand(outtakeClawRot, 0.5),
+                new ServoCommand(outtakeClawDistRight, 1-0.378),
+                new ServoCommand(outtakeClawDistLeft, 0.378)
         );
     }
 
@@ -132,7 +156,7 @@ public class Actions {
         public static SequentialCommandGroup HSlideAction(PIDFSingleSlideSubsystem hSlide, ServoSubsystem intakeClawRot) {
                 return new SequentialCommandGroup(
                         new ServoCommand(intakeClawRot, 0.4),
-                        new SetPIDFSlideArmCommand(hSlide, -700),
+                        new SetPIDFSlideArmCommand(hSlide, -670),
                         new ServoCommand(intakeClawRot, 0.12)
                 );
         }

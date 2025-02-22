@@ -29,7 +29,8 @@ public class Duo2 extends CommandOpMode {
     public static ServoSubsystem outtakeClawRot, outtakeClaw, intakeClawDist, intakeClawRot, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, shifter;
     public static IntakeSubsystem intake;
     public static LimitSwitchSubsystem vLimit, hLimit;
-    public static PIDFSlideSubsystem slide, tSlide;
+    public static PIDFSlideSubsystem slide;
+    public static PIDFSlideSubsystem tSlide;
     public static PIDFSingleSlideSubsystem hSlide;
     public static WaitSubsystem pause;
 
@@ -42,7 +43,7 @@ public class Duo2 extends CommandOpMode {
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
         drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.bl, Const.br, Const.fl),new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        tSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.05, 0.001, 0, 0, 0.05);
+        tSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.001, 0,  0, 0.01, 0.001, 0, 0, 0.01);
         slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, 0.1, 0, 0.000004, 0.21, 0.1, 0, 0.000004, 0.21);
         pause = new WaitSubsystem();
         outtakeClaw = new ServoSubsystem(hardwareMap, Const.outtakeClaw);
@@ -60,7 +61,7 @@ public class Duo2 extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
         new GamepadButton(base, GamepadKeys.Button.A).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot));
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(Actions.SpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(Actions.ShiftGearAction(Const.torque, shifter, pause)).whenReleased(new SequentialCommandGroup(Actions.ShiftGearAction(Const.speed, shifter, pause)));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(Actions.ShiftGearAction(slide, tSlide, vLimit, Const.torque, shifter, pause, 1300));
 
         // OPERATOR
         new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(Actions.IntakeAcceptAction(intake)).whenReleased(Actions.IntakeRestAction(intake));

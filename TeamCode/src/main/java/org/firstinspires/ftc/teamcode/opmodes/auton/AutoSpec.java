@@ -35,8 +35,8 @@ import java.util.ArrayList;
 
 @Autonomous(group = "Auton")
 public class AutoSpec extends OpMode {
-    static Pose grab = new Pose(5.25, -33, Math.toRadians(0));
-    static int scoreX = 33;
+    static Pose grab = new Pose(4.75, -33, Math.toRadians(0));
+    static int scoreX = 34;
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
@@ -215,9 +215,9 @@ public class AutoSpec extends OpMode {
                         );
 
         Command[] grabAndScore = {
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 230),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 230),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 230),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 270),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 270),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 270),
                 grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 270)
         };
 

@@ -60,8 +60,7 @@ public class Solo2 extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
         new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot));
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(Actions.SpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
-        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(Actions.ShiftGearAction(Const.torque, shifter, pause)).whenReleased(new SequentialCommandGroup(Actions.ShiftGearAction(Const.speed, shifter, pause)));
-
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(Actions.ShiftGearAction(slide, tSlide, vLimit, Const.torque, shifter, pause, 1300));
         // OPERATOR
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(Actions.IntakeAcceptAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(Actions.IntakeRejectAction(intake)).whenReleased(Actions.IntakeRestAction(intake));

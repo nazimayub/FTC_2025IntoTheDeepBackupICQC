@@ -90,16 +90,25 @@ public class PoseFinder extends OpMode {
 
     @Override
     public void loop() {
+        follower.update();
         CommandScheduler.getInstance().run();
 
-        boolean currentLeftBumper = gamepad1.left_bumper;
-        if (currentLeftBumper && !previousLeftBumper) {
-            poses.add(follower.getPose());
-            telemetry.addData("Pose Saved", follower.getPose());
-        }
-        previousLeftBumper = currentLeftBumper;
+        if (follower != null) {
+            Pose currentPose = follower.getPose();
+            telemetry.addData("X", String.format("%.2f", currentPose.getX()));
+            telemetry.addData("Y", String.format("%.2f", currentPose.getY()));
+            telemetry.addData("Heading", String.format("%.2f", Math.toDegrees(currentPose.getHeading())));
 
-        telemetry.update();
+            // Edge detection for left bumper press
+            if (gamepad1.left_bumper && !previousLeftBumper) {
+                poses.add(new Pose(currentPose.getX(), currentPose.getY(), currentPose.getHeading()));
+            }
+            previousLeftBumper = gamepad1.left_bumper;
+
+            for (Pose p : poses) {
+                telemetry.addLine(String.format("Pose: (%.2f, %.2f, %.2f)", p.getX(), p.getY(), Math.toDegrees(p.getHeading())));
+            }
+        }
     }
 
     @Override

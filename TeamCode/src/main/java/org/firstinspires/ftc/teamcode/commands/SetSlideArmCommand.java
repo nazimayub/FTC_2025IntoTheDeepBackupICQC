@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlideSubsystem;
 
@@ -13,6 +14,7 @@ public class SetSlideArmCommand extends CommandBase {
     private SlideSubsystem slide;
     private ArmSubsystem arm;
     private SingleSlideSubsystem sSlide;
+    private PIDFSlideSubsystem pSlide;
 
     private final double speed;
 
@@ -32,6 +34,11 @@ public class SetSlideArmCommand extends CommandBase {
         this.speed = speed;
         addRequirements(sSlide);
     }
+    public SetSlideArmCommand(PIDFSlideSubsystem pSlide, double speed){
+        this.pSlide = pSlide;
+        this.speed = speed;
+    }
+
     @Override
     public void execute() {
         if (slide != null) {
@@ -39,6 +46,9 @@ public class SetSlideArmCommand extends CommandBase {
         }
         else if (sSlide != null){
             sSlide.set(speed);
+        }
+        else if (pSlide != null){
+            pSlide.set(speed, speed);
         }
         else {
             arm.set(speed);
