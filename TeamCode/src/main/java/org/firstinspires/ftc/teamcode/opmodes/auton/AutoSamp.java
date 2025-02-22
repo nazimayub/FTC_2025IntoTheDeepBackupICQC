@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
+import android.drm.DrmStore;
+
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -31,12 +33,13 @@ import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
+import org.firstinspires.ftc.teamcode.utils.Actions;
 
 import java.util.ArrayList;
 
 @Autonomous(group = "Auton")
 public class AutoSamp extends OpMode {
-    public static Pose score = new Pose(14.95, -0.82, 3.86);
+    public static Pose score = new Pose(14.8, -0.82, 3.86);
     public enum AutoPaths {
         PRELOAD(
                 new Pose( 0, 0, 0),
@@ -144,163 +147,65 @@ public class AutoSamp extends OpMode {
 
         Command scorePreload =
                 new SequentialCommandGroup(
-                        new ParallelCommandGroup(
-                                new ServoCommand(outtakeClaw, Const.grab),
-                                new ServoCommand(outtakeClawRot, 0.9),
-                                new ServoCommand(outtakeClawDistRight, 1-0.378),
-                                new ServoCommand(outtakeClawDistLeft, 0.378),
-                                new FollowPathCommand(follower, AutoPaths.PRELOAD.curve(follower), true),
-                                new SetPIDFSlideArmCommand(slide, 1150)
-                        ),
-                        new ServoCommand(outtakeClawRot, 0.6),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new ParallelCommandGroup(
-                                new ServoCommand(intakeClawRot, .3),
-                                new ServoCommand(outtakeClawDistLeft, 1),
-                                new ServoCommand(outtakeClawDistRight, 0),
-                                new ServoCommand(outtakeClawRot, 0.7),
-                                new ServoCommand(outtakeClawTwist, 0.924)
-                        )
+                        new FollowPathCommand(follower, AutoPaths.PRELOAD.curve(follower), true),
+                        Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
+                        Actions.ClawReleaseAction(outtakeClaw)
                 );
 
         Command scoreFirstSamp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_1.curve(follower), true),
-                        new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .12),
-                        new SlideResetCommand(slide, vLimit),
+                        Actions.HSlideAction(hSlide, intakeClawRot),
+                        Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist),
+                        Actions.IntakeAutoAccept(intake, hSlide),
+                        Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -800),
-                                new IntakeAutoCommand(intake, -0.8, 1)
+                                Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_1.curve(follower), true)
                         ),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924),
-                        new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawRot, 0.83),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, 0.46),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab - .3),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 200),
-                        new ServoCommand(outtakeClawRot, 0.9),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
-                        new ParallelCommandGroup(
-                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_1.line(follower), true),
-                                new SetPIDFSlideArmCommand(slide, 1200)
-                        ),
-                        new ServoCommand(outtakeClawRot, 0.4),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924)
+                        Actions.ClawReleaseAction(outtakeClaw),
+                        new WaitCommand(pause, 300)
                 );
 
         Command scoreSecondSamp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_2.curve(follower), true),
-                        new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .12),
-                        new SlideResetCommand(slide, vLimit),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -800),
-                                new IntakeAutoCommand(intake, -0.8, 2)
+                                new ServoCommand(intakeClawRot, .3),
+                                Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist)
                         ),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924),
-                        new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawRot, 0.83),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, 0.46),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab - .3),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 200),
-                        new ServoCommand(outtakeClawRot, 0.9),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        Actions.HSlideAction(hSlide, intakeClawRot),
+                        Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist),
+                        Actions.IntakeAutoAccept(intake, hSlide),
+                        Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause),
                         new ParallelCommandGroup(
-                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_2.line(follower), true),
-                                new SetPIDFSlideArmCommand(slide, 1200)
+                                Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_2.curve(follower), true)
                         ),
-                        new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924)
+                        Actions.ClawReleaseAction(outtakeClaw),
+                        new WaitCommand(pause, 300)
                 );
 
         Command scoreThirdSamp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_3.curve(follower), true),
-                        new ServoCommand(intakeClawRot, 0.5),
-                        new SetPIDFSlideArmCommand(hSlide, -350),
-                        new ServoCommand(intakeClawRot, .12),
-                        new SlideResetCommand(slide, vLimit),
                         new ParallelCommandGroup(
-                                new SetPIDFSlideArmCommand(hSlide, -800),
-                                new IntakeAutoCommand(intake, -0.8, 1)
+                                new ServoCommand(intakeClawRot, .3),
+                                Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist)
                         ),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924),
-                        new SlideResetCommand(slide, vLimit),
-                        new SlideResetCommand(hSlide, hLimit),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClawRot, 0.83),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, 0.46),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.grab - .3),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new SetPIDFSlideArmCommand(slide, 200),
-                        new ServoCommand(outtakeClawRot, 0.9),
-                        new ServoCommand(outtakeClawDistRight, 1-0.378),
-                        new ServoCommand(outtakeClawDistLeft, 0.378),
+                        Actions.HSlideAction(hSlide, intakeClawRot),
+                        Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist),
+                        Actions.IntakeAutoAccept(intake, hSlide),
+                        Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause),
                         new ParallelCommandGroup(
-                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_3.line(follower), true),
-                                new SetPIDFSlideArmCommand(slide, 1200)
+                                Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
+                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_3.curve(follower), true)
                         ),
-                        new ServoCommand(outtakeClawRot, 0.4),
                         new WaitCommand(pause, 300),
-                        new ServoCommand(outtakeClaw, Const.release),
-                        new WaitCommand(pause, 300),
-                        new ServoCommand(intakeClawRot, .3),
-                        new ServoCommand(outtakeClawDistLeft, 1),
-                        new ServoCommand(outtakeClawDistRight, 0),
-                        new ServoCommand(outtakeClawRot, 0.7),
-                        new ServoCommand(outtakeClawTwist, 0.924)
+                        Actions.ClawReleaseAction(outtakeClaw),
+                        new WaitCommand(pause, 300)
                 );
 
         CommandScheduler.getInstance().schedule(new SequentialCommandGroup(

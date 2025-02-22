@@ -1,22 +1,31 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.LimitSwitchSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
+import org.firstinspires.ftc.teamcode.utils.Actions;
 import org.firstinspires.ftc.teamcode.utils.MotorConfig;
 import org.firstinspires.ftc.teamcode.utils.MotorDirectionConfig;
+import org.firstinspires.ftc.teamcode.utils.SimpleLogger;
 
 import java.util.ArrayList;
 
@@ -68,11 +77,11 @@ public class PoseFinder extends OpMode {
 
 
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot));
         new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(Actions.SpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
         new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(Actions.IntakeAcceptAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
         //new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(Actions.IntakeRejectAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(Actions.HSlideAction(hSlide));
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(Actions.HSlideAction(hSlide, intakeClawRot));
         new GamepadButton(base, GamepadKeys.Button.B).whenPressed(Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause));
         new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide));
         new GamepadButton(base, GamepadKeys.Button.X).whenPressed(Actions.ClawReleaseAction(outtakeClaw));
@@ -95,6 +104,6 @@ public class PoseFinder extends OpMode {
 
     @Override
     public void stop() {
-        CommandScheduler.getInstance().reset();  // Prevent memory leaks
+        CommandScheduler.getInstance().reset();
     }
 }

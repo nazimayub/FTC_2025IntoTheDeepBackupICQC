@@ -35,11 +35,12 @@ import java.util.ArrayList;
 
 @Autonomous(group = "Auton")
 public class AutoSpec extends OpMode {
-    static Pose grab = new Pose(6.75, -32.5, Math.toRadians(0));
+    static Pose grab = new Pose(5.25, -33, Math.toRadians(0));
+    static int scoreX = 33;
     public enum AutoPaths {
         PRELOAD(
                 new Pose(0, 0, Math.toRadians(180)),
-                new Pose(38, 6, Math.toRadians(180))
+                new Pose(scoreX, 6, Math.toRadians(180))
         ),
 
         GO_TO_SAMPLES(
@@ -65,52 +66,52 @@ public class AutoSpec extends OpMode {
         PUSH_SAMPLE_3(
                 new Pose(10, -58, Math.toRadians(0)),
                 new Pose(45, -58, Math.toRadians(0)),
-                new Pose(45, -66, Math.toRadians(0)),
-                new Pose(10, -66, Math.toRadians(0))
+                new Pose(45, -64, Math.toRadians(0)),
+                new Pose(10, -64, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_1(
-                new Pose(10, -66, Math.toRadians(0)),
+                new Pose(10, -64, Math.toRadians(0)),
                 new Pose(20, grab.getY()-10, Math.toRadians(0)),
                 new Pose(grab.getX() - 1, grab.getY() - 2.7, grab.getHeading())
         ),
 
         SCORE_SPECIMEN_1(
                 new Pose(grab.getX() - 1, grab.getY() - 2.7, grab.getHeading()),
-                new Pose(33, 4, Math.toRadians(0))
+                new Pose(scoreX, 4, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_2(
-                new Pose(33, 4, Math.toRadians(0)),
+                new Pose(36, 4, Math.toRadians(0)),
                 new Pose(20, -33, Math.toRadians(0)),
                 grab
         ),
 
         SCORE_SPECIMEN_2(
                 grab,
-                new Pose(33,4, Math.toRadians(0))
+                new Pose(scoreX,4, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_3(
-                new Pose(33, 3, Math.toRadians(0)),
+                new Pose(36, 3, Math.toRadians(0)),
                 new Pose(20, -33, Math.toRadians(0)),
                 grab
         ),
 
         SCORE_SPECIMEN_3(
                 grab,
-                new Pose(33, 2, Math.toRadians(0))
+                new Pose(scoreX, 2, Math.toRadians(0))
         ),
 
         GRAB_SPECIMEN_4(
-                new Pose(33, 2, Math.toRadians(0)),
+                new Pose(36, 2, Math.toRadians(0)),
                 new Pose(20, -33, Math.toRadians(0)),
                 grab
         ),
 
         SCORE_SPECIMEN_4(
                 grab,
-                new Pose(33, 0, Math.toRadians(0))
+                new Pose(scoreX, 0, Math.toRadians(0))
         );
 
         private final Pose[] poses;
@@ -189,7 +190,7 @@ public class AutoSpec extends OpMode {
                                 new ServoCommand(outtakeClawDistLeft, .2),
                                 new ServoCommand(outtakeClawRot, 1),
                                 new ServoCommand(outtakeClawTwist, Const.twist),
-                                new SetPIDFSlideArmCommand(slide, 330),
+                                new SetPIDFSlideArmCommand(slide, 200),
                                 new FollowPathCommand(follower, AutoPaths.PRELOAD.line(follower), true)
                         ),
                         new ServoCommand(outtakeClaw, Const.release)
@@ -214,10 +215,10 @@ public class AutoSpec extends OpMode {
                         );
 
         Command[] grabAndScore = {
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 330),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 330),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 330),
-                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 330)
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_1, AutoPaths.SCORE_SPECIMEN_1, 230),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_2, AutoPaths.SCORE_SPECIMEN_2, 230),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_3, AutoPaths.SCORE_SPECIMEN_3, 230),
+                grabAndScore(AutoPaths.GRAB_SPECIMEN_4, AutoPaths.SCORE_SPECIMEN_4, 270)
         };
 
         CommandScheduler.getInstance().schedule(

@@ -25,11 +25,11 @@ public class FConstants {
 
         FollowerConstants.mass = 13;
 
-        FollowerConstants.xMovement = 73.3649;
-        FollowerConstants.yMovement = 57.9459;
+        FollowerConstants.xMovement = 74.8039;
+        FollowerConstants.yMovement = 59.7478;
 
-        FollowerConstants.forwardZeroPowerAcceleration = -32.3072;
-        FollowerConstants.lateralZeroPowerAcceleration = -70.4231;
+        FollowerConstants.forwardZeroPowerAcceleration = -26.8918;
+        FollowerConstants.lateralZeroPowerAcceleration = -65.6537;
 
         FollowerConstants.translationalPIDFCoefficients.setCoefficients(-0.1,0,1e-8,0.05);
         FollowerConstants.useSecondaryTranslationalPID = false;
@@ -52,7 +52,7 @@ public class FConstants {
         FollowerConstants.pathEndTranslationalConstraint = 0.1;
         FollowerConstants.pathEndHeadingConstraint = 0.007;
 
-        FollowerConstants.nominalVoltage = 12.66;
+        FollowerConstants.nominalVoltage = 13.31;
         FollowerConstants.useVoltageCompensationInAuto = true;
     }
 }

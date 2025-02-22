@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.utils.*;
 import org.firstinspires.ftc.teamcode.utils.Actions;
 
 @TeleOp
-public class Duo2 extends CommandOpMode {
+public class Solo2 extends CommandOpMode {
     public static GamepadEx base;
     public static GamepadEx op;
     SimpleLogger log;
@@ -58,18 +58,18 @@ public class Duo2 extends CommandOpMode {
 
         // DRIVER
         drive.setDefaultCommand(new DriveCommand(drive,base));
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot));
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(Actions.SpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
-        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(Actions.ShiftGearAction(Const.torque, shifter, pause)).whenReleased(new SequentialCommandGroup(Actions.ShiftGearAction(Const.speed, shifter, pause)));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_LEFT).whenPressed(Actions.SpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_RIGHT).whenPressed(Actions.SpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_UP).whenPressed(Actions.ShiftGearAction(Const.torque, shifter, pause)).whenReleased(new SequentialCommandGroup(Actions.ShiftGearAction(Const.speed, shifter, pause)));
 
         // OPERATOR
-        new GamepadButton(op, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(Actions.IntakeAcceptAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
-        new GamepadButton(op, GamepadKeys.Button.LEFT_BUMPER).whenPressed(Actions.IntakeRejectAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
-        new GamepadButton(op, GamepadKeys.Button.A).whenPressed(Actions.HSlideAction(hSlide, intakeClawRot));
-        new GamepadButton(op, GamepadKeys.Button.B).whenPressed(Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause));
-        new GamepadButton(op, GamepadKeys.Button.Y).whenPressed(Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide));
-        new GamepadButton(op, GamepadKeys.Button.X).whenPressed(Actions.ClawReleaseAction(outtakeClaw));
-        new GamepadButton(op, GamepadKeys.Button.DPAD_DOWN).whenPressed(Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist));
+        new GamepadButton(base, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(Actions.IntakeAcceptAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
+        new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER).whenPressed(Actions.IntakeRejectAction(intake)).whenReleased(Actions.IntakeRestAction(intake));
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(Actions.HSlideAction(hSlide, intakeClawRot));
+        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause));
+        new GamepadButton(base, GamepadKeys.Button.Y).whenPressed(Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide));
+        new GamepadButton(base, GamepadKeys.Button.X).whenPressed(Actions.ClawReleaseAction(outtakeClaw));
+        new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(Actions.VSlideDownAction(slide, vLimit, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist));
     }
 }
 

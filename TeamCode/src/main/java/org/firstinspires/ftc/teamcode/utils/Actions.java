@@ -1,14 +1,18 @@
 
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.commands.*;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 
 public class Actions {
 
-    public static SequentialCommandGroup SpecimenGrabAction(ServoSubsystem outtakeClaw, PIDFSlideSubsystem slide, LimitSwitchSubsystem vLimit, ServoSubsystem intakeClawRot, PIDFSingleSlideSubsystem hSlide, LimitSwitchSubsystem hLimit, ServoSubsystem outtakeClawTwist, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft) {
-        return new SequentialCommandGroup(
+    public static ParallelCommandGroup SpecimenGrabAction(ServoSubsystem outtakeClaw, PIDFSlideSubsystem slide, LimitSwitchSubsystem vLimit, ServoSubsystem intakeClawRot, PIDFSingleSlideSubsystem hSlide, LimitSwitchSubsystem hLimit, ServoSubsystem outtakeClawTwist, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawRot) {
+        return new ParallelCommandGroup(
             new ServoCommand(outtakeClaw, Const.release),
             new SlideResetCommand(slide, vLimit),
             new ServoCommand(intakeClawRot, .3),
@@ -16,36 +20,37 @@ public class Actions {
             new ServoCommand(outtakeClawTwist, Const.untwist),
             new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
             new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
-            new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
-            new ServoCommand(outtakeClaw, Const.release)
+            new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab)
         );
     }
 
     public static SequentialCommandGroup SpecimenScoreAction(ServoSubsystem outtakeClaw, WaitSubsystem pause, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawTwist, PIDFSlideSubsystem slide) {
         return new SequentialCommandGroup(
-            new ServoCommand(outtakeClaw, Const.grab),
+            new ServoCommand(outtakeClaw, .2),
+            new WaitCommand(pause, 300),
+            new ParallelCommandGroup(
+                new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
+                new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
+                new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
+                new ServoCommand(outtakeClawTwist, Const.twist),
+                new SetPIDFSlideArmCommand(slide, 270)
+            )
+        );
+    }
+
+    public static ParallelCommandGroup SpecimenScoreReverseAction(ServoSubsystem outtakeClaw, WaitSubsystem pause, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawTwist, PIDFSlideSubsystem slide) {
+        return new ParallelCommandGroup(
+            new ServoCommand(outtakeClaw, .25),
             new WaitCommand(pause, 300),
             new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
             new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
             new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
             new ServoCommand(outtakeClawTwist, Const.twist),
-            new SetPIDFSlideArmCommand(slide, 330)
+            new SetPIDFSlideArmCommand(slide, 270)
         );
     }
 
-    public static SequentialCommandGroup SpecimenScoreReverseAction(ServoSubsystem outtakeClaw, WaitSubsystem pause, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawTwist, PIDFSlideSubsystem slide) {
-        return new SequentialCommandGroup(
-            new ServoCommand(outtakeClaw, Const.grab),
-            new WaitCommand(pause, 300),
-            new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
-            new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
-            new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
-            new ServoCommand(outtakeClawTwist, Const.twist),
-            new SetPIDFSlideArmCommand(slide, 330)
-        );
-    }
-
-    public static SequentialCommandGroup ShiftGearAction(double gear) {
+    public static SequentialCommandGroup ShiftGearAction(double gear, ServoSubsystem shifter, WaitSubsystem pause) {
         return new SequentialCommandGroup(
             new WaitCommand(pause, 1000),
             new ServoCommand(shifter, gear)
@@ -74,8 +79,8 @@ public class Actions {
         );
     }
 
-    public static SequentialCommandGroup RaiseToBasketAction(ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, PIDFSlideSubsystem slide) {
-        return new SequentialCommandGroup(
+    public static ParallelCommandGroup RaiseToBasketAction(ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawDistLeft, PIDFSlideSubsystem slide) {
+        return new ParallelCommandGroup(
             new ServoCommand(outtakeClawRot, 0.5),
             new ServoCommand(outtakeClawDistRight, 1-0.378),
             new ServoCommand(outtakeClawDistLeft, 0.378),
@@ -83,8 +88,8 @@ public class Actions {
         );
     }
 
-    public static SequentialCommandGroup VSlideDownAction(PIDFSlideSubsystem slide, LimitSwitchSubsystem vLimit, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawTwist) {
-        return new SequentialCommandGroup(
+    public static ParallelCommandGroup VSlideDownAction(PIDFSlideSubsystem slide, LimitSwitchSubsystem vLimit, ServoSubsystem outtakeClawDistLeft, ServoSubsystem outtakeClawDistRight, ServoSubsystem outtakeClawRot, ServoSubsystem outtakeClawTwist) {
+        return new ParallelCommandGroup(
             new SlideResetCommand(slide, vLimit),
             new ServoCommand(outtakeClawDistLeft, 1),
             new ServoCommand(outtakeClawDistRight, 0),
@@ -111,7 +116,20 @@ public class Actions {
                 );
         }
 
-        public static SequentialCommandGroup HSlideAction(PIDFSingleSlideSubsystem slide) {
+        public static ParallelCommandGroup IntakeAutoAccept(IntakeAutoSubsystem intake, PIDFSingleSlideSubsystem hSlide) {
+            return new ParallelCommandGroup(
+                new SetPIDFSlideArmCommand(hSlide, -800),
+                new IntakeAutoCommand(intake, -0.8, 1)
+            );
+        }
+
+        public static SequentialCommandGroup IntakeAutoReject(IntakeAutoSubsystem intake) {
+            return new SequentialCommandGroup(
+                    new IntakeAutoCommand(intake, 0.8, 1)
+            );
+        }
+
+        public static SequentialCommandGroup HSlideAction(PIDFSingleSlideSubsystem hSlide, ServoSubsystem intakeClawRot) {
                 return new SequentialCommandGroup(
                         new ServoCommand(intakeClawRot, 0.4),
                         new SetPIDFSlideArmCommand(hSlide, -700),

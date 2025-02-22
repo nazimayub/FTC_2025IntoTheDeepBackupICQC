@@ -13,13 +13,12 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.*;
+import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.subsystems.*;
 import org.firstinspires.ftc.teamcode.commands.*;
 import org.firstinspires.ftc.teamcode.utils.*;
-import org.firstinspires.ftc.teamcode.actions.SpecimenGrabAction;
-import org.firstinspires.ftc.teamcode.actions.SpecimenScoreAction;
-import org.firstinspires.ftc.teamcode.utils.ActionUtils;
 
+@TeleOp
 public class Duo extends CommandOpMode {
     public static GamepadEx base;
     public static GamepadEx op;
@@ -62,10 +61,31 @@ public class Duo extends CommandOpMode {
         drive.setDefaultCommand(new DriveCommand(drive,base));
 
         //Specimen Grab
-        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(ActionUtils.getSpecimenGrabAction(outtakeClaw, slide, vLimit, intakeClawRot, hSlide, hLimit, outtakeClawTwist, outtakeClawDistRight, outtakeClawDistLeft));
+        new GamepadButton(base, GamepadKeys.Button.A).whenPressed(
+                new SequentialCommandGroup(
+                        new ServoCommand(outtakeClaw, Const.release),
+                        new SlideResetCommand(slide, vLimit),
+                        new ServoCommand(intakeClawRot, .3),
+                        new SlideResetCommand(hSlide, hLimit),
+                        new ServoCommand(outtakeClawTwist, Const.untwist),
+                        new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrab),
+                        new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrab),
+                        new ServoCommand(outtakeClawRot, Const.rotSpecimenGrab),
+                        new ServoCommand(outtakeClaw, Const.release)
+                )
+        );
 
         //Specimen Score
-        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(ActionUtils.getSpecimenScoreAction(outtakeClaw, pause, outtakeClawDistRight, outtakeClawDistLeft, outtakeClawRot, outtakeClawTwist, slide));
+        new GamepadButton(base, GamepadKeys.Button.B).whenPressed(
+                new SequentialCommandGroup(
+                        new ServoCommand(outtakeClaw, Const.grab),
+                        new WaitCommand(pause, 300),
+                        new ServoCommand(outtakeClawDistRight, 1-Const.distSpecimenGrabFinal),
+                        new ServoCommand(outtakeClawDistLeft, Const.distSpecimenGrabFinal),
+                        new ServoCommand(outtakeClawRot, Const.rotSpecimenScore),
+                        new ServoCommand(outtakeClawTwist, Const.twist),
+                        new SetPIDFSlideArmCommand(slide, 330)
+                ));
 
         //Shift to high torque
         // new GamepadButton(base, GamepadKeys.Button.DPAD_DOWN).whenPressed(new SequentialCommandGroup(
