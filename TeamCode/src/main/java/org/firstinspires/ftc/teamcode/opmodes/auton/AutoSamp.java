@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
-import android.drm.DrmStore;
-
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -20,10 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Const;
 import org.firstinspires.ftc.teamcode.commands.FollowPathCommand;
-import org.firstinspires.ftc.teamcode.commands.IntakeAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.ServoCommand;
-import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
-import org.firstinspires.ftc.teamcode.commands.SlideResetCommand;
 import org.firstinspires.ftc.teamcode.commands.WaitCommand;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
@@ -36,53 +31,45 @@ import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
 import org.firstinspires.ftc.teamcode.utils.Actions;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 @Autonomous(group = "Auton")
 public class AutoSamp extends OpMode {
 
-    public static Pose score1 = new Pose(1, 13, Math.toRadians(315));
-    public static Pose score2 = new Pose(3, 16, Math.toRadians(315));
+    public static Pose score = new Pose(-4.09, -9.43, Math.toRadians(133.2));
     public enum AutoPaths {
         PRELOAD(
-                new Pose( 0, 0, Math.toRadians(90)),
-                score1
-        ),
-        PRELOAD_2(
-                score2
+                new Pose( 0, 0, 0),
+                score
         ),
 
         GRAB_SAMPLE_1(
-                score2,
-                new Pose(4, 8.5, Math.toRadians(-12))
+                score,
+                new Pose(-7.5, -8.25, Math.toRadians(164.2))
         ),
 
         SCORE_SAMPLE_1(
-                new Pose(4, 8.5, Math.toRadians(-12)),
-                score1
-        ),
-        SCORE_SAMPLE_12(
-                score2
+                new Pose(-7.5, -8.25, Math.toRadians(164.2)),
+                score
         ),
 
         GRAB_SAMPLE_2(
-                score2,
-                new Pose(3, 16, Math.toRadians(1))
+                score,
+                new Pose(-8.43, -9.03, Math.toRadians(181.83))
         ),
 
         SCORE_SAMPLE_2(
-                new Pose(3, 16, Math.toRadians(1)),
-                score2
+                new Pose(-8.43, -9.03, Math.toRadians(181.83)),
+                score
         ),
 
         GRAB_SAMPLE_3(
-                score2,
-                new Pose(2, 20, Math.toRadians(15))
+                score,
+                new Pose(-11.02, -9.35, Math.toRadians(200.09))
         ),
 
         SCORE_SAMPLE_3(
-                new Pose(2, 20, Math.toRadians(15)),
-                score2
+                new Pose(-11.02, -9.35, Math.toRadians(200.09)),
+                score
         );
 
         private final Pose[] poses;
@@ -156,10 +143,10 @@ public class AutoSamp extends OpMode {
         Command scorePreload =
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
-                          new ServoCommand(outtakeClawTwist, .924),
-                          new ServoCommand(outtakeClawRot, .8),
-                          new ServoCommand(outtakeClawDistLeft, .5),
-                          new ServoCommand(outtakeClawDistRight, .5)
+                                new ServoCommand(outtakeClawTwist, .924),
+                                new ServoCommand(outtakeClawRot, .8),
+                                new ServoCommand(outtakeClawDistLeft, .5),
+                                new ServoCommand(outtakeClawDistRight, .5)
                         ),
                         new FollowPathCommand(follower, AutoPaths.PRELOAD.curve(follower), true, 0.8),
                         Actions.RaiseToBasketAutoAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
@@ -182,7 +169,6 @@ public class AutoSamp extends OpMode {
                         Actions.ClawReleaseAction(outtakeClaw),
                         new WaitCommand(pause, 300)
                 );
-
         Command scoreSecondSamp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_2.curve(follower), true, 0.8),
@@ -196,13 +182,12 @@ public class AutoSamp extends OpMode {
                         Actions.TransferAction(outtakeClaw, intakeClawRot, outtakeClawDistLeft, outtakeClawDistRight, outtakeClawRot, outtakeClawTwist, slide, hSlide, vLimit, hLimit, pause),
                         new ParallelCommandGroup(
                                 Actions.RaiseToBasketAction(outtakeClawRot, outtakeClawDistRight, outtakeClawDistLeft, slide),
-                                new FollowPathCommand(follower, AutoPaths.SCORE_SAMPLE_2.curve(follower), true, 0.8)
+                                new FollowPathCommand(follower, AutoSamp.AutoPaths.SCORE_SAMPLE_2.curve(follower), true, 0.8)
                         ),
                         new WaitCommand(pause, 300),
                         Actions.ClawReleaseAction(outtakeClaw),
                         new WaitCommand(pause, 300)
                 );
-
         Command scoreThirdSamp =
                 new SequentialCommandGroup(
                         new FollowPathCommand(follower, AutoPaths.GRAB_SAMPLE_3.curve(follower), true, 0.8),
@@ -222,6 +207,7 @@ public class AutoSamp extends OpMode {
                         Actions.ClawReleaseAction(outtakeClaw),
                         new WaitCommand(pause, 300)
                 );
+
 
         CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
                 scorePreload,
