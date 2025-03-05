@@ -16,24 +16,24 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Const;
-import org.firstinspires.ftc.teamcode.commands.FollowPathCommand;
-import org.firstinspires.ftc.teamcode.commands.ServoCommand;
-import org.firstinspires.ftc.teamcode.commands.SetPIDFSlideArmCommand;
-import org.firstinspires.ftc.teamcode.commands.SlideResetCommand;
-import org.firstinspires.ftc.teamcode.commands.WaitCommand;
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeAutoSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.LimitSwitchSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSingleSlideSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PIDFSlideSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ServoSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.WaitSubsystem;
+import org.firstinspires.ftc.teamcode.base.bot.Const;
+import org.firstinspires.ftc.teamcode.base.commands.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.base.commands.ServoCommand;
+import org.firstinspires.ftc.teamcode.base.commands.SetPIDFSlideArmCommand;
+import org.firstinspires.ftc.teamcode.base.commands.SlideResetCommand;
+import org.firstinspires.ftc.teamcode.base.commands.WaitCommand;
+import org.firstinspires.ftc.teamcode.tuning.Pedro.constants.FConstants;
+import org.firstinspires.ftc.teamcode.tuning.Pedro.constants.LConstants;
+import org.firstinspires.ftc.teamcode.base.subsystems.IntakeAutoSubsystem;
+import org.firstinspires.ftc.teamcode.base.subsystems.LimitSwitchSubsystem;
+import org.firstinspires.ftc.teamcode.base.subsystems.PIDFSingleSlideSubsystem;
+import org.firstinspires.ftc.teamcode.base.subsystems.PIDFSlideSubsystem;
+import org.firstinspires.ftc.teamcode.base.subsystems.ServoSubsystem;
+import org.firstinspires.ftc.teamcode.base.subsystems.WaitSubsystem;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "Auton")
+@Autonomous(name="5+0",group = "Auton")
 public class AutoSpec extends OpMode {
     static Pose grab = new Pose(4.75, -33, Math.toRadians(0));
     static int scoreX = 34;
