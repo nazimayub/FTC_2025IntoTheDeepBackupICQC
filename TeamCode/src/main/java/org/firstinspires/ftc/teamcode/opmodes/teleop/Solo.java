@@ -7,11 +7,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.base.bot.Actions;
 import org.firstinspires.ftc.teamcode.base.bot.Robot;
 
-@TeleOp(name="Solo", group="TeleOp")
+@TeleOp(name="Solo", group=".TeleOp")
 public class Solo extends CommandOpMode {
+    public Robot bot;
+    public Solo(Robot bot) {
+        this.bot = bot;
+    }
+
     @Override
     public void initialize() {
-        Robot bot = new Robot(Robot.Mode.SOLO, hardwareMap);
+        bot = new Robot(Robot.Mode.SOLO, hardwareMap);
 
         new GamepadButton(bot.base, GamepadKeys.Button.DPAD_LEFT)
                 .whenPressed(Actions.SpecimenGrabAction(bot));

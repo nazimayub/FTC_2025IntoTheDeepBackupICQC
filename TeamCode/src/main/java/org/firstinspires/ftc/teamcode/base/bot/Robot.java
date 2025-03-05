@@ -46,11 +46,11 @@ public class Robot {
         this.mode = mode;
         this.hardwareMap = hardwareMap;
 
-        Follower follow = new Follower(hardwareMap);
+        follow = new Follower(hardwareMap);
         follower = new FollowerSubsystem(hardwareMap, follow, new Pose(0,0,Math.toRadians(0)));
 
-        base = new GamepadEx(null);
-        op = new GamepadEx(null);
+        base = new GamepadEx(gamepad1);
+        op = new GamepadEx(gamepad2);
 
         log = new SimpleLogger();
         intake = new IntakeSubsystem(hardwareMap, Const.intake);
@@ -76,34 +76,21 @@ public class Robot {
         outtakeClawRot = new ServoSubsystem(hardwareMap, Const.outtakeRot);
         outtakeClawTwist = new ServoSubsystem(hardwareMap, Const.outtakeTwist);
 
-        setBindings();
+        setMode();
     }
 
-    public void setGamePads(GamepadEx gamepad1, GamepadEx gamepad2) {
-        this.base = gamepad1;
-        this.op = gamepad2;
-    }
-
-    private void setBindings() {
-        if(mode == Mode.SOLO)
-            Solo();
-        else if(mode == Mode.DUO)
-            Duo();
-        else if(mode == Mode.AUTO)
+    private void setMode() {
+        if(mode == Mode.AUTO)
             Auto();
+        else
+            TeleOp();
     }
 
-    private void Solo() {
-        this.setGamePads(new GamepadEx(gamepad1), null);
-        drive.setDefaultCommand(new DriveCommand(drive,base));
-    }
-
-    private void Duo() {
-        this.setGamePads(new GamepadEx(gamepad1), new GamepadEx(gamepad2));
-        drive.setDefaultCommand(new DriveCommand(drive,base));
+    private void TeleOp() {
+        Actions.InitTeleAction(this, mode);
     }
 
     private void Auto() {
-        Actions.InitAutoAction(this);
+        Actions.InitAutoAction(this, mode);
     }
 }

@@ -13,11 +13,12 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 public class FollowerSubsystem extends CommandBase {
     private Follower follower;
+    private Pose start;
 
     public FollowerSubsystem(HardwareMap h, Follower follower, Pose start)  {
         Constants.setConstants(FConstants.class, LConstants.class);
         this.follower = follower;
-        follower.setPose(start);
+        this.start = start;
     }
 
     public Follower getFollower() {
@@ -26,7 +27,7 @@ public class FollowerSubsystem extends CommandBase {
 
     @Override
     public void initialize() {
-
+        follower.setPose(start);
     }
 
     public void execute() {

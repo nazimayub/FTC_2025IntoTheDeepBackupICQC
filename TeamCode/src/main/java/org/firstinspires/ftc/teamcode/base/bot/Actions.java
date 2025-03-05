@@ -2,11 +2,16 @@ package org.firstinspires.ftc.teamcode.base.bot;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.pathgen.PathChain;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.base.commands.*;
 
-public class Actions {
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 
+public class Actions {
+    //Specimen
     public static ParallelCommandGroup SpecimenGrabAction(Robot bot) {
         return new ParallelCommandGroup(
                 new ServoCommand(bot.outtakeClaw, Const.release),
@@ -45,6 +50,7 @@ public class Actions {
         );
     }
 
+    //Samples
     public static SequentialCommandGroup IntakeAction(Robot bot, boolean accept) {
         if(accept)
             return new SequentialCommandGroup(
@@ -58,6 +64,16 @@ public class Actions {
     public static SequentialCommandGroup IntakeRestAction(Robot bot) {
         return new SequentialCommandGroup(
                 new IntakeCommand(bot.intake, 0)
+        );
+    }
+
+    public static SequentialCommandGroup IntakeAutoAction(Robot bot, boolean accept, int time) {
+        if(accept)
+            return new SequentialCommandGroup(
+                    new IntakeAutoCommand(bot.intakeAuto, -.8, time)
+            );
+        return new SequentialCommandGroup(
+            new IntakeAutoCommand(bot.intakeAuto, .8, time)
         );
     }
 
@@ -106,6 +122,7 @@ public class Actions {
         );
     }
 
+    //Default
     public static ParallelCommandGroup ResetAction(Robot bot) {
         return new ParallelCommandGroup(
             new SlideResetCommand(bot.slide, bot.vLimit),
@@ -125,10 +142,14 @@ public class Actions {
         );
     }
 
-    public static ParallelCommandGroup InitAutoAction(Robot bot) {
+    public static ParallelCommandGroup InitAutoAction(Robot bot, Robot.Mode m) {
         return new ParallelCommandGroup(
           new ServoCommand(bot.outtakeClaw, Const.grab),
           new ServoCommand(bot.intakeClawRot, .58)
         );
+    }
+
+    public static void InitTeleAction(Robot bot, Robot.Mode m) {
+        bot.drive.setDefaultCommand(new DriveCommand(bot.drive, bot.base));
     }
 }

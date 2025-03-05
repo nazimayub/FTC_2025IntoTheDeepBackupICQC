@@ -33,7 +33,7 @@ import org.firstinspires.ftc.teamcode.base.subsystems.WaitSubsystem;
 
 import java.util.ArrayList;
 
-@Autonomous(name="5+0",group = "Auton")
+@Autonomous(name="5+0",group = ".Auton")
 public class AutoSpec extends OpMode {
     static Pose grab = new Pose(4.75, -33, Math.toRadians(0));
     static int scoreX = 34;

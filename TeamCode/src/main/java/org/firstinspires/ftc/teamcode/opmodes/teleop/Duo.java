@@ -7,11 +7,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.base.bot.Actions;
 import org.firstinspires.ftc.teamcode.base.bot.Robot;
 
-@TeleOp(name="Duo",group="TeleOp")
+@TeleOp(name="Duo",group=".TeleOp")
 public class Duo extends CommandOpMode {
+    public Robot bot;
+    public Duo(Robot bot) {
+        this.bot = bot;
+    }
+
     @Override
     public void initialize() {
-        Robot bot = new Robot(Robot.Mode.DUO, hardwareMap);
+        bot = new Robot(Robot.Mode.DUO, hardwareMap);
 
         // DRIVER CONTROLS
         new GamepadButton(bot.base, GamepadKeys.Button.A)

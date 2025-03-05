@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.base.bot.Actions;
 
 import java.util.ArrayList;
 
-@Autonomous(name="5+1", group = "Auton")
+@Autonomous(name="5+1", group = ".Auton")
 public class AutoSpec2 extends OpMode {
     public enum AutoPaths {
         PRELOAD(
@@ -132,32 +132,33 @@ public class AutoSpec2 extends OpMode {
     @Override
     public void init() {
         Robot bot = new Robot(Robot.Mode.AUTO, hardwareMap);
-
+        Follower f = bot.follower.getFollower();
+        
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
                         Actions.SpecimenScoreReverseAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.PRELOAD.curve(bot.follower.getFollower())),
-                        Actions.FollowPathAction(bot, AutoPaths.GO_TO_SAMPLES.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.PRELOAD.curve(f)),
+                        Actions.FollowPathAction(bot, AutoPaths.GO_TO_SAMPLES.curve(f)),
                         Actions.ResetAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_1.curve(bot.follower.getFollower())),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_2.curve(bot.follower.getFollower())),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_3.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_1.curve(f)),
+                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_2.curve(f)),
+                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_3.curve(f)),
                         Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_1.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_1.curve(f)),
                         Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_1.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_1.curve(f)),
                         Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_2.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_2.curve(f)),
                         Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_2.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_2.curve(f)),
                         Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_3.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_3.curve(f)),
                         Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_3.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_3.curve(f)),
                         Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_4.curve(bot.follower.getFollower())),
+                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_4.curve(f)),
                         Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_4.curve(bot.follower.getFollower()))
+                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_4.curve(f))
                 )
         );
     }
