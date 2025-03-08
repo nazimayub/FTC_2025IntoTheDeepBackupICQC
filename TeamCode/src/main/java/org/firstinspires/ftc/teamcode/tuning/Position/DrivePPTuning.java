@@ -6,6 +6,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.base.commands.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.tuning.Pedro.constants.FConstants;
 import org.firstinspires.ftc.teamcode.tuning.Pedro.constants.LConstants;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  * Change paths/poses through FTC Dash, hit A to run the path
  */
 @Config
+@TeleOp(group="Pos")
 public class DrivePPTuning extends OpMode {
 
     private Follower follower;

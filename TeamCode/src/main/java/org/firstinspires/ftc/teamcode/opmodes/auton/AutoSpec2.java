@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import com.arcrobotics.ftclib.command.*;
-import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
@@ -11,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.base.bot.Robot;
-import org.firstinspires.ftc.teamcode.base.bot.Actions;
+import org.firstinspires.ftc.teamcode.base.subsystems.FollowerSubsystem;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public class AutoSpec2 extends OpMode {
         ),
 
         GO_TO_SAMPLES(
-                new Pose(38,  0, Math.toRadians(180)),
+                new Pose(34,  6, Math.toRadians(180)),
                 new Pose(15, 0, Math.toRadians(180)),
                 new Pose(15, -30, Math.toRadians(0)),
                 new Pose(45, -30, Math.toRadians(0)),
@@ -100,15 +99,15 @@ public class AutoSpec2 extends OpMode {
             this.poses = poses;
         }
 
-        public PathChain line(Follower follower) {
-            PathChain path = follower.pathBuilder()
+        public PathChain line(FollowerSubsystem follower) {
+            PathChain path = follower.getFollower().pathBuilder()
                     .addPath(new BezierLine(new Point(poses[0]), new Point(poses[1])))
                     .setLinearHeadingInterpolation(poses[0].getHeading(), poses[1].getHeading())
                     .build();
             return path;
         }
 
-        public PathChain curve(Follower follower) {
+        public PathChain curve(FollowerSubsystem follower) {
             ArrayList<Point> controlPoints = new ArrayList<>();
             for (Pose pose : poses) {
                 controlPoints.add(new Point(pose.getX(), pose.getY(), 1));
@@ -116,7 +115,7 @@ public class AutoSpec2 extends OpMode {
 
             BezierCurve bezierCurve = new BezierCurve(controlPoints);
 
-            PathChain path = follower.pathBuilder()
+            PathChain path = follower.getFollower().pathBuilder()
                     .addPath(bezierCurve)
                     .setLinearHeadingInterpolation(poses[0].getHeading(), poses[poses.length - 1].getHeading())
                     .build();
@@ -131,34 +130,34 @@ public class AutoSpec2 extends OpMode {
 
     @Override
     public void init() {
-        Robot bot = new Robot(Robot.Mode.AUTO, hardwareMap);
-        Follower f = bot.follower.getFollower();
-        
+        Robot bot = new Robot(Robot.Mode.AUTO, null, null, hardwareMap);
+        FollowerSubsystem f = bot.follower;
+
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        Actions.SpecimenScoreReverseAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.PRELOAD.curve(f)),
-                        Actions.FollowPathAction(bot, AutoPaths.GO_TO_SAMPLES.curve(f)),
-                        Actions.ResetAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_1.curve(f)),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_2.curve(f)),
-                        Actions.FollowPathAction(bot, AutoPaths.PUSH_SAMPLE_3.curve(f)),
-                        Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_1.curve(f)),
-                        Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_1.curve(f)),
-                        Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_2.curve(f)),
-                        Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_2.curve(f)),
-                        Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_3.curve(f)),
-                        Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_3.curve(f)),
-                        Actions.SpecimenGrabAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.GRAB_SPECIMEN_4.curve(f)),
-                        Actions.SpecimenScoreAction(bot),
-                        Actions.FollowPathAction(bot, AutoPaths.SCORE_SPECIMEN_4.curve(f))
+                        bot.SpecimenScoreReverse(),
+                        bot.FollowPath(AutoPaths.PRELOAD.curve(f)),
+                        bot.FollowPath(AutoPaths.GO_TO_SAMPLES.curve(f)),
+                        bot.Reset(),
+                        bot.FollowPath(AutoPaths.PUSH_SAMPLE_1.curve(f)),
+                        bot.FollowPath(AutoPaths.PUSH_SAMPLE_2.curve(f)),
+                        bot.FollowPath(AutoPaths.PUSH_SAMPLE_3.curve(f)),
+                        bot.SpecimenGrab(),
+                        bot.FollowPath(AutoPaths.GRAB_SPECIMEN_1.curve(f)),
+                        bot.SpecimenScore(),
+                        bot.FollowPath(AutoPaths.SCORE_SPECIMEN_1.curve(f)),
+                        bot.SpecimenGrab(),
+                        bot.FollowPath(AutoPaths.GRAB_SPECIMEN_2.curve(f)),
+                        bot.SpecimenScore(),
+                        bot.FollowPath(AutoPaths.SCORE_SPECIMEN_2.curve(f)),
+                        bot.SpecimenGrab(),
+                        bot.FollowPath(AutoPaths.GRAB_SPECIMEN_3.curve(f)),
+                        bot.SpecimenScore(),
+                        bot.FollowPath(AutoPaths.SCORE_SPECIMEN_3.curve(f)),
+                        bot.SpecimenGrab(),
+                        bot.FollowPath(AutoPaths.GRAB_SPECIMEN_4.curve(f)),
+                        bot.SpecimenScore(),
+                        bot.FollowPath(AutoPaths.SCORE_SPECIMEN_4.curve(f))
                 )
         );
     }
@@ -166,5 +165,9 @@ public class AutoSpec2 extends OpMode {
     @Override
     public void loop() {
         CommandScheduler.getInstance().run();
+    }
+
+    public void stop() {
+        CommandScheduler.getInstance().reset();
     }
 }

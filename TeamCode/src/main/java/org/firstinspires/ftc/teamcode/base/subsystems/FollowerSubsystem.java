@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.tuning.Pedro.constants.LConstants;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 public class FollowerSubsystem extends CommandBase {
-    private Follower follower;
-    private Pose start;
+    private final Follower follower;
+    private final Pose start;
 
     public FollowerSubsystem(HardwareMap h, Follower follower, Pose start)  {
         Constants.setConstants(FConstants.class, LConstants.class);
@@ -23,6 +23,14 @@ public class FollowerSubsystem extends CommandBase {
 
     public Follower getFollower() {
         return this.follower;
+    }
+
+    public void setStartPose(Pose pose) {
+        follower.setPose(pose);
+    }
+
+    public Pose getPose() {
+        return follower.getPose();
     }
 
     @Override

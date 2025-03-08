@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.tuning.Position;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.PwmControl;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import org.firstinspires.ftc.teamcode.base.bot.Const;
 
 @Config
+@TeleOp(group="Pos")
 public class ServoTuning extends OpMode {
     public static Servo outtakeRot, outtakeDistRight, outtakeDistLeft, intakeRot, outtakeClaw, outtakeTwist, shifter;
 
