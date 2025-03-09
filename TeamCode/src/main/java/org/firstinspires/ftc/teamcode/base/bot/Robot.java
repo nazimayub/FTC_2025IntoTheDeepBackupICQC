@@ -36,7 +36,6 @@ public class Robot {
     private final HardwareMap hardwareMap;
     public  GamepadEx base;
     public  GamepadEx op;
-    private Follower follow;
     static SimpleLogger log;
 
     public static Drive drive;
@@ -62,9 +61,9 @@ public class Robot {
         drive = new Drive(hardwareMap, Const.imu, new MotorConfig(Const.fr, Const.fl, Const.br, Const.bl),
                 new MotorDirectionConfig(false,true,false,true));
         hSlide = new PIDFSingleSlideSubsystem(hardwareMap, Const.hSlide, -0.02, 0, 0, 0.0);
-        tSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD,
-                                        0.001, 0,  0, 0.01,
-                                        0.001, 0, 0, 0.01);
+        //tSlide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD,
+        //                                0.001, 0,  0, 0.01,
+        //                                0.001, 0, 0, 0.01);
         slide = new PIDFSlideSubsystem(hardwareMap, Const.rSlide, Const.lSlide, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD,
                                         0.1, 0, 0.000004, 0.21,
                                         0.1, 0, 0.000004, 0.21);
@@ -85,15 +84,9 @@ public class Robot {
 
     public void setMode(Mode m, Gamepad g1, Gamepad g2) {
         if(m == Mode.SOLO) {
-            base = new GamepadEx(g1);
-            InitTele();
-        } else if(m == Mode.DUO) {
-            base = new GamepadEx(g1);
-            op = new GamepadEx(g2);
-            InitTele();
+            InitTele(m, g1, g2);
         } else if(m == Mode.AUTO) {
-            CommandScheduler.getInstance().schedule(InitAuto());
-            CommandScheduler.getInstance().run();
+            InitAuto();
         }
     }
 
@@ -104,14 +97,23 @@ public class Robot {
             new GamepadButton(g, b).whenPressed(Press).whenReleased(Release);
     }
 
-    public Command InitAuto() {
-        return new ParallelCommandGroup(
+    //Init
+    public void InitAuto() {
+        Command i = new ParallelCommandGroup(
                 new ServoCommand(outtakeClaw, Const.grab),
                 new ServoCommand(intakeClawRot, .58)
         );
+        CommandScheduler.getInstance().schedule(i);
+        CommandScheduler.getInstance().run();
     }
 
-    public void InitTele() {
+    public void InitTele(Mode m, Gamepad g1, Gamepad g2) {
+        if(m == Mode.SOLO) {
+            base = new GamepadEx(g1);
+        } else if(m == Mode.DUO) {
+            base = new GamepadEx(g1);
+            op = new GamepadEx(g2);
+        }
         drive.setDefaultCommand(new DriveCommand(drive, base));
     }
 

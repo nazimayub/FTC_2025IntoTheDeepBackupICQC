@@ -1,62 +1,61 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.base.bot.Robot;
 
 @TeleOp(name="Solo2", group=".TeleOp")
 public class Solo2 extends CommandOpMode {
-    public static Robot bot;
+    public Robot tanveerBot;
 
     @Override
     public void initialize() {
-        bot = new Robot(Robot.Mode.SOLO, gamepad1, null, hardwareMap);
+        tanveerBot = new Robot(Robot.Mode.SOLO, gamepad1, null, hardwareMap);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.DPAD_LEFT,
-                bot.SpecimenGrab(),
+                tanveerBot.SpecimenGrab(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.DPAD_RIGHT,
-                bot.SpecimenScore(),
+                tanveerBot.SpecimenScore(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.DPAD_DOWN,
-                bot.Reset(),
+                tanveerBot.Reset(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.RIGHT_BUMPER,
-                bot.Intake(true),
-                bot.IntakeRest());
+                tanveerBot.Intake(true),
+                tanveerBot.IntakeRest());
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.LEFT_BUMPER,
-                bot.Intake(false),
-                bot.IntakeRest());
+                tanveerBot.Intake(false),
+                tanveerBot.IntakeRest());
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.A,
-                bot.SubmersibleIntake(),
+                tanveerBot.SubmersibleIntake(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.B,
-                bot.Transfer(),
+                tanveerBot.Transfer(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.Y,
-                bot.HighBasketPos(),
+                tanveerBot.HighBasketPos(),
                 null);
 
-        bot.Action(bot.base,
+        tanveerBot.Action(tanveerBot.base,
                 GamepadKeys.Button.X,
-                bot.HighBasketScore(),
+                tanveerBot.HighBasketScore(),
                 null);
     }
 }
