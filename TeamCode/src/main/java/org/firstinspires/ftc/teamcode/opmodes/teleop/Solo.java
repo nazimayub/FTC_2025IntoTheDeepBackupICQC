@@ -107,7 +107,7 @@ public class Solo extends CommandOpMode {
         new GamepadButton(base, GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(
                         new SequentialCommandGroup(
-                                new IntakeCommand(intake, -.8)
+                                new IntakeCommand(intake, .8)
                         )
                 )
                 .whenReleased(
