@@ -7,17 +7,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 public class Drivetrain extends Subsystem {
-    private DcMotorEx frontLeft, frontRight, backLeft, backRight;
+    private DcMotorEx fL, fR, bL, bR;
 
     @Override
     public void init(HardwareMap hardwareMap) {
-        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
-        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        fL = hardwareMap.get(DcMotorEx.class, "fL");
+        fR = hardwareMap.get(DcMotorEx.class, "fR");
+        bL = hardwareMap.get(DcMotorEx.class, "bL");
+        bR = hardwareMap.get(DcMotorEx.class, "bR");
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        fR.setDirection(DcMotorSimple.Direction.REVERSE);
+        bR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         setBrakeMode(true);
     }
@@ -33,20 +33,20 @@ public class Drivetrain extends Subsystem {
         max = Math.max(max, Math.abs(blPower));
         max = Math.max(max, Math.abs(brPower));
 
-        frontLeft.setPower(Range.clip(flPower / max, -1, 1));
-        frontRight.setPower(Range.clip(frPower / max, -1, 1));
-        backLeft.setPower(Range.clip(blPower / max, -1, 1));
-        backRight.setPower(Range.clip(brPower / max, -1, 1));
+        fL.setPower(Range.clip(flPower / max, -1, 1));
+        fR.setPower(Range.clip(frPower / max, -1, 1));
+        bL.setPower(Range.clip(blPower / max, -1, 1));
+        bR.setPower(Range.clip(brPower / max, -1, 1));
     }
 
     public void setBrakeMode(boolean enabled) {
         DcMotor.ZeroPowerBehavior behavior = enabled ?
                 DcMotor.ZeroPowerBehavior.BRAKE :
                 DcMotor.ZeroPowerBehavior.FLOAT;
-        frontLeft.setZeroPowerBehavior(behavior);
-        frontRight.setZeroPowerBehavior(behavior);
-        backLeft.setZeroPowerBehavior(behavior);
-        backRight.setZeroPowerBehavior(behavior);
+        fL.setZeroPowerBehavior(behavior);
+        fR.setZeroPowerBehavior(behavior);
+        bL.setZeroPowerBehavior(behavior);
+        bR.setZeroPowerBehavior(behavior);
     }
 
     @Override
