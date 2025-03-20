@@ -4,21 +4,42 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-
-@Autonomous(name = "icl ts pmo vro", group = ".Auton")
+@Autonomous(name = "April Tag Demo", group = ".Auton")
 
 public class AprilTagFollower extends LinearOpMode {
 
     private Limelight3A limelight;
 
+    private final double TARGET_X = 0;
+    private final double TARGET_A = 9;
+    private double movePower = 0;
+    private double turnPower = 0;
+    private DcMotor fL, fR, bL, bR;
+    private final double KP_TURN = 0.02;
+    private final double KP_MOVE = 0.1;
+    private final double TX_DEADZONE = 0.5; 
+    private final double TA_DEADZONE = 1;
+
+
+
     @Override
-    public void runOpMode() throws InterruptedException
-    {
+    public void runOpMode() throws InterruptedException {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         telemetry.setMsTransmissionInterval(11);
+
+        fL = hardwareMap.get(DcMotor .class, "fL");
+        fR = hardwareMap.get(DcMotor.class, "fR");
+        bL = hardwareMap.get(DcMotor.class, "bL");
+        bR = hardwareMap.get(DcMotor.class, "bR");
+
+
+
+        fL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         limelight.pipelineSwitch(0);
         limelight.start();
@@ -29,8 +50,47 @@ public class AprilTagFollower extends LinearOpMode {
             // int tagID = result.getDetectorResults()
             telemetry.addData("tx", result.getTx());
             telemetry.addData("ty", result.getTy());
+            telemetry.addData("ta", result.getTa());
             telemetry.update();
+
+            if (result.getTx() > TARGET_X) {
+                telemetry.addData("specifics", "need to turn right");
+            } else if (result.getTx() < TARGET_X){
+                telemetry.addData("specifics", "need to turn left");
+            }
+            if (result.getTa() < TARGET_A) {
+                telemetry.addData("specifics", "need to move forward");
+            } else if (result.getTa() >= TARGET_A || result.getTa() == 0 && result.getTx() == 0 && result.getTy() == 0) {
+                telemetry.addData("specifics", "need to stop");
+            }
+            double taError = TARGET_A - result.getTa();
+
+            if (Math.abs(result.getTx()) >= TX_DEADZONE) {
+                    turnPower = result.getTx() * KP_TURN;
+            } else {
+                turnPower = 0;
+            }
+            if (Math.abs(taError) >= TA_DEADZONE) {
+                movePower = (KP_MOVE / Math.abs(result.getTa())) + .3;
+            } else {
+                movePower = 0;
+            }
+            
+            if (result.getTa() == 0 && result.getTx() == 0 && result.getTy() == 0){
+                movePower = 0;
+            }
+
+            double fLPower = movePower + turnPower;
+            double fRPower = movePower - turnPower;
+            double bLPower = movePower + turnPower;
+            double bRPower = movePower - turnPower;
+
+            fL.setPower(fLPower);
+            fR.setPower(fRPower);
+            bL.setPower(bLPower);
+            bR.setPower(bRPower);
+
+            }
 
         }
     }
-}
