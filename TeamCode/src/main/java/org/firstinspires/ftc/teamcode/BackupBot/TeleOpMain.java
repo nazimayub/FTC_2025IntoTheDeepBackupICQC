@@ -1,49 +1,52 @@
 package org.firstinspires.ftc.teamcode.BackupBot;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.LLStatus;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 
-@Autonomous(name = "Limelight Auton", group = "Auton")
-public class LimelightAuton extends LinearOpMode {
+@TeleOp(name = "icl ts pmo", group = "TeleOp")
+public class TeleOpMain extends OpMode {
+    Limelight3A limelight;
+
     private DcMotor fL, fR, bL, bR;
-    private PhotonCamera limelight;
+    @Override
+    public void init() {
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.setPollRateHz(90); // This sets how often we ask Limelight for data (100 times per second)
+        limelight.start(); // This tells Limelight to start looking!
 
-    public void runOpMode() {
         fL = hardwareMap.get(DcMotor.class, "fL");
         fR = hardwareMap.get(DcMotor.class, "fR");
         bL = hardwareMap.get(DcMotor.class, "bL");
         bR = hardwareMap.get(DcMotor.class, "bR");
-
         fR.setDirection(DcMotor.Direction.REVERSE);
         bR.setDirection(DcMotor.Direction.REVERSE);
 
-        limelight = new PhotonCamera("limelight");
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+    }
+    @Override
+    public void loop() {
+        double drive = -gamepad1.left_stick_x; // Forward/Backward
+        double strafe = gamepad1.left_stick_y; // Left/Right
+        double turn = gamepad1.right_stick_x; // Turning
 
-        waitForStart();
+        double fLPower = drive + strafe + turn;
+        double fRPower = drive - strafe + turn;
+        double bLPower = -drive + strafe + turn;
+        double bRPower = -drive - strafe + turn;
 
-        while (opModeIsActive()) {
-            PhotonPipelineResult result = limelight.getLatestResult();
-            if (result.hasTargets()) {
-                double xOffset = result.getBestTarget().getYaw();
-                double forwardSpeed = 0.2;
-                double turnSpeed = -xOffset * 0.02;
+        fL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-                fL.setPower(forwardSpeed + turnSpeed);
-                fR.setPower(forwardSpeed - turnSpeed);
-                bL.setPower(forwardSpeed + turnSpeed);
-                bR.setPower(forwardSpeed - turnSpeed);
-            } else {
-                fL.setPower(0);
-                fR.setPower(0);
-                bL.setPower(0);
-                bR.setPower(0);
-            }
-            telemetry.addData("Target Found", result.hasTargets());
-            telemetry.addData("X Offset", result.hasTargets() ? result.getBestTarget().getYaw() : "N/A");
-            telemetry.update();
-        }
+        fL.setPower(fLPower);
+        fR.setPower(fRPower);
+        bL.setPower(bLPower);
+        bR.setPower(bRPower);
     }
 }
