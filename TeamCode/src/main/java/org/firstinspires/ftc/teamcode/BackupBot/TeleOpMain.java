@@ -7,16 +7,12 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
-@TeleOp(name = "icl ts pmo", group = "TeleOp")
+@TeleOp(name = "TeleOpMain", group = "TeleOp")
 public class TeleOpMain extends OpMode {
-     Limelight3A limelight;
 
     private DcMotor fL, fR, bL, bR;
     @Override
     public void init() {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.setPollRateHz(90); // This sets how often we ask Limelight for data (100 times per second)
-        limelight.start(); // This tells Limelight to start looking!
 
         fL = hardwareMap.get(DcMotor.class, "fL");
         fR = hardwareMap.get(DcMotor.class, "fR");
