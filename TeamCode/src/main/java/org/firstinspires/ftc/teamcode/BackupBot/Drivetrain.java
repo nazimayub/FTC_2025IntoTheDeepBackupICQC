@@ -33,10 +33,10 @@ public class Drivetrain extends Subsystem {
         max = Math.max(max, Math.abs(blPower));
         max = Math.max(max, Math.abs(brPower));
 
-        fL.setPower(Range.clip(flPower / max, -1, 1));
-        fR.setPower(Range.clip(frPower / max, -1, 1));
-        bL.setPower(Range.clip(blPower / max, -1, 1));
-        bR.setPower(Range.clip(brPower / max, -1, 1));
+        fL.setPower(Range.clip(flPower / max, -.5, .5));
+        fR.setPower(Range.clip(frPower / max, -.5, .5));
+        bL.setPower(Range.clip(blPower / max, -.5, .5));
+        bR.setPower(Range.clip(brPower / max, -.5, .5));
     }
 
     public void setBrakeMode(boolean enabled) {

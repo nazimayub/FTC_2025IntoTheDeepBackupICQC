@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "April Tag Demo", group = ".Auton")
 
-public class AprilTagFollower extends LinearOpMode {
+public class AprilTagDetection extends LinearOpMode {
 
     private Limelight3A limelight;
 
@@ -16,10 +16,9 @@ public class AprilTagFollower extends LinearOpMode {
     private final double TARGET_A = 8;
     private double movePower = 0;
     private double turnPower = 0;
-    private DcMotor fL, fR, bL, bR;
     private final double KP_TURN = 0.05;
     private final double KP_MOVE = 1;
-    private final double TX_DEADZONE = 0.5; 
+    private final double TX_DEADZONE = 0.5;
     private final double TA_DEADZONE = 1;
 
 
@@ -28,18 +27,6 @@ public class AprilTagFollower extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         telemetry.setMsTransmissionInterval(11);
-
-        fL = hardwareMap.get(DcMotor .class, "fL");
-        fR = hardwareMap.get(DcMotor.class, "fR");
-        bL = hardwareMap.get(DcMotor.class, "bL");
-        bR = hardwareMap.get(DcMotor.class, "bR");
-
-
-
-        fL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        fR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        bR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        bL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         limelight.pipelineSwitch(0);
         limelight.start();
@@ -63,34 +50,7 @@ public class AprilTagFollower extends LinearOpMode {
             } else if (result.getTa() >= TARGET_A || result.getTa() == 0 && result.getTx() == 0 && result.getTy() == 0) {
                 telemetry.addData("specifics", "need to stop");
             }
-            double taError = TARGET_A - result.getTa();
-
-            if (Math.abs(result.getTx()) >= TX_DEADZONE) {
-                   turnPower = -(result.getTx() * KP_TURN);
-                ;
-            } else {
-                turnPower = 0;
-            }
-            if (Math.abs(taError) >= TA_DEADZONE) {
-                movePower = (KP_MOVE / Math.abs(result.getTa())) + .3;
-            } else {
-                movePower = 0;
-            }
-            
-            if (result.getTa() == 0 && result.getTx() == 0 && result.getTy() == 0){
-                movePower = 0;
-            }
-            double fLPower = -(movePower + turnPower);
-            double fRPower = -(movePower - turnPower);
-            double bLPower = -(movePower + turnPower);
-            double bRPower = -(movePower - turnPower);
-
-            fL.setPower(fLPower);
-            fR.setPower(fRPower);
-            bL.setPower(bLPower);
-            bR.setPower(bRPower);
-
-            }
-
         }
+
     }
+}
