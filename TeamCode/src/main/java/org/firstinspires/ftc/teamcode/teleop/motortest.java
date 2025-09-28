@@ -10,7 +10,7 @@ public class motortest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        DcMotor myMotor = hardwareMap.get(DcMotor.class, "motor");
+        DcMotor myMotor = hardwareMap.get(DcMotor.class, "test");
 
         myMotor.setDirection(DcMotor.Direction.FORWARD);
 
